@@ -12,5 +12,8 @@ class Kategori extends Model
     public function jenis(){
         return $this->belongsTo(Jenis::class);
     }
+    public function barang(){
+        return $this->hasMany(Barang::class);
+    }
 }
 

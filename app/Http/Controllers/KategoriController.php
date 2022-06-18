@@ -25,6 +25,9 @@ class KategoriController extends Controller
             ->addColumn('jenis', function($data){
                 return $data->jenis->nama;
             })
+            ->addColumn('jumlah_barang', function($data){
+                return $data->barang->count();
+            })
             ->addColumn('action', function($data){
                 return <<<EOD
                     <div class="dropdown" style="text-align: center;">
@@ -38,7 +41,7 @@ class KategoriController extends Controller
                 </div>
                 EOD;
             })
-            ->rawColumns(['jenis','action' ])
+            ->rawColumns(['jenis','jumlah_barang','action' ])
             ->addIndexColumn()
             ->make(true);
         }

@@ -24,3 +24,4 @@ Route::resource('jenis', 'JenisController');
 Route::resource('kategori', 'KategoriController');
 Route::get('get-jenis', 'KategoriController@getJenis')->name('get-jenis.index');
 Route::resource('barang', 'BarangController');
+Route::get('get-kategori', 'BarangController@getJenis')->name('get-kategori.index');

@@ -32,6 +32,7 @@
                                 <th>Nomor Kategori</th>
                                 <th>Nama</th>
                                 <th>Jenis</th>
+                                <th>Jumlah Barang</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -195,6 +196,10 @@
             {
             data: 'jenis',
             name: 'jenis'
+            },
+            {
+            data: 'jumlah_barang',
+            name: 'jumlah_barang'
             },
             {
             data: 'action',

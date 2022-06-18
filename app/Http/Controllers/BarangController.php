@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Barang;
+use App\Kategori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class BarangController extends Controller
 {
@@ -17,11 +19,18 @@ class BarangController extends Controller
         $list_barang = Barang::all();
         if($request->ajax()){
            return datatables()->of($list_barang)
-           ->addColumn('gambar', function($data){
-                $url = asset('storage/barangs/'.$data->gambar);
-                return '<img src="'.$url.'" border="0" width="40" class="img-rounded"">';
+            ->addColumn('gambar', function($data){
+                if(empty($data->gambar)){
+                    $url = asset('img/nopict.png');
+                }else {
+                    $url = asset('storage/barangs/'.$data->gambar);
+                }
+                return '<img src="'.$url.'" border="0" width="40" height="40" class="img-rounded"">';
             })
-           ->addColumn('action', function($data){
+            ->addColumn('kategori', function($data){
+                return $data->kategori->nama;
+            })
+            ->addColumn('action', function($data){
                return <<<EOD
                        <div class="dropdown" style="text-align: center;">
                            <button class="btn p-0" type="button" id="orederStatistics" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -34,7 +43,7 @@ class BarangController extends Controller
                        </div>
                        EOD;     
            })
-           ->rawColumns(['gambar','action'])
+           ->rawColumns(['gambar','kategori','action'])
            ->addIndexColumn()
            ->make(true);
        }
@@ -59,15 +68,39 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        // $gambar = $request->gambar->store('barangs');
-        // Barang::create([
-        //     'nama_barang' => $request->nama_barang,
-        //     'gambar' => $gambar
-        // ]);
+        $rules =[
+            'nomor_barang'=>'required|unique:barangs',
+            'nama_barang'=>'required|unique:barangs',
+            'stok'=>'required',
+            'harga_satuan'=>'required',
+            'kategori_id'=>'required',
+            'gambar'=>'image'
+        ];
 
-        // return redirect(route('barang.index'));
+        $text =[
+            'nomor_barang.required' => 'Mohon isi kolom Nomor Barang!',
+            'nomor_barang.required' => 'Mohon isi kolom Nama Barang!',
+            'nomor_barang.unique' => 'Nomor Barang telah terdata sebelumnya!',
+            'nomor_barang.unique' => 'Nama Barang telah terdata sebelumnya!',
+            'stok.unique' => 'Mohon isi kolom Stok!',
+            'harga_satuan.unique' => 'Mohon isi kolom Harga Satuan!',
+            'kategori_id.unique' => 'Mohon isi kolom Kategori!',
+            'gambar.image' => 'Data yang di upload haruslah berupa file gambar!',
+
+        ];
+
+        $validasi = Validator::make($request->all(),$rules,$text);
+
+        if($validasi->fails()){
+            return response()->json(['success'=>0,'text' => $validasi->errors()->first()],422);
+        }
+
         $barang = new Barang;
+        $barang->nomor_barang = $request->input('nomor_barang');
         $barang->nama_barang = $request->input('nama_barang');
+        $barang->stok = $request->input('stok');
+        $barang->harga_satuan = $request->input('harga_satuan');
+        $barang->kategori_id = $request->input('kategori_id');
         if($request->hasFile('gambar')){
             $file = $request->file('gambar');
             $extension = $file->getClientOriginalExtension();
@@ -121,5 +154,21 @@ class BarangController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getJenis(Request $request){
+        $data = [];
+
+        if($request->has('q')){
+            $search = $request->q;
+            $data =Jenis::select("id","nama")
+            		->where('nama','LIKE',"%$search%")
+            		->get();
+        }else{
+            $data = Kategori::all();
+        }
+        return response()->json($data);
+            // ini berhasil
+
     }
 }
