@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Barang;
 use App\Kategori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class BarangController extends Controller
@@ -23,9 +24,9 @@ class BarangController extends Controller
                 if(empty($data->gambar)){
                     $url = asset('img/nopict.png');
                 }else {
-                    $url = asset('storage/barangs/'.$data->gambar);
+                    $url = asset('storage/'.$data->gambar);
                 }
-                return '<img src="'.$url.'" border="0" width="40" height="40" class="img-rounded"">';
+                return '<img src="'.$url.'" border="0" width="40" height="40">';
             })
             ->addColumn('kategori', function($data){
                 return $data->kategori->nama;
@@ -37,8 +38,8 @@ class BarangController extends Controller
                                    <i class="bx bx-dots-vertical-rounded"></i>
                            </button>
                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
-                               <a class="dropdown-item" data-id="$data->id" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modalEdit" onClick="editJenis(event.target)">Edit</a>
-                               <a class="dropdown-item" data-id="$data->id" href="javascript:void(0);" onClick="deleteJenis(event.target)">Delete</a>
+                               <a class="dropdown-item" data-id="$data->id" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modalEdit" onClick="editBarang(event.target)">Edit</a>
+                               <a class="dropdown-item" data-id="$data->id" href="javascript:void(0);" onClick="deleteBarang(event.target)">Delete</a>
                            </div>
                        </div>
                        EOD;     
@@ -72,19 +73,19 @@ class BarangController extends Controller
             'nomor_barang'=>'required|unique:barangs',
             'nama_barang'=>'required|unique:barangs',
             'stok'=>'required',
-            'harga_satuan'=>'required',
             'kategori_id'=>'required',
+            'harga_satuan'=>'required',
             'gambar'=>'image'
         ];
 
         $text =[
             'nomor_barang.required' => 'Mohon isi kolom Nomor Barang!',
-            'nomor_barang.required' => 'Mohon isi kolom Nama Barang!',
+            'nama_barang.required' => 'Mohon isi kolom Nama Barang!',
             'nomor_barang.unique' => 'Nomor Barang telah terdata sebelumnya!',
-            'nomor_barang.unique' => 'Nama Barang telah terdata sebelumnya!',
-            'stok.unique' => 'Mohon isi kolom Stok!',
-            'harga_satuan.unique' => 'Mohon isi kolom Harga Satuan!',
-            'kategori_id.unique' => 'Mohon isi kolom Kategori!',
+            'nama_barang.unique' => 'Nama Barang telah terdata sebelumnya!',
+            'stok.required' => 'Mohon isi kolom Stok!',
+            'kategori_id.required' => 'Mohon isi kolom Kategori!',
+            'harga_satuan.required' => 'Mohon isi kolom Harga Satuan!',
             'gambar.image' => 'Data yang di upload haruslah berupa file gambar!',
 
         ];
@@ -94,21 +95,19 @@ class BarangController extends Controller
         if($validasi->fails()){
             return response()->json(['success'=>0,'text' => $validasi->errors()->first()],422);
         }
-
-        $barang = new Barang;
-        $barang->nomor_barang = $request->input('nomor_barang');
-        $barang->nama_barang = $request->input('nama_barang');
-        $barang->stok = $request->input('stok');
-        $barang->harga_satuan = $request->input('harga_satuan');
-        $barang->kategori_id = $request->input('kategori_id');
-        if($request->hasFile('gambar')){
-            $file = $request->file('gambar');
-            $extension = $file->getClientOriginalExtension();
-            $fileName = time().'.'.$extension;
-            $file->move('storage/barangs',$fileName);
-            $barang->gambar = $fileName;
+        $gambar ='';
+        if(! is_null ($request->gambar)){
+            $gambar = $request->gambar->store('barangs');
         }
-        $barang->save();
+        // dd(json_encode($request->nomor_barang));
+        Barang::create([
+            'nomor_barang' => $request->nomor_barang,
+            'nama_barang' => $request->nama_barang,
+            'stok' => $request->stok,
+            'harga_satuan' => $request->harga_satuan,
+            'kategori_id' => $request->kategori_id,
+            'gambar' => $gambar,
+        ]);
     }
 
     /**
@@ -130,7 +129,8 @@ class BarangController extends Controller
      */
     public function edit($id)
     {
-        //
+        $barang = Barang::find($id)->load('kategori');
+        return response()->json($barang);
     }
 
     /**
@@ -140,9 +140,19 @@ class BarangController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+
+    public function update(Request $request){
+        $barang = Barang::find($request->id);
+        $data = $request->only(['nomor_barang','nama_barang','kategori_id','stok','harga_satuan']);
+        //dd(json_encode($data));
+        $gambar ='';
+        if(! is_null ($request->gambar)){
+            $gambar = $request->gambar->store('barangs');
+            $barang->deleteImage();
+            $data['gambar'] = $gambar;
+        }
+        //dd(json_encode($barang));
+        $barang->update($data);
     }
 
     /**
@@ -153,15 +163,18 @@ class BarangController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $barang = Barang::find($id);
+        $barang->deleteImage();
+        $barang->delete();
+        return response()->json();
     }
 
-    public function getJenis(Request $request){
+    public function getKategori(Request $request){
         $data = [];
 
         if($request->has('q')){
             $search = $request->q;
-            $data =Jenis::select("id","nama")
+            $data =Kategori::select("id","nama")
             		->where('nama','LIKE',"%$search%")
             		->get();
         }else{

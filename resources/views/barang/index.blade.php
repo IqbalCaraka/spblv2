@@ -107,6 +107,71 @@
         </div>
     </div>
     <!--//Modal tambah jenis-->
+    <!--Modal edit jenis-->
+    <div class="modal fade" id="modalEdit" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="modalEditJudul">Edit Barang</h5>
+            <button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form enctype="multipart/form-data" id="form-edit" name="ItemForm">
+                <!-- <input type="hidden" name="_method" value="PUT"> -->
+                <input type="hidden" id="id_edit" name="id" class="form-control"/>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="nomor_barang" class="form-label">Nomor Barang</label>
+                            <input type="number" id="nomor_barang_edit" name="nomor_barang" class="form-control" placeholder="Masukan Nomor Barang"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="nama_barang_edit" class="form-label">Nama Barang</label>
+                            <input type="text" id="nama_barang_edit" name="nama_barang" class="form-control" placeholder="Masukan Nama Barang"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="stok_edit" class="form-label">Stok</label>
+                            <input type="number" id="stok_edit" name="stok" class="form-control" placeholder="Masukan Stok"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="kategori_id_edit" class="form-label" >Kategori</label>
+                            <select name="kategori_id" id="kategori_id_edit" style="width: 100% ;" class="js-example-basic-single-edit select2 form-control" name="states">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="harga_satuan" class="form-label">Harga Satuan</label>
+                            <div class="input-group">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="number" id="harga_satuan_edit" name="harga_satuan" class="form-control"/>
+                                <span class="input-group-text">,00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row position-relative">
+                        <div class="col mb-3">
+                            <label for="gambar" class="form-label">Gambar</label>
+                            <br>
+                            <img id="gambar-edit" src="" style="width: 40%;" class="mb-3">
+                            <input type="file" id="gambar_edit" name="gambar" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"> Batal </button>
+                    <button type="submit" class="btn btn-primary" id="submit-form"> Simpan </button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+    <!--//Modal edit jenis-->
 </div>
 
 <script>
@@ -184,30 +249,31 @@
             }
         })
         //select untuk edit
-        // $('.js-example-basic-single-edit').select2({
-        //     dropdownParent: $('#modalEdit'),
-        //     ajax:{
-        //         url: "{{route('get-jenis.index')}}",
-        //         dataType: 'json',
-        //         delay: 250,
-        //         processResults: function (data) {
-        //             return {
-        //                 results:  $.map(data, function (item) {
-        //                     return {
-        //                         text: item.nama,
-        //                         id: item.id
-        //                     }   
-        //                 })
-        //             };
-        //         }
-        //     },
-        // })
+        $('.js-example-basic-single-edit').select2({
+            dropdownParent: $('#modalEdit'),
+            ajax:{
+                url: "{{route('get-kategori.index')}}",
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {
+                    return {
+                        results:  $.map(data, function (item) {
+                            return {
+                                text: item.nama,
+                                id: item.id
+                            }   
+                        })
+                    };
+                }
+            },
+        })
     });
 
     //Membuat barang
     $(document).on('submit', '#form-tambah', function (e) { 
         e.preventDefault();
         var formData = new FormData($('#form-tambah')[0])
+        console.log(formData);
         $.ajax({
             type:"POST",
             url:"{{route('barang.store')}}",
@@ -226,7 +292,86 @@
             }
         });
     })
-    
+    //Untuk mendapatkan data yang diedit
+    function editBarang(event){
+        var gambar;
+        data_id = $(event).data('id');        
+        var URL = "{{route('barang.edit', 'id')}}";
+        var newURL = URL.replace('id', data_id);
+        $.ajax({
+            url: newURL,
+            type:"GET",
+            dataType:"JSON",
+            success: function(barang){
+                if(barang){
+                    if(!barang.gambar){
+                        gambar = "storage/nopict.png"
+                    }else{
+                        gambar = "storage/"+barang.gambar;
+                    }
+                    $('#id_edit').val(barang.id);
+                    $('#nomor_barang_edit').val(barang.nomor_barang);
+                    $('#nama_barang_edit').val(barang.nama_barang);
+                    $('#stok_edit').val(barang.stok);
+                    $("#kategori_id_edit").html('<option value = "'+barang.kategori.id+'" selected >'+barang.kategori.nama+'</option>');
+                    $('#harga_satuan_edit').val(barang.harga_satuan);
+                    $("#gambar-edit").attr("src", gambar);
+                }
+            }
+        })
+    };
+
+    //Update data
+    $(document).on('submit', '#form-edit', function (e) { 
+        e.preventDefault();
+        var url = "{{route('barang.update')}}";
+        var formData = new FormData($('#form-edit')[0]);
+        console.log(formData);
+        $.ajax({
+            type:"POST",
+            url:url,
+            data:formData,
+            contentType:false,
+            processData:false,
+            success: function(response){
+                $('#modalEdit').modal('hide');
+                $('#form-edit').trigger("reset");
+                $('#datatable').DataTable().ajax.reload();
+                $('.js-example-basic-single-edit').html("");
+                swal("Selamat!", "Data berhasil disimpan!", "success"); 
+            },
+            error: function (xhr) { //jika error tampilkan error pada console
+                toastr.error(xhr.responseJSON.text,'Gagal Menyimpan Data!')
+            }
+        });
+    // }
+    })
+
+    //Untuk hapus data
+    function deleteBarang(event){
+        data_id = $(event).data('id');
+        var URL = "{{route('barang.destroy', 'id')}}";
+        var newURL = URL.replace('id', data_id);
+        swal({
+            title: 'Apakah Anda yakin?',
+            text: 'Data ini akan dihapus permanen!',
+            icon: 'warning',
+            dangerMode: true,
+            buttons: true,
+        }).then((willdelete)=>{
+            if(willdelete){
+                $.ajax({
+                    url:newURL,
+                    type:"DELETE",
+                    success: function($data){
+                        $('#datatable').DataTable().ajax.reload();
+                        swal("Selamat!", "Data berhasil dihapus!", "success");
+                    },
+                })
+            };
+        });
+    }
+   
 </script>
 
 @endsection
