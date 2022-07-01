@@ -17,7 +17,7 @@ class JenisController extends Controller
     public function index(Request $request)
     {
         $list_jenis = Jenis::all();
-         if($request->ajax()){
+        if($request->ajax()){
             return datatables()->of($list_jenis)
             ->addColumn('jumlah_kategori', function($data){
                 return $data->kategoris->count();
