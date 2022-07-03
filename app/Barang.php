@@ -18,14 +18,14 @@ class Barang extends Model
         Storage::delete($this->gambar);
     }
     public function getAllBarang(){
-        $barang = DB::table('barangs')->paginate(3);
+        $barang = DB::table('barangs')->paginate(8);
         return $barang;
     }
 
     public function getBarang ($data){
-        $barang = DB::table('barangs')
+        $barangs = DB::table('barangs')
             ->Where('nama_barang','LIKE', '%'.$data.'%')
-            ->get();
-            return $barang;
+            ->paginate(3);
+            return $barangs;
     }
 }

@@ -27,8 +27,6 @@ Route::resource('barang', 'BarangController',['except' => ['update']]);
 Route::post('barang-update', 'BarangController@update')->name('barang.update');
 Route::get('get-kategori', 'BarangController@getKategori')->name('get-kategori.index');
 Route::resource('menu', 'MenuController');
-Route::post ('search', 'MenuController@search');
+Route::get('utama','UtamaController@index')->name('utama.index');
+// Route::get ('/menu/search', 'MenuController@search');
 
-Route::get('search',function(){
-    return view('layouts.menu');
-});

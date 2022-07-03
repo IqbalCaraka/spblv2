@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Barang;
+use DB;
 use App\Kategori;
 use Illuminate\Http\Request;
 
@@ -13,23 +14,63 @@ class MenuController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $barang = new Barang();
-        $barang = $barang->getAllBarang();
-        if($request->ajax()){
-            return Barang::all();
-        }
-        return view("layouts.menu");
+        return view('pengguna.menu');
+        // $barangs = new Barang();
+        // $barangs = $barangs->getAllBarang();
+        // return view('layouts.menu', compact('barangs'));
+
+        // Search V2
+        // $barangs = new Barang();
+        // $barangs = $barangs->getAllBarang();
+        // if ($request->ajax()) {
+        //     return view('partials.menuLoadBarang', ['barangs' => $barangs])->render();  
+  
+        // }
+        // return view('layouts.menu', compact('barangs'));
+        
+
+        // Live search ajax V1
+        // $barang = new Barang();
+        // $barang = $barang->getAllBarang();
+        // // echo $barang;
+        // if($request->ajax()){
+        //     return response()->json([
+        //         'success' => true,
+        //         'barang' => $barang,
+        //         'pagination' => $barang->links()
+        //     ]);
+        // }
+        // return view("layouts.menu");
  
     }
 
-    public function search(Request $request){
-        $barang = new Barang();
-        $inputSearch = $request['inputSearch'];
-        $barang = $barang->getBarang($inputSearch);
-        echo ($barang);
-    }
+    // public function search (Request $request){
+    //     if ($request->ajax()) {
+    //         $query = $request->get('query');
+    //         $query = str_replace(" ", "%", $query);
+    //         $data = DB::table('barangs')
+    //             ->Where('nama_barang','LIKE', '%'.$query.'%')
+    //             ->paginate(3);
+    //         return view('partials.menuLoadBarang', compact('data'))->render;
+    //     }
+
+    //     // if ($request->ajax()) {
+    //     //     $barangs = new Barang();
+    //     //     $inputSearch = $request->get('inputSearch');
+    //     //     $barangs = $barangs->getBarang($inputSearch);
+    //     //     return view('partials.menuLoadBarang', ['barangs' => $barangs])->render();
+    //     // }
+
+    //     //Live Search V.2
+    //     // if ($request->ajax()) {
+    //     //     $barangs = new Barang();
+    //     //     $inputSearch = $request['inputSearch'];
+    //     //     $barangs = $barangs->getBarang($inputSearch);
+    //     //     return view('partials.menuLoadBarang', ['barangs' => $barangs])->render();
+    //     // }
+    // }
 
     /**
      * Show the form for creating a new resource.
