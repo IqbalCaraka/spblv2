@@ -14,7 +14,7 @@ class MenuBarang extends Component
     public function render()
     {
         return view('livewire.menu-barang',[
-            'barangs' => Barang::where('nama_barang', 'like', '%'.$this->search.'%')->paginate(10)
+            'barangs' => Barang::where('nama_barang', 'like', '%'.$this->search.'%')->paginate(12)
         ]);
     }
 
