@@ -31,6 +31,41 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Nunito", sans-serif;
 }
 
+/*Card Tambahan*/
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  box-shadow: 0px 0 30px rgba(1, 41, 112, 0.08);
+  background-clip: border-box;
+  border: 0 solid #d9dee3;
+  border-radius: 1rem;
+}
+
+.card-body {
+  flex: 1 1 auto;
+  padding: 0.5rem 3rem 0.5rem 3rem;
+}
+
+.card-header {
+  height: 5rem;
+  padding: 1rem 0.5rem;
+  margin-bottom: 0;
+  background-color: transparent;
+  border-bottom: 0 solid #d9dee3;
+}
+.card-header:first-child {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.card > hr {
+  margin-right: 0;
+  margin-left: 0;
+}
+
 /*--------------------------------------------------------------
 # Sections
 --------------------------------------------------------------*/
@@ -512,6 +547,66 @@ section {
 # Index Page
 --------------------------------------------------------------*/
 /*--------------------------------------------------------------
+# Keranjang
+--------------------------------------------------------------*/
+
+.keranjang .content {
+  background-color: #f6f9ff;
+  padding: 50px;
+  margin-top: 7%;
+}
+
+#keranjang {
+  padding: 20px 0;
+  overflow: hidden;
+
+}
+.keranjang h1 {
+  font-size: 30px;
+  font-weight: 700;
+  color: #4154f1;
+  text-transform: uppercase;
+}
+
+.keranjang h2 {
+  font-size: 25px;
+  font-weight: 700;
+  color: #012970;
+  margin:5px 20px;
+}
+
+.keranjang h3 {
+  font-size: 20px;
+  font-weight: 550;
+  color: #012970;
+  margin:10px;
+}
+.keranjang p {
+  margin:10px;
+}
+
+.keranjang input{
+  text-align: center;
+}
+
+.keranjang .rounded-pill {
+  border-radius: 5rem !important;
+}
+.keranjang .btn-icon {
+  width: calc(1.5rem + 2px);
+  height: calc(1.5rem + 2px);
+}
+
+.keranjang .form-control:disabled{
+  background-color: #fff;
+  border: 0px solid;
+}
+
+.keranjang img{
+  width: 150px;
+  height: 100px;
+}
+/*--------------------------------------------------------------
 # About
 --------------------------------------------------------------*/
 .about .content {
@@ -941,7 +1036,6 @@ section {
 .barang .btn-icon {
   width: calc(1.5rem + 2px);
   height: calc(1.5rem + 2px);
-  
 }
 
 
@@ -1007,10 +1101,10 @@ section {
   text-decoration: line-through;
 }
 
-.barang .btn-buy {
+.barang .btn-tambah-keranjang {
   display: inline-block;
-  padding: 8px 40px 10px 40px;
-  border-radius: 50px;
+  padding: 8px 20px 10px 20px;
+  border-radius: 60px;
   color: #4154f1;
   transition: none;
   font-size: 16px;
@@ -1019,9 +1113,10 @@ section {
   font-weight: 600;
   transition: 0.3s;
   border: 1px solid #4154f1;
+  background: #fff;
 }
 
-.barang .btn-buy:hover {
+.barang .btn-tambah-keranjang:hover {
   background: #4154f1;
   color: #fff;
 }

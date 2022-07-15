@@ -15,6 +15,9 @@ class CreateKeranjangsTable extends Migration
     {
         Schema::create('keranjangs', function (Blueprint $table) {
             $table->id();
+            $table->integer('barang_id');
+            $table->integer('user_id');
+            $table->integer('jumlah_barang');
             $table->timestamps();
         });
     }
