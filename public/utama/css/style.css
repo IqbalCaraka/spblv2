@@ -14,7 +14,8 @@
 
 body {
   font-family: "Open Sans", sans-serif;
-  color: #444444;
+  /* color: #444444; */
+  background-color: #f5f5f9;
 }
 
 a {
@@ -70,7 +71,7 @@ h1, h2, h3, h4, h5, h6 {
 # Sections
 --------------------------------------------------------------*/
 section {
-  padding: 40px 0;
+  padding: 40px 25px;
   overflow: hidden;
 }
 
@@ -158,35 +159,8 @@ section {
 /*--------------------------------------------------------------
 # Back to top button
 --------------------------------------------------------------*/
-.back-to-top {
-  position: fixed;
-  visibility: hidden;
-  opacity: 0;
-  right: 15px;
-  bottom: 15px;
-  z-index: 99999;
-  background: #4154f1;
-  width: 40px;
-  height: 40px;
-  border-radius: 4px;
-  transition: all 0.4s;
-}
 
-.back-to-top i {
-  font-size: 24px;
-  color: #fff;
-  line-height: 0;
-}
 
-.back-to-top:hover {
-  background: #6776f4;
-  color: #fff;
-}
-
-.back-to-top.active {
-  visibility: visible;
-  opacity: 1;
-}
 
 /*--------------------------------------------------------------
 # Disable aos animation delay on mobile devices
@@ -591,10 +565,15 @@ section {
 
 .keranjang .rounded-pill {
   border-radius: 5rem !important;
+  border-width: 2px;
 }
 .keranjang .btn-icon {
-  width: calc(1.5rem + 2px);
-  height: calc(1.5rem + 2px);
+  width: calc(1.7rem + 2px);
+  height: calc(1.7rem + 2px);
+}
+
+.keranjang .bx{
+  vertical-align: middle;
 }
 
 .keranjang .form-control:disabled{
@@ -606,13 +585,63 @@ section {
   width: 150px;
   height: 100px;
 }
+
+/*--------------------------------------------------------------
+# Checkout
+--------------------------------------------------------------*/
+.check-out .btn-check-out {
+  position: fixed;
+  bottom: 3rem;
+  right: 3rem;
+  z-index: 999999;
+  box-shadow: 0 1px 20px 1px #ff3e1d;
+}
+.check-out .btn-check-out:hover {
+  box-shadow: none;
+}
+
+/*--------------------------------------------------------------
+# Buat Transaksi
+--------------------------------------------------------------*/
+
+.buat-transaksi {
+  position: fixed;
+  /* visibility: hidden; */
+  opacity: 0;
+  right: 15px;
+  bottom: 15px;
+  z-index: 99999;
+  background: #4154f1;
+  width: 200px;
+  height: 100px;
+  border-radius: 4px;
+  transition: all 0.4s;
+}
+
+.buat-transaksi h4 {
+  font-size: 24px;
+  color: #fff;
+  line-height: 0;
+}
+
+.buat-transaksi:hover {
+  background: #6776f4;
+  color: #fff;
+}
+
+.buat-transaksi.active {
+  visibility: visible;
+  opacity: 6;
+}
+
+
 /*--------------------------------------------------------------
 # About
 --------------------------------------------------------------*/
 .about .content {
-  background-color: #f6f9ff;
+  background-color: #b8d0ff;
   padding: 50px;
-  margin-top: 20%;
+  margin-top: 80px;
 }
 
 .about h3 {
@@ -1107,13 +1136,13 @@ section {
   border-radius: 60px;
   color: #4154f1;
   transition: none;
-  font-size: 16px;
-  font-weight: 400;
+  font-size: 12px;
   font-family: "Nunito", sans-serif;
-  font-weight: 600;
+  font-weight: 800;
   transition: 0.3s;
   border: 1px solid #4154f1;
   background: #fff;
+  width: 190px;
 }
 
 .barang .btn-tambah-keranjang:hover {
@@ -2306,7 +2335,7 @@ section {
 # Footer
 --------------------------------------------------------------*/
 .footer {
-  background: #f6f9ff;
+  background: #b8d0ff;
   padding: 0 0 30px 0;
   font-size: 14px;
 }

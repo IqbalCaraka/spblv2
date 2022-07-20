@@ -49,13 +49,15 @@
     <!-- Navbar -->
     @include('partials.utama-navbar')
 
-    <main id='main'>
-        <div class="container" >
-            <!-- Content wrapper -->
-            @yield('content')
-              <!-- / Content -->
-        </div>      
-    </main>
+    <!-- <main id='main'> -->
+        <!-- Content wrapper -->
+        @yield('content')
+        <!-- / Content -->    
+    <!-- </main> -->
+
+     <!-- Footer -->
+     @include('partials.utama-footer')
+
     <!-- Vendor JS Files -->
     <script src="{{asset('/utama/vendor/bootstrap/js/bootstrap.bundle.js')}}"></script>
     <script src="{{asset('/utama/vendor/aos/aos.js')}}"></script>   
@@ -64,6 +66,13 @@
     <!-- Template Main JS File -->
     <script src="{{asset('/utama/js/main.js')}}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- Sweet Alert -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     @stack('scripts')
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 </body>
 </html>

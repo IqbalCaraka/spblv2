@@ -13,11 +13,18 @@ class KeranjangController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $keranjang = new Keranjang();
-        $keranjang = $keranjang->getKeranjang();
-        return view ('pengguna.keranjang')->with('keranjangs', $keranjang);
+        $keranjangCount = Keranjang::Where('user_id','=', Auth::user()->id)->get();
+        $keranjangs = new Keranjang();
+        $keranjangs = $keranjangs->getKeranjang();
+        if($request->ajax()){
+            return response()->json([
+                'success'=>true,
+                'keranjangs'=>$keranjangs
+            ]);
+        }
+        return view ('pengguna.keranjang')->with('keranjangs', $keranjangs)->with('keranjangCount', $keranjangCount);
     }
 
     /**
@@ -49,9 +56,14 @@ class KeranjangController extends Controller
             ]);
             return response()->json(['success'=>true, $text],200);
         }else{  
-            if($keranjang->jumlah_barang < $keranjang->barang->stok){
+            if($keranjang->jumlah_barang < $keranjang->barang->stok && $request->jumlah_barang == 1){
                 Keranjang::where('id', $keranjang->id)->update(['jumlah_barang' =>\DB::raw('jumlah_barang+1')]);
-            }else{
+            }elseif($keranjang->jumlah_barang == 1 ){
+                return response()->json(['success'=>false,$text],442);
+            }elseif($request->jumlah_barang == -1){
+                Keranjang::where('id', $keranjang->id)->update(['jumlah_barang' =>\DB::raw('jumlah_barang-1')]);
+            }
+            else{
                 return response()->json(['success'=>false,$text],442);
             }
         }
@@ -99,6 +111,7 @@ class KeranjangController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $keranjang = Keranjang::find($id);
+        $keranjang->delete();
     }
 }

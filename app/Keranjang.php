@@ -11,7 +11,7 @@ class Keranjang extends Model
     protected $guarded = [];
 
     public function barang(){
-        return $this->belongsTo(Barang::class);
+        return $this->belongsTo(Barang::class, 'barang_id');
     }
 
     public function user(){
@@ -19,11 +19,11 @@ class Keranjang extends Model
     }
 
     public function getKeranjang(){
-        $keranjang = Keranjang::with('barang')
+        $keranjang = Keranjang::with(['barang','barang.kategori'])
                     -> Where('user_id','=', Auth::user()->id)
                     -> get()
+                    -> sortBy('barang.kategori_id')
                     -> groupBy('barang.kategori_id');
-        // dd((object)$keranjang);
         return $keranjang;
     }
 
@@ -32,8 +32,6 @@ class Keranjang extends Model
                     ->Where('barang_id','=', $data->barang_id)
                     ->Where('user_id','=', $data->user_id)
                     ->first();
-                    // dd(json_decode($data));
-        // echo($keranjang);
         return $keranjang;
     }
 
