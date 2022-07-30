@@ -2,12 +2,31 @@
 @section('content')
 <!-- ======= Keranjang Section ======= -->
 <div class="container" >
-    <div id="keranjang" class="keranjang">
-       <div class="container mt-4" data-aos="fade-up">
-           <div class="content">
-               <h1>Keranjang {{Auth::user()->name}}</h1>
-               <div class="content-keranjang">
-                   @foreach($keranjangs as $keranjang)
+    <section id="keranjang" class="keranjang">
+        @if($keranjangs->count()==0)
+        <div id="empty-chart" class="empty-chart">
+            <div class="container" data-aos="fade-up">
+                <div class="content">
+                    <div class="row gx-0">
+                        <img src="{{asset('storage/addtochart.jpg')}}" class="" alt="">
+                        <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
+                            <div class="text-center text-lg-start">
+                                <h5>Keranjang Kamu Masih Kosong!</h5>
+                                <a href="{{route('menu.index')}}" class="btn-isi-barang d-inline-flex align-items-center justify-content-center align-self-center">
+                                    <span>Yuk isi keranjangmu dahulu!</span>
+                                </a>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+        @else
+        <div class="container mt-4" data-aos="fade-up">
+            <div class="content">
+                <h1 class="mb-5">Keranjang {{Auth::user()->name}}</h1>
+                <div class="content-keranjang">
+                    @foreach($keranjangs as $keranjang)
                        <div class="card mt-2">
                            <div class="card-header">
                                <h2>{{$keranjang[0]->barang->kategori->nama}}</h2>
@@ -39,7 +58,7 @@
                                        </button>
                                    </div>
                                </div>
-                               <div class="col-3 d-inline-flex justify-content-start align-self-center">
+                               <div class="col-3 d-inline-flex justify-content-center align-self-center">
                                    <div class="align-self-center d-flex justify-content-end">
                                        <button id="hapus-keranjang-{{$item->id}}" data-id="{{$item->id}}" data-toggle="tooltip" data-placement="top" title="Hapus Barang dari Keranjang" class="btn btn-xs rounded-pill btn-icon align-self-center align-middle btn-outline-danger d-inline-flex justify-content-center mx-1" onclick="hapusKeranjang(event.target)">
                                            <span id="hapus-keranjang-{{$item->id}}" data-id="{{$item->id}}" class='bx bx-xs bx-trash align-self-center'></span>
@@ -50,20 +69,18 @@
                            </div>
                            @endforeach
                        </div>
-                   @endforeach
-               </div>
+                    @endforeach
+                </div>
            </div>
-       </div>
-   </div>
+        </div>
+        <div class="check-out">
+            <button class="btn btn-danger btn-check-out" onclick="checkOut()">
+               Check Out Sekarang!
+            </button>
+        </div>
+        @endif
+    </section>
 </div>
-
-
-<div class="check-out">
-    <button class="btn btn-danger btn-check-out">
-       Check Out Sekarang!
-    </button>
-</div>
-
 <!-- End keranjang Section -->
 @endsection
 
@@ -87,57 +104,61 @@
             success:function(response){
                 var getDataKeranjang='';
                 var getGambar ='';
-                $.each(response.keranjangs, function(index,keranjangsAjax){
-                    getDataKeranjang +=
-                    `<div class="card mt-2">
-                        <div class="card-header">
-                            <h2>`+keranjangsAjax[0].barang.kategori.nama+`</h2>
-                            <hr> 
-                        </div>`
-                        $.each(keranjangsAjax, function(index,keranjangAjax){
-                            if (keranjangAjax.barang.gambar === ''){
-                                getGambar =   
-                                    `<img src="{{asset('storage/nopict.png')}}" class="img-fluid card-img-top mt-1" alt="" style="object-fit: cover;">`
-                            } else{
-                                getGambar =
-                                    `<img src="{{asset('storage/`+keranjangAjax.barang.gambar+`')}}" class="img-fluid card-img-top mt-1" alt="" style="object-fit: cover;">`
-                            }
-                            getDataKeranjang +=
-                                `<div class="card-body row">
-                                    <div class="col-2 d-inline-flex justify-content-start align-self-center">
-                                       `+getGambar+` 
-                                    </div>
-                                    <div class="col-4 justify-content-start align-self-center">
-                                        <h3>`+keranjangAjax.barang.nama_barang+`</h3>
-                                        <p>
-                                            <small class="text-muted fw-semibold" id="stok">Jumlah stok saat ini `+keranjangAjax.barang.stok+`</small>
-                                        </p>
-                                    </div>
-                                    <div class="col-3 d-inline-flex justify-content-start align-self-center">
-                                        <div class="align-self-center d-flex justify-content-end">
-                                            <button id="kurang-keranjang-`+keranjangAjax.barang.id+`" data-id="`+keranjangAjax.id+`" data-barang="`+keranjangAjax.barang.id+`" data-toggle="tooltip" data-placement="top" title="Kurangi Barang dari Keranjang" class="btn btn-xs rounded-pill btn-icon align-self-center btn-outline-primary d-inline-flex justify-content-center mx-1" onclick="kurangBarang(this)">
-                                                <i id="kurang-keranjang-`+keranjangAjax.barang.id+`" data-id="`+keranjangAjax.id+`" data-barang="`+keranjangAjax.barang.id+`" data-toggle="tooltip" data-placement="top" title="Kurangi Barang dari Keranjang" class='bx bx-xs bx-minus align-self-center'></i>
-                                            </button>
-                                            <input disabled id="input-`+keranjangAjax.barang.id+`" class="form-control align-middle d-flex justify-content-center" style="width: 35%; height: 10%;" type="text" value="`+keranjangAjax.jumlah_barang+`"/>
-                                            <button id="tambah-keranjang-`+keranjangAjax.barang.id+`" data-id="`+keranjangAjax.id+`" data-barang="`+keranjangAjax.barang.id+`" data-toggle="tooltip" data-placement="top" title="Tambah Barang ke Keranjang" class="btn btn-xs rounded-pill btn-icon align-self-center align-middle btn-outline-primary d-inline-flex justify-content-center mx-1" onclick="tambahBarang(event.target)">
-                                                <span id="tambah-keranjang-`+keranjangAjax.barang.id+`" data-id="`+keranjangAjax.id+`" data-barang="`+keranjangAjax.barang.id+`" data-toggle="tooltip" data-placement="top" title="Tambah Barang ke Keranjang" class='bx bx-xs bx-plus align-self-center'></span>
-                                            </button>
+                if(response.keranjangs == ''){
+                    location.reload()
+                } else {
+                    $.each(response.keranjangs, function(index,keranjangsAjax){
+                        getDataKeranjang +=
+                        `<div class="card mt-2">
+                            <div class="card-header">
+                                <h2>`+keranjangsAjax[0].barang.kategori.nama+`</h2>
+                                <hr> 
+                            </div>`
+                            $.each(keranjangsAjax, function(index,keranjangAjax){
+                                if (keranjangAjax.barang.gambar === ''){
+                                    getGambar =   
+                                        `<img src="{{asset('storage/nopict.png')}}" class="img-fluid card-img-top mt-1" alt="" style="object-fit: cover;">`
+                                } else{
+                                    getGambar =
+                                        `<img src="{{asset('storage/`+keranjangAjax.barang.gambar+`')}}" class="img-fluid card-img-top mt-1" alt="" style="object-fit: cover;">`
+                                }
+                                getDataKeranjang +=
+                                    `<div class="card-body row">
+                                        <div class="col-2 d-inline-flex justify-content-start align-self-center">
+                                           `+getGambar+` 
                                         </div>
-                                    </div>
-                                    <div class="col-3 d-inline-flex justify-content-start align-self-center">
-                                        <div class="align-self-center d-flex justify-content-end">
-                                            <button id="hapus-keranjang-`+keranjangAjax.id+`" data-id="`+keranjangAjax.id+`" data-toggle="tooltip" data-placement="top" title="Hapus Barang dari Keranjang" class="btn btn-xs rounded-pill btn-icon align-self-center align-middle btn-outline-danger d-inline-flex justify-content-center mx-1" onclick="hapusKeranjang(event.target)">
-                                                <span id="hapus-keranjang-`+keranjangAjax.id+`" data-id="`+keranjangAjax.id+`" class='bx bx-xs bx-trash align-self-center'></span>
-                                            </button>
+                                        <div class="col-4 justify-content-start align-self-center">
+                                            <h3>`+keranjangAjax.barang.nama_barang+`</h3>
+                                            <p>
+                                                <small class="text-muted fw-semibold" id="stok">Jumlah stok saat ini `+keranjangAjax.barang.stok+`</small>
+                                            </p>
                                         </div>
-                                    </div>
-                                    <hr style="width: 100%; margin-top: 10px;">
-                                </div>`
-                        });
-                    getDataKeranjang +=
-                    `</div>`
-                })
-                $('.content-keranjang').html(getDataKeranjang);
+                                        <div class="col-3 d-inline-flex justify-content-start align-self-center">
+                                            <div class="align-self-center d-flex justify-content-end">
+                                                <button id="kurang-keranjang-`+keranjangAjax.barang.id+`" data-id="`+keranjangAjax.id+`" data-barang="`+keranjangAjax.barang.id+`" data-toggle="tooltip" data-placement="top" title="Kurangi Barang dari Keranjang" class="btn btn-xs rounded-pill btn-icon align-self-center btn-outline-primary d-inline-flex justify-content-center mx-1" onclick="kurangBarang(this)">
+                                                    <i id="kurang-keranjang-`+keranjangAjax.barang.id+`" data-id="`+keranjangAjax.id+`" data-barang="`+keranjangAjax.barang.id+`" data-toggle="tooltip" data-placement="top" title="Kurangi Barang dari Keranjang" class='bx bx-xs bx-minus align-self-center'></i>
+                                                </button>
+                                                <input disabled id="input-`+keranjangAjax.barang.id+`" class="form-control align-middle d-flex justify-content-center" style="width: 35%; height: 10%;" type="text" value="`+keranjangAjax.jumlah_barang+`"/>
+                                                <button id="tambah-keranjang-`+keranjangAjax.barang.id+`" data-id="`+keranjangAjax.id+`" data-barang="`+keranjangAjax.barang.id+`" data-toggle="tooltip" data-placement="top" title="Tambah Barang ke Keranjang" class="btn btn-xs rounded-pill btn-icon align-self-center align-middle btn-outline-primary d-inline-flex justify-content-center mx-1" onclick="tambahBarang(event.target)">
+                                                    <span id="tambah-keranjang-`+keranjangAjax.barang.id+`" data-id="`+keranjangAjax.id+`" data-barang="`+keranjangAjax.barang.id+`" data-toggle="tooltip" data-placement="top" title="Tambah Barang ke Keranjang" class='bx bx-xs bx-plus align-self-center'></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-3 d-inline-flex justify-content-start align-self-center">
+                                            <div class="align-self-center d-flex justify-content-end">
+                                                <button id="hapus-keranjang-`+keranjangAjax.id+`" data-id="`+keranjangAjax.id+`" data-toggle="tooltip" data-placement="top" title="Hapus Barang dari Keranjang" class="btn btn-xs rounded-pill btn-icon align-self-center align-middle btn-outline-danger d-inline-flex justify-content-center mx-1" onclick="hapusKeranjang(event.target)">
+                                                    <span id="hapus-keranjang-`+keranjangAjax.id+`" data-id="`+keranjangAjax.id+`" class='bx bx-xs bx-trash align-self-center'></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <hr style="width: 100%; margin-top: 10px;">
+                                    </div>`
+                            });
+                        getDataKeranjang +=
+                        `</div>`
+                    })
+                    $('.content-keranjang').html(getDataKeranjang);
+                }
             }
         });
     }
@@ -172,10 +193,6 @@
                 toastr.error('Jumlah permintaan sudah melebihi stok!','Gagal Menambahkan!');
             }
         })
-    }
-
-    function updateInputBarang(barangId){
-        var inputBarang = $('#input-'+barangId).val();
     }
 
     function kurangBarang(event){
@@ -230,6 +247,26 @@
                 })
             };
         });
+    }
+
+    function checkOut(){
+        $.ajax({
+            url:"{{route('transaksi.store')}}",
+            type:"POST",
+            success:function(){
+                toastr.options = {
+                                    "debug": false,
+                                    "positionClass": "toast-top-left",
+                                    "onclick": null,
+                                    "fadeIn": 300,
+                                    "fadeOut": 1000,
+                                    "timeOut": 5000,
+                                    "extendedTimeOut": 1000
+                                }
+                toastr.info('Nomor Transaksi Anda Adalah...')
+                updateContentKeranjang();
+            }
+        })
     }
 
 </script>

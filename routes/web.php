@@ -28,5 +28,12 @@ Route::post('barang-update', 'BarangController@update')->name('barang.update');
 Route::get('get-kategori', 'BarangController@getKategori')->name('get-kategori.index');
 Route::resource('menu', 'MenuController');
 Route::resource('keranjang', 'KeranjangController');
+Route::resource('transaksi', 'TransaksiController');
+Route::resource('laporan-pengajuan', 'LaporanPengajuanController');
+Route::get('laporan-pengajuan-pengajuan', 'LaporanPengajuanController@getPengajuan')->name('laporan-pengajuan.pengajuan');
+Route::get('laporan-pengajuan-validasi', 'LaporanPengajuanController@getValidasi')->name('laporan-pengajuan.validasi');
+Route::get('laporan-pengajuan-selesai', 'LaporanPengajuanController@getSelesai')->name('laporan-pengajuan.selesai');
+Route::get('laporan-pengajuan-ditolak', 'LaporanPengajuanController@getDitolak')->name('laporan-pengajuan.ditolak');
+Route::get('laporan-pengajuan-dibatalkan', 'LaporanPengajuanController@getDibatalkan')->name('laporan-pengajuan.dibatalkan');
 // Route::get ('/menu/search', 'MenuController@search');
 

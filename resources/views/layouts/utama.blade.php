@@ -19,21 +19,23 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
+    
     <!-- Vendor CSS Files -->
     <link href="{{asset('/utama/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
-
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
-
+    <link href="{{asset('/utama/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+    
     <!-- Template Main CSS File -->
     <link href="{{asset('/utama/css/style.css')}}" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
 
-    <!-- Datatable -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"/>
-    <link type="text/css" href="https://cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css" rel="stylesheet">
-
-    <!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
+    <!-- DataTables -->
+    <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+    <!-- Ajax -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
 
     <!-- Toastr -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.0/css/toastr.css" rel="stylesheet" />
@@ -42,6 +44,7 @@
     <!-- Select -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     @stack('styles')
     
 </head>
@@ -49,30 +52,38 @@
     <!-- Navbar -->
     @include('partials.utama-navbar')
 
-    <!-- <main id='main'> -->
+    <main id='main'>
         <!-- Content wrapper -->
         @yield('content')
         <!-- / Content -->    
-    <!-- </main> -->
+    </main>
 
      <!-- Footer -->
      @include('partials.utama-footer')
 
-    <!-- Vendor JS Files -->
-    <script src="{{asset('/utama/vendor/bootstrap/js/bootstrap.bundle.js')}}"></script>
-    <script src="{{asset('/utama/vendor/aos/aos.js')}}"></script>   
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="{{asset('/utama/js/scripts.js')}}"></script>
-    <!-- Template Main JS File -->
-    <script src="{{asset('/utama/js/main.js')}}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <!-- Sweet Alert -->
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    @stack('scripts')
-    <script>
-        $(function () {
+
+     <!-- Vendor JS Files -->
+     <!-- <script src="{{asset('/utama/vendor/bootstrap/js/bootstrap.bundle.js')}}"></script> -->
+     <!-- <script src="{{asset('/utama/vendor/aos/aos.js')}}"></script>    -->
+
+     <!-- JS BootStrap -->
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+     <!-- <script src="{{asset('/utama/js/scripts.js')}}"></script> -->
+
+     <!-- Template Main JS File -->
+     <script src="{{asset('/utama/js/main.js')}}"></script>
+     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+     <!-- Sweet Alert -->
+     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+     
+     <script>
+         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
     </script>
+     @stack('scripts')
+     
+     
 </body>
 </html>

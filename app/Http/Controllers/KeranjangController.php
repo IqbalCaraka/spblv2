@@ -59,7 +59,7 @@ class KeranjangController extends Controller
             if($keranjang->jumlah_barang < $keranjang->barang->stok && $request->jumlah_barang == 1){
                 Keranjang::where('id', $keranjang->id)->update(['jumlah_barang' =>\DB::raw('jumlah_barang+1')]);
             }elseif($keranjang->jumlah_barang == 1 ){
-                return response()->json(['success'=>false,$text],442);
+                return response()->json(['success'=>false],442);
             }elseif($request->jumlah_barang == -1){
                 Keranjang::where('id', $keranjang->id)->update(['jumlah_barang' =>\DB::raw('jumlah_barang-1')]);
             }
