@@ -19,12 +19,9 @@
                                 </button>
                             </a>
                         </div>
-                        
                         <button type="button" class="btn rounded-pill btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambah">
                             <span class="tf-icons bx bx-plus-circle"></span>&nbsp; Tambah Jenis
-                        </button>                            
-                        
-                        
+                        </button> 
                     </div>
                 </div>
                 <div class="card-body">

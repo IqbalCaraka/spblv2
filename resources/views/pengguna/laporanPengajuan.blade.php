@@ -21,7 +21,7 @@
                                         <a class="nav-link" data-bs-toggle="pill" href="#validasi">Proses Validasi</a>
                                     </li>
                                     <li>
-                                        <a class="nav-link" data-bs-toggle="pill" href="#selesai">Selesai</a>
+                                        <a class="nav-link" data-bs-toggle="pill" href="#selesai">Diterima</a>
                                     </li>
                                     <li>
                                         <a class="nav-link" data-bs-toggle="pill" href="#ditolak">Ditolak</a>
@@ -324,8 +324,9 @@
     }
 
     function batalTransaksi(event){
+        var data = 6;
         var data_id = $(event).data('id')
-        var URL = "{{route('laporan-pengajuan.update', 'id')}}";
+        var URL = "{{route('transaksi.update', 'id')}}";
         var newURL = URL.replace('id', data_id);
         swal({
             title: 'Apakah Anda yakin?',
@@ -338,6 +339,9 @@
                 $.ajax({
                     url:newURL,
                     type:"PUT",
+                    data:{
+                        data:data
+                    },
                     success: function($data){
                         $('#pengajuan-datatable').DataTable().ajax.reload();
                         $('#dibatalkan-datatable').DataTable().ajax.reload();

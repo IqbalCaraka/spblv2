@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Keranjang;
 use App\LaporanPengajuan;
 use App\Transaksi;
+use App\Barang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -49,7 +50,8 @@ class TransaksiController extends Controller
             LaporanPengajuan::create([
                 'transaksi_id'=> $transaksi->id,
                 'barang_id'=> $keranjang->barang_id,
-                'jumlah_barang'=> $keranjang->jumlah_barang
+                'jumlah_barang'=> $keranjang->jumlah_barang,
+                'status_item_pengajuan_id'=> '1'
             ]);
             $keranjang = Keranjang::find($keranjang->id);
             $keranjang->delete();
@@ -87,7 +89,26 @@ class TransaksiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if($request->data == 3){
+            $laporanPengajuan = LaporanPengajuan::with(['barang'])->where('transaksi_id','=',$id)->get();
+            foreach ($laporanPengajuan as $item){
+                if($item->status_item_pengajuan_id == "1"){
+                    if($item->revisi_jumlah_barang == ""){
+                        $jumlah_barang_terkonfirmasi = $item->jumlah_barang;
+                    }else{
+                        $jumlah_barang_terkonfirmasi = $item->revisi_jumlah_barang;
+                    }
+
+                    if($jumlah_barang_terkonfirmasi <= $item->barang->stok){
+                        Barang::where('id','=', $item->barang_id)->update(['stok'=>\DB::raw('stok-'.$jumlah_barang_terkonfirmasi)]);
+                    }else{
+                        $item->status_item_pengajuan_id = "2";
+                        $item->save();
+                    }
+                }
+            }
+        }
+        Transaksi::where('id', '=', $id)->update(['status_id'=> $request->data]);
     }
 
     /**

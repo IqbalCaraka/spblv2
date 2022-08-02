@@ -20,6 +20,10 @@ class Barang extends Model
         return $this->hasMany(Keranjang::class);
     }
 
+    public function laporanPengajuan(){
+        return $this->hasMany(LaporanPengajuan::class,'barang_id');
+    }
+
     public function deleteImage(){
         Storage::delete($this->gambar);
     }
@@ -39,12 +43,6 @@ class Barang extends Model
         $barang = Barang::load('keranjang')
             ->Where('barangs.nama_barang', 'like', '%'.$data.'%')
             ->paginate(12);
-            // dd($barang);
             return $barang;
-        // $barang = DB::table('barangs')
-        //     ->Where('barangs.nama_barang', 'like', '%'.$data.'%')
-        //     ->paginate(12);
-        //     // dd($barang);
-        //     return $barang;
     }
 }

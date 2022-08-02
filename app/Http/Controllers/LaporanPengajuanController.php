@@ -117,7 +117,7 @@ class LaporanPengajuanController extends Controller
 
     public function getSelesai (Request $request){
         $transaksis = Transaksi::where('user_id','=',Auth::user()->id)
-                                ->where('status_id','=',5)
+                                ->where('status_id','=',3)
                                 ->get();
         if($request->ajax()){
             return datatables()->of($transaksis)
@@ -220,8 +220,6 @@ class LaporanPengajuanController extends Controller
             ->addIndexColumn()
             ->make(true);
         };
-
-        // return response()->json($laporanPengajuan);
     }
 
     /**
@@ -244,7 +242,7 @@ class LaporanPengajuanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Transaksi::where('id', '=', $id)->update(['status_id'=> 6]);
+        LaporanPengajuan::where('id', '=', $id)->update(['status_item_pengajuan_id'=> $request->data]);
     }
 
     /**
