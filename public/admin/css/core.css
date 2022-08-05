@@ -15677,7 +15677,7 @@ html:not(.layout-footer-fixed) .content-wrapper {
 
 .menu-vertical .app-brand {
   padding-right: 2rem;
-  padding-left: 2rem;
+  padding-left: 1rem;
 }
 
 .menu-horizontal .app-brand,
@@ -16650,6 +16650,31 @@ html:not(.layout-footer-fixed) .content-wrapper {
 .bg-label-disetujui {
   background-color: #e8fadf !important;
   color: #71dd37 !important;
+}
+
+.bg-label-pengajuan {
+  background-color: #d7f5fc !important;
+  color: #03c3ec !important;
+}
+
+.bg-label-validasi {
+  background-color: #b2a1ff !important;
+  color: #ebeef0 !important;
+}
+
+.bg-label-diterima {
+  background-color: #e8fadf !important;
+  color: #71dd37 !important;
+}
+
+.bg-label-dibatalkan {
+  background-color: #ffd16d !important;
+  color: #e76800 !important;
+}
+
+.bg-label-ditolak {
+  background-color: #ffe0db !important;
+  color: #ff3e1d !important;
 }
 
 

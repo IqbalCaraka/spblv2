@@ -99,9 +99,6 @@
                     data: 'action',
                     name: 'action'
                 },
-            ],
-                order: [
-                    [1, 'asc']
             ]
     });
         

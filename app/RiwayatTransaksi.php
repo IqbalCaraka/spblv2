@@ -1,0 +1,22 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class RiwayatTransaksi extends Model
+{
+    protected $guarded = [];
+
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function transaksi(){
+        return $this->belongsTo(Transaksi::class, 'transaksi_id');
+    }
+
+    public function status(){
+        return $this->belongsTo(Status::class, 'status_id');
+    }
+}

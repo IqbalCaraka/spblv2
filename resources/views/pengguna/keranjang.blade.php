@@ -253,18 +253,15 @@
         $.ajax({
             url:"{{route('transaksi.store')}}",
             type:"POST",
-            success:function(){
-                toastr.options = {
-                                    "debug": false,
-                                    "positionClass": "toast-top-left",
-                                    "onclick": null,
-                                    "fadeIn": 300,
-                                    "fadeOut": 1000,
-                                    "timeOut": 5000,
-                                    "extendedTimeOut": 1000
-                                }
-                toastr.info('Nomor Transaksi Anda Adalah...')
-                updateContentKeranjang();
+            success:function(response){
+                swal({
+                    title: 'Check Out Berhasil!',
+                    text: 'Nomor transaksi Anda adalah '+response.text,
+                    icon:'success',
+                    confirmButtonText: 'Ok'
+                }).then((updatePage)=>{
+                    updateContentKeranjang();
+                })                
             }
         })
     }

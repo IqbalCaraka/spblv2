@@ -7,14 +7,14 @@
     <meta content="" name="description">
     <meta content="" name="keywords">
 
-    <title>SIPBL | Sistem Informasi Permmintaan Barang Lancar</title>
+    <title>SI PERMATA | Sistem Persediaan Mandiri Terlayani</title>
 
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="{{asset('admin/css/boxicons.css')}}" />
 
     <!-- Favicons -->
-    <link href="{{asset('/utama/img/logo2.png')}}" rel="icon">
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link href="{{asset ('admin/img/SIPERMATA.jpg')}}" rel="icon"/>
+    <!-- <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> -->
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
@@ -26,16 +26,11 @@
     
     <!-- Template Main CSS File -->
     <link href="{{asset('/utama/css/style.css')}}" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
-
     
     <!-- DataTables -->
     <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-
-    <!-- Ajax -->
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
 
     <!-- Toastr -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.0/css/toastr.css" rel="stylesheet" />
@@ -48,7 +43,7 @@
     @stack('styles')
     
 </head>
-<body>
+<body class="flex-wrapper">
     <!-- Navbar -->
     @include('partials.utama-navbar')
 
@@ -57,14 +52,10 @@
         @yield('content')
         <!-- / Content -->    
     </main>
+    
+    <!-- Footer -->
+    @include('partials.utama-footer')
 
-     <!-- Footer -->
-     @include('partials.utama-footer')
-
-
-     <!-- Vendor JS Files -->
-     <!-- <script src="{{asset('/utama/vendor/bootstrap/js/bootstrap.bundle.js')}}"></script> -->
-     <!-- <script src="{{asset('/utama/vendor/aos/aos.js')}}"></script>    -->
 
      <!-- JS BootStrap -->
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

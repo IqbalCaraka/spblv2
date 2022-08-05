@@ -24,7 +24,8 @@ class KeranjangController extends Controller
                 'keranjangs'=>$keranjangs
             ]);
         }
-        return view ('pengguna.keranjang')->with('keranjangs', $keranjangs)->with('keranjangCount', $keranjangCount);
+        $title = "Keranjang";
+        return view ('pengguna.keranjang')->with('keranjangs', $keranjangs)->with('keranjangCount', $keranjangCount)->with('title',$title);
     }
 
     /**

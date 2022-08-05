@@ -203,12 +203,12 @@
             name: 'nama_barang'
             },
             {
-            data: 'kategori',
-            name: 'kategori'
-            },
-            {
             data: 'stok',
             name: 'stok'
+            },
+            {
+            data: 'kategori',
+            name: 'kategori'
             },
             {
             data: 'harga_satuan',

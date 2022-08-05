@@ -16,9 +16,9 @@ class LaporanPengajuanController extends Controller
      */
     public function index(Request $request)
     {
-        $transaksis = Transaksi::where('user_id','=',Auth::user()->id)->get();
+        $transaksi = Transaksi::where('user_id','=',Auth::user()->id)->get();
         if($request->ajax()){
-            return datatables()->of($transaksis)
+            return datatables()->of($transaksi)
             ->addColumn('nomor_transaksi', function($data){
                 return <<<EOD
                             <div>
@@ -58,8 +58,8 @@ class LaporanPengajuanController extends Controller
             ->addIndexColumn()
             ->make(true);
         };
-
-        return view('pengguna.laporanPengajuan');
+        $title = "Laporan Pengajuan";
+        return view('pengguna.laporanPengajuan')->with('title', $title);
     }
 
     public function getPengajuan(Request $request){

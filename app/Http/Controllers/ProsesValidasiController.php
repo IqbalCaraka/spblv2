@@ -17,8 +17,7 @@ class ProsesValidasiController extends Controller
      */
     public function index(Request $request)
     {
-        $transaksi = Transaksi::where('status_id','=',2)
-                        ->get();
+        $transaksi = Transaksi::where('status_id','=',2)->orderBy('created_at', 'ASC')->get();
         if($request->ajax()){
         return datatables()->of($transaksi)
             ->addColumn('nomor_transaksi', function($data){
@@ -57,7 +56,8 @@ class ProsesValidasiController extends Controller
             ->addIndexColumn()
             ->make(true);
         };
-        return view('prosesvalidasi.index');
+        $title = 'Proses Validasi';
+        return view('prosesvalidasi.index')->with('title', $title);
     }
 
     /**
@@ -138,7 +138,11 @@ class ProsesValidasiController extends Controller
                 
             })
             ->addColumn('persetujuan', function($data){
-                return $data->statusItemPengajuan->status;
+                if($data->status_item_pengajuan_id == 1){
+                    return '<span class="badge bg-label-disetujui">'.$data->statusItemPengajuan->status.'</span>';
+                }else{
+                    return '<span class="badge bg-label-ditolak">'.$data->statusItemPengajuan->status.'</span>';
+                }
             })
             ->addColumn('action', function($data){
                 if($data->status_item_pengajuan_id == 1){

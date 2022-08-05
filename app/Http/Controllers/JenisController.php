@@ -39,7 +39,8 @@ class JenisController extends Controller
             ->addIndexColumn()
             ->make(true);
         }
-        return view('jenis.index');
+        $title = 'Jenis';
+        return view('jenis.index')->with('title', $title);
     }
 
     /**

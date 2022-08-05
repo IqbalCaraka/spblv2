@@ -15,7 +15,16 @@
 body {
   font-family: "Open Sans", sans-serif;
   /* color: #444444; */
-  background-color: #f5f5f9;
+  /* background-color: #f5f5f9; */
+  background-color: #fafeff;
+  /* height: 10px; */
+}
+
+.flex-wrapper{
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 a {
@@ -30,6 +39,11 @@ a:hover {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: "Nunito", sans-serif;
+}
+
+
+.container{
+  margin-bottom: 20px;
 }
 
 /*Card Tambahan*/
@@ -732,7 +746,7 @@ section {
 
 .table-responsive{
   font-family:"Nunito", sans-serif;
-  text-align: center; 
+  text-align: left; 
   
 }
 
@@ -2534,12 +2548,15 @@ table {
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
+
 .footer {
   background: #b8d0ff;
-  padding: 0 0 30px 0;
+  padding: 0 0 5px 0;
   font-size: 14px;
   bottom: 0;
   top: 0;
+  margin-top: auto;
+  clear: both;
 }
 
 .footer .footer-newsletter {

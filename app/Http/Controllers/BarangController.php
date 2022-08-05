@@ -48,7 +48,8 @@ class BarangController extends Controller
            ->addIndexColumn()
            ->make(true);
        }
-        return view('barang.index');
+       $title = "Barang";
+        return view('barang.index')->with('title', $title);
     }
 
     /**

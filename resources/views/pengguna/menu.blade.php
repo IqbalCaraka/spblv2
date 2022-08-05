@@ -33,10 +33,10 @@
                 <div class="row gx-0">
                     <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
                         
-                        <h3>SIPBL</h3>
-                        <h2>Selamat Datang {{ Auth::user()->name }} di Portal Sistem Informasi Permintaan Barang Lancar!</h2>
+                        <h3>SI PERMATA</h3>
+                        <h2>Selamat Datang {{ Auth::user()->name }} di Portal Sistem Persediaan Mandiri Terlayani!</h2>
                         <p>
-                            Sistem Informasi Permintaan Barang Lancar, digunakan untuk melakukan permintaan kebutuhan barang ke Sub Bagian Umum!
+                            Sistem Persediaan Mandiri Terlayani, digunakan untuk melakukan permintaan kebutuhan barang ke Sub Bagian Umum!
                         </p>
                         <div class="text-center text-lg-start">
                             <a href="#barang" class="btn-read-more d-inline-flex align-items-center justify-content-center align-self-center">

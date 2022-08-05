@@ -6,6 +6,7 @@ use App\Keranjang;
 use App\LaporanPengajuan;
 use App\Transaksi;
 use App\Barang;
+use App\RiwayatTransaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,6 +47,11 @@ class TransaksiController extends Controller
             'user_id'=> Auth::user()->id,
             'status_id'=>1,
         ]);
+        RiwayatTransaksi::create([
+            'transaksi_id'=> $transaksi->id,
+            'user_id'=> Auth::user()->id,
+            'status_id'=>1,
+        ]);
         foreach($keranjangs as $keranjang){
             LaporanPengajuan::create([
                 'transaksi_id'=> $transaksi->id,
@@ -56,6 +62,8 @@ class TransaksiController extends Controller
             $keranjang = Keranjang::find($keranjang->id);
             $keranjang->delete();
         }
+
+        return response()->json(['success'=>1, 'text'=>$nomor_transaksi]);
     }
 
     /**
@@ -109,6 +117,11 @@ class TransaksiController extends Controller
             }
         }
         Transaksi::where('id', '=', $id)->update(['status_id'=> $request->data]);
+        RiwayatTransaksi::create([
+            'transaksi_id'=> $id,
+            'user_id'=> Auth::user()->id,
+            'status_id'=>$request->data,
+        ]);
     }
 
     /**

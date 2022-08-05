@@ -1,12 +1,10 @@
 @extends('layouts.utama')
 @section('content')
-@endsection
 <!-- ======= Laporan Pengajuan Section ======= -->
 <div class="container" >
     <div id="laporan-pengajuan" class="laporan-pengajuan">
         <div class="container mt-4" data-aos="fade-up">
             <div class="content">
-                
                 <h1 class="mb-5">Laporan Pengajuan {{Auth::user()->name}}</h1>
                 <div class="content-keranjang">
                     <div class="row">
@@ -142,6 +140,7 @@
 </div>
 <!--Modal show laporan-pengajuan-->
 <!-- End laporan pengajuan Section -->
+@endsection
 @push('scripts')
 <script>
     
@@ -345,7 +344,6 @@
                     success: function($data){
                         $('#pengajuan-datatable').DataTable().ajax.reload();
                         $('#dibatalkan-datatable').DataTable().ajax.reload();
-                        // $('#semua-datatable').DataTable().ajax.reload();
                         swal("Selamat!", "Transaksi berhasil dibatalkan!", "success");
                     },
                     error: function (xhr) {

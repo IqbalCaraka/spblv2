@@ -16,7 +16,8 @@ class MenuController extends Controller
      */
     public function index()
     {
-        return view('pengguna.menu');
+        $title = "Menu";
+        return view('pengguna.menu')->with('title', $title);
         // $barangs = new Barang();
         // $barangs = $barangs->getAllBarang();
         // return view('layouts.menu', compact('barangs'));

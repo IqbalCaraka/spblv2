@@ -21,7 +21,10 @@ class Transaksi extends Model
     public function laporanPengajuan(){
         return $this->hasMany(LaporanPengajuan::class, 'transaksi_id');
     }
-    public function revisiLaporanPengajuan(){
-        return $this->hasMany(RevisiLaporanPengajuan::class, 'transaksi_id');
+
+    public function riwayatTransaksi(){
+        return $this->hasMany(RiwayatTransaksi::class, 'transaksi_id');
     }
+
+
 }

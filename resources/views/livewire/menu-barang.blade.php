@@ -22,13 +22,6 @@
                                 @endif
                                 <p class="card-text">{{$barang->kategori->nama}}</p>
                                 <div class="d-flex justify-content-center mb-2">
-                                    <!-- <button disabled id="btn-minus-{{$barang->id}}" data-id="{{$barang->id}}" value="{{$barang->stok}}" class="btn btn-xs rounded-pill btn-icon align-self-center btn-outline-primary d-inline-flex justify-content-center mx-1" onclick="kurangBarang(this)">
-                                        <span class='bx bx-xs bx-minus align-self-center'></span>
-                                    </button>
-                                    <input disabled id="input-keranjang-{{$barang->id}}" class="form-control align-middle d-flex justify-content-center" style="width: 20%; height: 10%;" type="text" value="0"/>
-                                    <button id="btn-plus-{{$barang->id}}" data-id="{{$barang->id}}" value="{{$barang->stok}}" class="btn btn-xs rounded-pill btn-icon align-self-center align-middle btn-outline-primary d-inline-flex justify-content-center mx-1" onclick="tambahBarang(this)">
-                                        <span class='bx bx-xs bx-plus align-self-center'></span>
-                                    </button> -->
                                     <button id="tambah-keranjang-{{$barang->id}}" data-id="{{$barang->id}}" class="btn-tambah-keranjang" onclick="tambahBarang(event.target)">Tambahkan ke Keranjang!</button>
                                 </div>
                                 <p>

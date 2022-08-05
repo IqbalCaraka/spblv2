@@ -16,8 +16,7 @@ class ToDoListController extends Controller
      */
     public function index(Request $request)
     {
-        $transaksis = Transaksi::where('status_id','=',1)
-                        ->get();
+        $transaksis = Transaksi::where('status_id','=',1)->orderBy('created_at', 'ASC')->get();
         if($request->ajax()){
         return datatables()->of($transaksis)
             ->addColumn('nomor_transaksi', function($data){
@@ -62,7 +61,8 @@ class ToDoListController extends Controller
             ->addIndexColumn()
             ->make(true);
         };
-        return view('todolist.index');
+        $title='To Do List';
+        return view('todolist.index')->with('title', $title);
     }
 
     /**

@@ -45,7 +45,8 @@ class KategoriController extends Controller
             ->addIndexColumn()
             ->make(true);
         }
-        return view('kategori.index');
+        $title = 'Kategori';
+        return view('kategori.index')->with('title', $title);
     }
 
     /**
