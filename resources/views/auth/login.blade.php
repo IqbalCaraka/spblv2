@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Login Template</title>
+  <title>SI PERMATA | SISTEM PERSEDIAAN MANDIRI TERLAYANI</title>
+  <!-- Icon -->
+  <link rel="icon" type="image/x-icon" href="{{asset ('admin/img/SIPERMATA.jpg')}}" />
   <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -16,7 +18,7 @@
       <div class="card login-card">
         <div class="row no-gutters">
             <div class="col-md-7">
-                <img src="{{asset ('loginregister/img/lgn.jpg')}}" alt="login" class="login-card-img">
+                <img src="{{asset ('admin/img/SIPERMATA V10.jpg')}}" alt="login" class="login-card-img">
             </div>
           <div class="col-md-5">
             <div class="card-body">
@@ -30,7 +32,7 @@
 
                 <div class="form-group">
                     <label for="id" class="sr-only">{{ __('NIP') }}</label>
-                    <input type="number" name="id" id="id" class="form-control @error('id') is-invalid @enderror" value="{{ old('id') }}" required autocomplete="id" placeholder="NIP">
+                    <input type="number" name="nip" id="nip" class="form-control @error('id') is-invalid @enderror" value="{{ old('id') }}" required autocomplete="id" placeholder="NIP">
                     @error('id')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

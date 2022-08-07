@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -40,6 +41,11 @@ class LoginController extends Controller
     
     public function username()
     {
-        return 'id';
+        return 'nip';
     }
+
+    // public function logout(Request $request) {
+    //     Auth::logout();
+    //     return redirect('/login');
+    //   }
 }

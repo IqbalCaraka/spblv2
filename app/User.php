@@ -5,6 +5,9 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Jabatan;
+use App\Bidang;
+use App\Peran;
 
 class User extends Authenticatable
 {
@@ -15,9 +18,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        'id','name', 'email', 'password'
-    ];
+    protected $guarded = [];    
 
     /**
      * The attributes that should be hidden for arrays.
@@ -40,4 +41,17 @@ class User extends Authenticatable
     public function keranjang(){
         return $this->hasMany(Keranjang::class,'user_id');
     }
+
+    public function jabatan(){
+        return $this->belongsTo(Jabatan::class,'jabatan_id');
+    }
+
+    public function bidang(){
+        return $this->belongsTo(Bidang::class,'bidang_id');
+    }
+
+    public function peran(){
+        return $this->belongsTo(Peran::class,'peran_id');
+    }
+    
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -50,9 +51,10 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            'id' => ['unique:users'], // tambahan
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'email' => ['email', 'max:255'],
+            // 'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
 
@@ -68,7 +70,12 @@ class RegisterController extends Controller
             'id' => $data['nip'],
             'name' => $data['name'],
             'email' => $data['email'],
+            //Tambahan
+            'peran_id' => $data['peran_id'],
+            'jabatan_id' => $data['jabatan_id'],
+            'bidang_id' => $data['bidang_id'],
             'password' => Hash::make($data['password']),
         ]);
+
     }
 }

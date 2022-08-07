@@ -100,7 +100,6 @@ class BarangController extends Controller
         if(! is_null ($request->gambar)){
             $gambar = $request->gambar->store('barangs');
         }
-        // dd(json_encode($request->nomor_barang));
         Barang::create([
             'nomor_barang' => $request->nomor_barang,
             'nama_barang' => $request->nama_barang,
@@ -144,15 +143,13 @@ class BarangController extends Controller
 
     public function update(Request $request){
         $barang = Barang::find($request->id);
-        $data = $request->only(['nomor_barang','nama_barang','kategori_id','stok','harga_satuan']);
-        //dd(json_encode($data));
+        $data = $request->only(['nomor_barang','nama_barang','kategori_id','stok','harga_satuan']);        
         $gambar ='';
         if(! is_null ($request->gambar)){
             $gambar = $request->gambar->store('barangs');
             $barang->deleteImage();
             $data['gambar'] = $gambar;
         }
-        //dd(json_encode($barang));
         $barang->update($data);
     }
 

@@ -11,9 +11,13 @@
             <li><a class="nav-link scrollto {{( $title === 'Laporan Pengajuan')? 'active': ''}}" href="{{route('laporan-pengajuan.index')}}">Laporan Pengajuan</a></li>
             <li><a class="nav-link scrollto" id="userId" data-id="{{ Auth::user()->id }}" >Hi {{ Auth::user()->name }}</a></li>
             <li>
-                <button class="btn btn-primary float-left" style="margin-left: 20px;" onclick="notifLogout()">
+                <button class="btn btn-primary float-left" style="margin-left: 20px;" onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();">
                     Logout
                 </button>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
             </li>
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>

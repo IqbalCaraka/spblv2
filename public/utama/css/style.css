@@ -67,7 +67,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .card-header {
   height: 5rem;
-  padding: 1rem 0.5rem;
+  padding: 0.5rem 0.5rem;
   margin-bottom: 0;
   background-color: transparent;
   border-bottom: 0 solid #d9dee3;

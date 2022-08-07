@@ -13,33 +13,41 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('jenis', 'JenisController');
-Route::resource('kategori', 'KategoriController');
-Route::get('get-jenis', 'KategoriController@getJenis')->name('get-jenis.index');
-Route::resource('barang', 'BarangController',['except' => ['update']]);
-Route::post('barang-update', 'BarangController@update')->name('barang.update');
-Route::get('get-kategori', 'BarangController@getKategori')->name('get-kategori.index');
-Route::resource('to-do-list', 'ToDoListController');
-Route::resource('proses-validasi', 'ProsesValidasiController');
-Route::resource('semua-status', 'SemuaStatusController');
-Route::resource('kebutuhan-permintaan', 'KebutuhanPermintaanController');
-Route::resource('riwayat-transaksi', 'RiwayatTransaksiController');
-Route::resource('menu', 'MenuController');
-Route::resource('keranjang', 'KeranjangController');
-Route::resource('transaksi', 'TransaksiController');
-Route::put('transaksi-validasi', 'TransaksiController@updateValidasi')->name('update-validasi');
-Route::resource('laporan-pengajuan', 'LaporanPengajuanController');
-Route::get('laporan-pengajuan-pengajuan', 'LaporanPengajuanController@getPengajuan')->name('laporan-pengajuan.pengajuan');
-Route::get('laporan-pengajuan-validasi', 'LaporanPengajuanController@getValidasi')->name('laporan-pengajuan.validasi');
-Route::get('laporan-pengajuan-selesai', 'LaporanPengajuanController@getSelesai')->name('laporan-pengajuan.selesai');
-Route::get('laporan-pengajuan-ditolak', 'LaporanPengajuanController@getDitolak')->name('laporan-pengajuan.ditolak');
-Route::get('laporan-pengajuan-dibatalkan', 'LaporanPengajuanController@getDibatalkan')->name('laporan-pengajuan.dibatalkan');
-// Route::get ('/menu/search', 'MenuController@search');
+Route::group(['middleware' => ['auth','superadmin']], function(){
+    //Admin
+    Route::get('/', 'MenuController@index');
+    Route::get('admin/dashboard', 'DashboardController@index')->name('dashboard');
+    Route::resource('admin/jenis', 'JenisController');
+    Route::resource('admin/kategori', 'KategoriController');
+    Route::get('admin/get-jenis', 'KategoriController@getJenis')->name('get-jenis.index');
+    Route::resource('admin/barang', 'BarangController',['except' => ['update']]);
+    Route::post('admin/barang-update', 'BarangController@update')->name('barang.update');
+    Route::get('admin/get-kategori', 'BarangController@getKategori')->name('get-kategori.index');
+    Route::resource('admin/to-do-list', 'ToDoListController');
+    Route::resource('admin/proses-validasi', 'ProsesValidasiController');
+    Route::resource('admin/semua-status', 'SemuaStatusController');
+    Route::resource('admin/kebutuhan-permintaan', 'KebutuhanPermintaanController');
+    Route::resource('admin/riwayat-transaksi', 'RiwayatTransaksiController');
+    Route::resource('admin/profil', 'ProfilController');
+    Route::get('admin/get-jabatan', 'ProfilController@getJabatan')->name('get-jabatan');
+    Route::get('admin/get-bidang', 'ProfilController@getBidang')->name('get-bidang');
+    Route::get('admin/get-peran', 'ProfilController@getPeran')->name('get-peran');
+});
+Route::group(['middleware' => ['auth']], function(){
+    //Pengguna
+    Route::resource('menu', 'MenuController');
+    Route::resource('keranjang', 'KeranjangController');
+    Route::resource('transaksi', 'TransaksiController');
+    Route::put('transaksi-validasi', 'TransaksiController@updateValidasi')->name('update-validasi');
+    Route::resource('laporan-pengajuan', 'LaporanPengajuanController');
+    Route::get('laporan-pengajuan-pengajuan', 'LaporanPengajuanController@getPengajuan')->name('laporan-pengajuan.pengajuan');
+    Route::get('laporan-pengajuan-validasi', 'LaporanPengajuanController@getValidasi')->name('laporan-pengajuan.validasi');
+    Route::get('laporan-pengajuan-selesai', 'LaporanPengajuanController@getSelesai')->name('laporan-pengajuan.selesai');
+    Route::get('laporan-pengajuan-ditolak', 'LaporanPengajuanController@getDitolak')->name('laporan-pengajuan.ditolak');
+    Route::get('laporan-pengajuan-dibatalkan', 'LaporanPengajuanController@getDibatalkan')->name('laporan-pengajuan.dibatalkan');
 
+    // Route::get ('/menu/search', 'MenuController@search');
+});

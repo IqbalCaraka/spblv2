@@ -170,7 +170,5 @@ class KategoriController extends Controller
             $data = Jenis::all();
         }
         return response()->json($data);
-            // ini berhasil
-
     }
 }

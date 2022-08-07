@@ -1,0 +1,14 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Bidang extends Model
+{
+    protected $guarded = [];
+
+    public function user(){
+        return $this->hasMany(User::class,'bidang_id');
+    }
+}

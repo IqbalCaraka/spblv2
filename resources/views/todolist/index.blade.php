@@ -3,24 +3,26 @@
 <div class="content-wrapper" >
     <div class="container-xxl flex-grow-1 container-p-y" >
         <div class="row">
-            <div class="card h-100">
-                <div class="card-header mb-3 d-flex align-items-center justify-content-between pb-0">
-                    <h3 class="m-2 me-2">Daftar Pengajuan</h3>
-                </div>
-                <div class="card-body">
-                    <table id="pengajuan-datatable" class="datatable row-border hover" style="width: 100%;" cellspacing="0">
-                        <thead style="text-align: center; width: 100%;">
-                            <tr>
-                                <th>No</th>
-                                <th>Nomor Transaksi</th>
-                                <th>Pembuat Pengajuan</th>
-                                <th>Jumlah Item Barang</th>
-                                <th>Total Barang</th>
-                                <th>Tanggal Pengajuan</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                    </table>
+            <div class="col-md-12">
+                <div class="card h-100">
+                    <div class="card-header mb-3 d-flex align-items-center justify-content-between pb-0">
+                        <h3 class="m-2 me-2">Daftar Pengajuan</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="pengajuan-datatable" class="datatable row-border hover" style="width: 100%;" cellspacing="0">
+                            <thead style="text-align: center; width: 100%;">
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nomor Transaksi</th>
+                                    <th>Pembuat Pengajuan</th>
+                                    <th>Jumlah Item Barang</th>
+                                    <th>Total Barang</th>
+                                    <th>Tanggal Pengajuan</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

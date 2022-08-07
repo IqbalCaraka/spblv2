@@ -1,6 +1,6 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-        <a href="{{route('home')}}" class="app-brand-link">
+        <a href="{{route('dashboard')}}" class="app-brand-link">
             <img src="{{asset ('admin/img/SIPERMATA V10.jpg')}}" style="width:100% ;" alt="">
         </a>
 
@@ -14,7 +14,7 @@
     <ul class="menu-inner py-1">
     <!-- Dashboard -->
     <li class="menu-item {{( $title === 'Dashboard')? 'active': ''}}">
-        <a href="{{route ('home')}}" class="menu-link">
+        <a href="{{route('dashboard')}}" class="menu-link">
         <i class="menu-icon tf-icons bx bx-home-circle"></i>
         <div data-i18n="Analytics">Dashboard</div>
         </a>
@@ -104,6 +104,25 @@
         <a href="{{route('riwayat-transaksi.index')}}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-copy"></i>
             <div data-i18n="Basic">Riwayat Transaksi</div>
+        </a>
+    </li>
+
+    <!-- Aktivitas -->
+    <li class="menu-header small text-uppercase"><span class="menu-header-text">Setting</span></li>
+
+    <!-- Tambah Profil -->
+    <li class="menu-item {{( $title === 'Atur Profil')? 'active': ''}}">
+        <a href="{{route('profil.index')}}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-user-plus"></i>
+            <div data-i18n="Basic">Atur Profil</div>
+        </a>
+    </li>
+
+    <!-- Profil -->
+    <li class="menu-item">
+        <a href="" class="menu-link">
+            <i class="menu-icon tf-icons bx bxs-user-rectangle"></i>
+            <div data-i18n="Basic">Pengguna</div>
         </a>
     </li>
 </aside>

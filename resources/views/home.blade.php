@@ -10,9 +10,9 @@
                 <div class="d-flex align-items-end row">
                     <div class="col-sm-7">
                         <div class="card-body">
-                            <h3 class="card-title text-primary">Halo Iqbal 🎉</h3>
+                            <h3 class="card-title text-primary">Halo {{Auth::user()->name}} 🎉</h3>
                             <p class="mb-4">
-                            Selamat Datang di <span class="fw-bold">Sistem Informasi Permintaan Barang!</span>
+                            Selamat Datang di <span class="fw-bold">Sistem Persediaan Mandiri Terlayani!</span>
                             <hr> Selamat melakukan aktivitas!
                             </p>
                         </div>

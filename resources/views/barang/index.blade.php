@@ -273,7 +273,7 @@
     $(document).on('submit', '#form-tambah', function (e) { 
         e.preventDefault();
         var formData = new FormData($('#form-tambah')[0])
-        console.log(formData);
+        // console.log(formData);
         $.ajax({
             type:"POST",
             url:"{{route('barang.store')}}",
