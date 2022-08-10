@@ -6,9 +6,14 @@
         </a>
         <nav id="navbar" class="navbar">
             <ul>
+            @if(Auth::user()->peran_id =='1' || Auth::user()->peran_id =='2')
+            <li><a class="nav-link scrollto" href="{{route('dashboard')}}">Admin
+            </a></li>
+            @endif
             <li><a class="nav-link scrollto {{( $title === 'Menu')? 'active': ''}}" href="{{route('menu.index')}}">Home</a></li>
             <li><a class="nav-link scrollto {{( $title === 'Keranjang')? 'active': ''}}" href="{{route('keranjang.index')}}">Keranjang</a></li>
             <li><a class="nav-link scrollto {{( $title === 'Laporan Pengajuan')? 'active': ''}}" href="{{route('laporan-pengajuan.index')}}">Laporan Pengajuan</a></li>
+            <li><a class="nav-link scrollto {{( $title === 'Setting')? 'active': ''}}" href="{{route('setting.index')}}">Profil</a></li>
             <li><a class="nav-link scrollto" id="userId" data-id="{{ Auth::user()->id }}" >Hi {{ Auth::user()->name }}</a></li>
             <li>
                 <button class="btn btn-primary float-left" style="margin-left: 20px;" onclick="event.preventDefault();

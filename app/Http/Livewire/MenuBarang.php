@@ -17,7 +17,6 @@ class MenuBarang extends Component
         $barangs = new Barang();
         $barangs = $barangs->getBarangMenu($this->search);
         $items = Keranjang::get()->where('user_id', Auth::user()->id);
-        // dd($items);
         return view('livewire.menu-barang')->with('barangs', $barangs)->with('items', $items);
     }
 

@@ -38,17 +38,22 @@ class ProfilController extends Controller
                 return $data->peran->peran;
             })
             ->addColumn('action', function($data){
-                return <<<EOD
+                if(Auth::user()->peran_id == '2' && $data->peran_id =='1'){
+                    return '';
+                }else{
+                    return <<<EOD
                             <div class="dropdown" style="text-align: center;">
                                 <button class="btn btn-sm btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow" type="button" id="orederStatistics" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="bx bx-dots-vertical-rounded"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
                                     <a class="dropdown-item" data-id="$data->id" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modalEdit" onClick="editProfil(event.target)">Edit</a>
+                                    <a class="dropdown-item" data-id="$data->id" href="javascript:void(0);" onClick="resetPassword(event.target)">Reset Password</a>
                                     <a class="dropdown-item" data-id="$data->id" href="javascript:void(0);" onClick="hapusProfil(event.target)">Hapus</a>
                                 </div>
                             </div>
                         EOD;
+                    };
             })
             
             ->rawColumns(['jabatan','bidang', 'peran', 'action'])
@@ -203,34 +208,30 @@ class ProfilController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $rules =[
-        //     'id' => 'required', 
-        //     'name' => 'required|max:255',
-        //     'jabatan_id' => 'required',
-        //     'peran_id' => 'required',
-        //     'bidang_id' => 'required',
-        // ];
+        $rules =[
+            'nip' => 'required', 
+            'name' => 'required|max:255',
+            'jabatan_id' => 'required',
+            'peran_id' => 'required',
+            'bidang_id' => 'required',
+        ];
 
-        // $text =[
-        //     'id.required' => 'NIP harus diisi!',
-        //     'name.required' => 'Nama harus diisi!',
-        //     'name.max' => 'Nama maximal 255 karakter!',
-        //     'jabatan_id.required' => 'Jabatan harus diisi!',
-        //     'peran_id.required' => 'Peran harus diisi!',
-        //     'bidang_id.required' => 'Bidang harus diisi!',
-        // ];
+        $text =[
+            'nip.required' => 'NIP harus diisi!',
+            'name.required' => 'Nama harus diisi!',
+            'name.max' => 'Nama maximal 255 karakter!',
+            'jabatan_id.required' => 'Jabatan harus diisi!',
+            'peran_id.required' => 'Peran harus diisi!',
+            'bidang_id.required' => 'Bidang harus diisi!',
+        ];
 
-        // $validasi = Validator::make($request->all(),$rules,$text);
+        $validasi = Validator::make($request->all(),$rules,$text);
 
-        // if($validasi->fails()){
-        //     return response()->json(['success'=>0,'text' => $validasi->errors()->first()],422);
-        // }
-
-        // return response()->json($request->jabatan_id);
+        if($validasi->fails()){
+            return response()->json(['success'=>0,'text' => $validasi->errors()->first()],422);
+        }
         
         User::where('id', $id)->update($request->all());
-        // $data = $request->only(['id','name','jabatan_id','peran_id','bidang_id']); 
-        // $user->update($data);
     }
 
     /**
@@ -241,6 +242,16 @@ class ProfilController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::find($id);
+        $user->delete();
+    }
+
+    public function resetPassword(Request $request){
+        $user = User::find($request->id);
+        $password = substr($user->nip, 0,8);
+        $user->update([
+            'password' => Hash::make($password)
+        ]);
+       
     }
 }

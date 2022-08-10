@@ -12,15 +12,8 @@ id="layout-navbar"
     <ul class="navbar-nav flex-row align-items-center ms-auto">
     <!-- Place this tag where you want the button to render. -->
     <li class="nav-item lh-1 me-3">
-        <a
-        class=""
-        href="https://github.com/themeselection/sneat-html-admin-template-free"
-        data-icon="{{asset ('admin/img/SIPERMATA.jpg')}}"
-        data-size="large"
-        data-show-count="true"
-        aria-label="Star themeselection/sneat-html-admin-template-free on GitHub"
-        >Menu</a
-        >
+        <a  class="" href="{{route('menu.index')}}" data-icon="{{asset ('admin/img/SIPERMATA.jpg')}}" data-size="large" data-show-count="true" aria-label="Star themeselection/sneat-html-admin-template-free on GitHub"
+        >Menu</a>
     </li>
 
     <!-- User -->
@@ -41,7 +34,7 @@ id="layout-navbar"
                 </div>
                 <div class="flex-grow-1">
                 <span class="fw-semibold d-block">{{Auth::user()->name}}</span>
-                <small class="text-muted">Admin</small>
+                <small class="text-muted">{{Auth::user()->peran->peran}}</small>
                 </div>
             </div>
             </a>
@@ -50,7 +43,7 @@ id="layout-navbar"
             <div class="dropdown-divider"></div>
         </li>
         <li>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" href="{{route('menu.index')}}">
             <i class="bx bx-store me-2"></i>
             <span class="align-middle"> Go To Menu</span>
             </a>

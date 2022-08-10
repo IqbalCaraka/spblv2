@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth','superadmin']], function(){
     Route::resource('admin/kebutuhan-permintaan', 'KebutuhanPermintaanController');
     Route::resource('admin/riwayat-transaksi', 'RiwayatTransaksiController');
     Route::resource('admin/profil', 'ProfilController');
+    Route::post('admin/profil-reset-password', 'ProfilController@resetPassword')->name('reset-password');
     Route::get('admin/get-jabatan', 'ProfilController@getJabatan')->name('get-jabatan');
     Route::get('admin/get-bidang', 'ProfilController@getBidang')->name('get-bidang');
     Route::get('admin/get-peran', 'ProfilController@getPeran')->name('get-peran');
@@ -48,6 +49,7 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('laporan-pengajuan-selesai', 'LaporanPengajuanController@getSelesai')->name('laporan-pengajuan.selesai');
     Route::get('laporan-pengajuan-ditolak', 'LaporanPengajuanController@getDitolak')->name('laporan-pengajuan.ditolak');
     Route::get('laporan-pengajuan-dibatalkan', 'LaporanPengajuanController@getDibatalkan')->name('laporan-pengajuan.dibatalkan');
+    Route::resource('setting', 'SettingController');
 
     // Route::get ('/menu/search', 'MenuController@search');
 });

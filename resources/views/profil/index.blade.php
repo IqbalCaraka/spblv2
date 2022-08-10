@@ -407,11 +407,11 @@
         })  
     }
 
-    //Hapus jenis
-    function deleteJenis(event){
-        data_id = $(event).data('id');
-        var URL = "{{route('jenis.destroy', 'id')}}";
-        var newURL = URL.replace('id', data_id);
+    //Hapus pengguna
+    function hapusProfil(event){
+        var id = $(event).attr('data-id');
+        var URL = "{{route('profil.destroy', ':id')}}";
+        var newURL = URL.replace(':id', id);
         swal({
             title: 'Apakah Anda yakin?',
             text: 'Data ini akan dihapus permanen!',
@@ -424,22 +424,44 @@
                     url:newURL,
                     type:"DELETE",
                     success: function($data){
-                        $('#datatable').DataTable().ajax.reload();
-                        swal("Selamat!", "Data berhasil dihapus!", "success");
+                        $('#profil-datatable').DataTable().ajax.reload();
+                        swal("Selamat!", "Data berhasil diperbarui!", "success"); 
                     },
-                    error: function (xhr) { //jika error tampilkan error pada console
-                        swal({
-                            title: 'Gagal Menghapus Data!',
-                            icon: 'warning',
-                            text : xhr.responseJSON.text,
-                            buttons: "Kembali"
-                        })
+                    error: function (xhr) { 
+                        toastr.error(xhr.responseJSON.text,'Gagal Menyimpan Data!')
                     }
                 })
             };
         });
     };
-    
+
+    function resetPassword(event){
+        var id = $(event).attr('data-id');
+        swal({
+            title: 'Apakah Anda yakin?',
+            text: 'Data ini mereset password akun ini!',
+            icon: 'warning',
+            dangerMode: true,
+            buttons: true,
+        }).then((willdelete)=>{
+            if(willdelete){
+                $.ajax({
+                    url:"{{route('reset-password')}}",
+                    type:"POST",
+                    data:{
+                        id:id
+                    },
+                    success: function($data){
+                        $('#profil-datatable').DataTable().ajax.reload();
+                        swal("Selamat!", "Data berhasil diperbarui!", "success"); 
+                    },
+                    error: function (xhr) { 
+                        toastr.error(xhr.responseJSON.text,'Gagal Menyimpan Data!')
+                    }
+                })
+            };
+        });
+    }
 </script>
 
 @endsection

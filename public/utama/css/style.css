@@ -41,6 +41,16 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Nunito", sans-serif;
 }
 
+th{
+  color: #012970;
+}
+
+label{
+    font-size: 14px;
+    font-weight: 700;
+    color: #4154f1;
+    font-family: "Nunito", sans-serif;
+}
 
 .container{
   margin-bottom: 20px;
@@ -81,6 +91,227 @@ h1, h2, h3, h4, h5, h6 {
   margin-left: 0;
 }
 
+
+.btn-outline-primary{
+  display: inline-block;
+  padding: 8px;
+  border-radius: 10px;
+  color: #4154f1;
+  transition: none;
+  font-size: 14px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+  transition: 0.3s;
+  border: 1px solid #4154f1;
+  background: #fff;
+  width: 100px;
+}
+
+
+.btn-outline-primary:hover{
+  background: #4154f1;
+  color: #fff;
+}
+
+.btn-outline-success:hover{
+  background-color: #225c00;
+  border-color: #225c00;
+}
+/*--------------------------------------------------------------
+# Sppinner
+--------------------------------------------------------------*/
+@-webkit-keyframes spinner-border {
+  to {
+    transform: rotate(360deg) /* rtl:ignore */;
+  }
+}
+
+@keyframes spinner-border {
+  to {
+    transform: rotate(360deg) /* rtl:ignore */;
+  }
+}
+.spinner-border {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  vertical-align: -0.5em;
+  border: 0.25em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  -webkit-animation: 0.75s linear infinite spinner-border;
+          animation: 0.75s linear infinite spinner-border;
+}
+.spinner-border-lg {
+  width: 10rem;
+  height: 10rem;
+  border-width: 0.5em;
+   
+  /* margin-left: 430px; */
+  /* margin-right: 450px; */
+}
+
+.text-loading{
+  color: #4154f1;
+}
+
+.spinner-border{
+  margin: auto;
+}
+
+
+/*--------------------------------------------------------------
+# Modal
+--------------------------------------------------------------*/
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1090;
+  display: none;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  outline: 0;
+}
+
+.modal-dialog {
+  position: relative;
+  width: auto;
+  margin: 1.5rem;
+  pointer-events: none;
+}
+.modal.fade .modal-dialog {
+  transition: transform 0.15s ease-out;
+  transform: translateY(-100px) scale(0.8);
+}
+@media (prefers-reduced-motion: reduce) {
+  .modal.fade .modal-dialog {
+    transition: none;
+  }
+}
+.modal.show .modal-dialog {
+  transform: translateY(0) scale(1);
+}
+.modal.modal-static .modal-dialog {
+  transform: scale(1.02);
+}
+
+.modal-dialog-scrollable {
+  height: calc(100% - 3rem);
+}
+.modal-dialog-scrollable .modal-content {
+  max-height: 100%;
+  overflow: hidden;
+}
+.modal-dialog-scrollable .modal-body {
+  overflow-y: auto;
+}
+
+.modal-dialog-centered {
+  display: flex;
+  align-items: center;
+  min-height: calc(100% - 3rem);
+}
+.modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 0px solid rgba(67, 89, 113, 0.2);
+  border-radius: 0.5rem;
+  outline: 0;
+}
+
+.modal-backdrop {
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #435971;
+}
+.modal-backdrop.fade {
+  opacity: 0;
+}
+.modal-backdrop.show {
+  opacity: 0.5;
+}
+
+.modal-header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 1.5rem 0.25rem;
+  border-bottom: 0px solid #d9dee3;
+  color: #012970;
+  border-top-left-radius: calc(0.5rem - 0px);
+  border-top-right-radius: calc(0.5rem - 0px);
+}
+.modal-header .btn-close {
+  padding: 0.125rem 0.75rem;
+  margin: -0.125rem -0.75rem -0.125rem auto;
+}
+
+.modal-title {
+  margin-bottom: 0;
+  line-height: 1.53;
+  font-weight: 550;
+}
+
+.modal-body {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 1.25rem;
+  border-top: 0px solid #d9dee3;
+  border-bottom-right-radius: calc(0.5rem - 0px);
+  border-bottom-left-radius: calc(0.5rem - 0px);
+}
+.modal-footer > * {
+  margin: 0.25rem;
+}
+@media (min-width: 576px) {
+  .modal-dialog {
+    max-width: 35rem;
+    margin: 1.75rem auto;
+  }
+
+  .modal-dialog-scrollable {
+    height: calc(100% - 3.5rem);
+  }
+
+  .modal-dialog-centered {
+    min-height: calc(100% - 3.5rem);
+  }
+
+  .modal-sm {
+    max-width: 22.5rem;
+  }
+}
+@media (min-width: 992px) {
+  .modal-lg,
+.modal-xl {
+    max-width: 50rem;
+  }
+}
+@media (min-width: 1200px) {
+  .modal-xl {
+    max-width: 1140px;
+  }
+}
 /*--------------------------------------------------------------
 # Sections
 --------------------------------------------------------------*/
@@ -538,6 +769,110 @@ section {
 # Index Page
 --------------------------------------------------------------*/
 /*--------------------------------------------------------------
+# Setting
+--------------------------------------------------------------*/
+.setting .content {
+  background-color: #b8d0ff;
+  padding: 50px;
+  margin-top: 80px;
+}
+.setting h1 {
+  font-size: 30px;
+  font-weight: 700;
+  color: #4154f1;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.setting h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #4154f1;
+  text-transform: uppercase;
+}
+
+.setting h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #012970;
+  margin-bottom: 20px;
+}
+
+.setting p {
+  margin: 15px 0 30px 0;
+  line-height: 24px;
+}
+
+.setting .btn-read-more {
+  line-height: 0;
+  padding: 15px 40px;
+  border-radius: 4px;
+  transition: 0.5s;
+  color: #fff;
+  background: #4154f1;
+  box-shadow: 0px 5px 25px rgba(65, 84, 241, 0.3);
+}
+
+.setting .btn-read-more span {
+  font-family: "Nunito", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+.setting .btn-read-more i {
+  margin-left: 5px;
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+.setting .btn-read-more:hover i {
+  transform: translateX(5px);
+}
+
+/* .setting .content {
+  background-color: #f6f9ff;
+  padding: 50px;
+  margin-top: 7%;
+}
+
+#setting {
+  padding: 20px 0;
+  overflow: hidden;
+
+}
+
+.setting{
+  font-family: "Nunito", sans-serif;
+}
+
+.setting h1 {
+  font-size: 30px;
+  font-weight: 700;
+  color: #4154f1;
+  text-transform: uppercase;
+  text-align: center;
+}
+.setting .card-body {
+  flex: 1 1 auto;
+  padding: 5rem 3rem 5rem 3rem;
+}
+
+.setting .btn{
+  font-weight: 600;
+}
+
+.setting label{
+  font-size: 18px;
+  font-weight: 700;
+  color: #012970;
+}
+
+
+.setting .card{
+  background-color: #d9e6ff;
+} */
+/*--------------------------------------------------------------
 # Keranjang
 --------------------------------------------------------------*/
 
@@ -668,6 +1003,10 @@ section {
 # Laporan Pengajuan
 --------------------------------------------------------------*/
 
+.laporan-pengajuan{
+  font-family:"Nunito", sans-serif;
+}
+
 .laporan-pengajuan .content {
   background-color: #f6f9ff;
   padding: 50px;
@@ -693,6 +1032,7 @@ section {
   font-weight: 550;
   color: #012970;
 }
+
 
 .laporan-pengajuan input{
   text-align: center;

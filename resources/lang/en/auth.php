@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
+    'failed' => 'NIP atau password tidak sesuai!',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];
