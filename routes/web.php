@@ -26,6 +26,7 @@ Route::group(['middleware' => ['auth','superadmin']], function(){
     Route::resource('admin/barang', 'BarangController',['except' => ['update']]);
     Route::post('admin/barang-update', 'BarangController@update')->name('barang.update');
     Route::get('admin/get-kategori', 'BarangController@getKategori')->name('get-kategori.index');
+    Route::resource('admin/satuan', 'SatuanController');
     Route::resource('admin/to-do-list', 'ToDoListController');
     Route::resource('admin/proses-validasi', 'ProsesValidasiController');
     Route::resource('admin/semua-status', 'SemuaStatusController');
@@ -40,7 +41,9 @@ Route::group(['middleware' => ['auth','superadmin']], function(){
 Route::group(['middleware' => ['auth']], function(){
     //Pengguna
     Route::resource('menu', 'MenuController');
+    Route::get('get-satuan', 'MenuController@getSatuan')->name('get-satuan');
     Route::resource('keranjang', 'KeranjangController');
+    Route::resource('keranjang-barang-tidak-tersedia', 'KeranjangBarangTidakTersediaController');
     Route::resource('transaksi', 'TransaksiController');
     Route::put('transaksi-validasi', 'TransaksiController@updateValidasi')->name('update-validasi');
     Route::resource('laporan-pengajuan', 'LaporanPengajuanController');

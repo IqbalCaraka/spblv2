@@ -68,6 +68,8 @@ label{
   background-clip: border-box;
   border: 0 solid #d9dee3;
   border-radius: 1rem;
+  width: 90%;
+  margin: auto;
 }
 
 .card-body {
@@ -91,6 +93,11 @@ label{
   margin-left: 0;
 }
 
+.btn-outline-primary:hover{
+  background-color: #4154f1;
+  border-color: #4154f1;
+  color: #ffffff;
+}
 
 .btn-outline-primary{
   display: inline-block;
@@ -108,15 +115,29 @@ label{
 }
 
 
-.btn-outline-primary:hover{
-  background: #4154f1;
+.btn-outline-danger:hover{
+  background: #ff3d3d;
+  border-color: #ff3d3d;
   color: #fff;
 }
 
-.btn-outline-success:hover{
-  background-color: #225c00;
-  border-color: #225c00;
+.btn-outline-danger{
+  display: inline-block;
+  padding: 8px;
+  border-radius: 10px;
+  color: #dd0000;
+  transition: none;
+  font-size: 14px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+  transition: 0.3s;
+  border: 1px solid #dd0000;
+  background: #fff;
+  width: 100px;
 }
+
+
+
 /*--------------------------------------------------------------
 # Sppinner
 --------------------------------------------------------------*/
@@ -939,6 +960,16 @@ section {
   height: 100px;
 }
 
+.keranjang-tabs .nav-pills {
+  border-bottom: 1px solid #eee;
+}
+
+.keranjang-tabs .nav-pills  .nav-link.active {
+  color: #4154f1;
+  border-bottom: 3px solid #4154f1;
+  background-color: transparent;
+}
+
 
 .empty-chart .content {
   background-color: #ffffff;
@@ -983,6 +1014,54 @@ section {
   display: block;
   margin-left: auto;
   margin-right: auto ;
+}
+
+
+.aksi .btn-outline-primary{
+  display: inline-block;
+  padding: 4px;
+  border-radius: 10px;
+  color: #4154f1;
+  transition: none;
+  font-size: 14px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+  transition: 0.3s;
+  border: 1px solid #4154f1;
+  background: #fff;
+  width: 60px;
+}
+
+.aksi .btn-outline-primary:hover{
+  background-color: #4154f1;
+  border-color: #4154f1;
+  color: #ffffff;
+}
+
+.aksi .btn-outline-danger{
+  display: inline-block;
+  padding: 4px;
+  border-radius: 10px;
+  color: #dd0000;
+  transition: none;
+  font-size: 14px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+  transition: 0.3s;
+  border: 1px solid #dd0000;
+  background: #fff;
+  width: 60px;
+}
+
+.aksi .btn-outline-danger:hover{
+  background-color: #dd0000;
+  border-color: #dd0000;
+  color: #ffffff;
+}
+
+#form-edit input:disabled{
+  background-color: #d1d1d1;
+  border-color: #4154f1;
 }
 
 /*--------------------------------------------------------------
@@ -1243,6 +1322,57 @@ table {
   transform: translateX(5px);
 }
 
+
+.empty-data .content {
+  background-color: #ffffff;
+  padding: 10px;
+  margin-top: 50px;
+}
+
+.empty-data h5 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #4154f1;
+}
+.empty-data h3 {
+  font-size: 40px;
+  margin-bottom: 10px;
+  font-weight: 700;
+  color: #4154f1;
+  text-transform: uppercase;
+}
+
+
+.empty-data .btn-tidak-tersedia {
+  line-height: 0;
+  padding: 15px 40px;
+  border-radius: 4px;
+  transition: 0.5s;
+  color: #fff;
+  background: #4154f1;
+  font-size: 18px;
+  transition: 0.3s;
+  box-shadow: 0 1px 20px 1px #6d7bf8;
+}
+
+.empty-data .btn-read-more span {
+  font-family: "Nunito", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+.empty-data .btn-tidak-tersedia:hover{
+  box-shadow: none;
+}
+
+.empty-data img {
+  width: 45%;
+  height: 45%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto ;
+}
 /*--------------------------------------------------------------
 # Values
 --------------------------------------------------------------*/
@@ -1613,6 +1743,13 @@ table {
   text-align: center;
 }
 
+.select2-dropdown input{
+  text-align: left;
+}
+
+.select2-dropdown ul li{
+  text-align: left;
+}
 .barang .rounded-pill {
   border-radius: 5rem !important;
 }

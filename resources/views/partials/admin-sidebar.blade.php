@@ -48,7 +48,7 @@
                 </a>
             </li>
             <li class="menu-item {{( $title === 'Satuan')? 'active': ''}}">
-                <a href="{{route('barang.index')}}" class="menu-link">
+                <a href="{{route('satuan.index')}}" class="menu-link">
                 <div data-i18n="Notifications">Satuan Barang</div>
                 </a>
             </li>

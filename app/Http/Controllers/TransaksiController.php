@@ -6,6 +6,8 @@ use App\Keranjang;
 use App\LaporanPengajuan;
 use App\Transaksi;
 use App\Barang;
+use App\KeranjangBarangTidakTersedia;
+use App\LaporanPengajuanBarangTidakTersedia;
 use App\RiwayatTransaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,6 +43,8 @@ class TransaksiController extends Controller
     public function store()
     {
         $keranjangs = Keranjang::Where('user_id','=', Auth::user()->id)->get();
+        $keranjang_barang_tidak_tersedias = KeranjangBarangTidakTersedia::where('user_id', Auth::user()->id)->get();
+
         $nomor_transaksi = '#'.now()->format('dmY').random_int(10000,99999);
         $transaksi = Transaksi::create([
             'nomor_transaksi'=> $nomor_transaksi,
@@ -52,15 +56,30 @@ class TransaksiController extends Controller
             'user_id'=> Auth::user()->id,
             'status_id'=>1,
         ]);
-        foreach($keranjangs as $keranjang){
-            LaporanPengajuan::create([
-                'transaksi_id'=> $transaksi->id,
-                'barang_id'=> $keranjang->barang_id,
-                'jumlah_barang'=> $keranjang->jumlah_barang,
-                'status_item_pengajuan_id'=> '1'
-            ]);
-            $keranjang = Keranjang::find($keranjang->id);
-            $keranjang->delete();
+        if($keranjangs->count() > 0){
+            foreach($keranjangs as $keranjang){
+                LaporanPengajuan::create([
+                    'transaksi_id'=> $transaksi->id,
+                    'barang_id'=> $keranjang->barang_id,
+                    'jumlah_barang'=> $keranjang->jumlah_barang,
+                    'status_item_pengajuan_id'=> '1'
+                ]);
+                // $keranjang = Keranjang::find($keranjang->id);
+                $keranjang->delete();
+            }
+        }
+        if($keranjang_barang_tidak_tersedias->count() > 0){
+            foreach($keranjang_barang_tidak_tersedias as $keranjang_barang_tidak_tersedia){
+                LaporanPengajuanBarangTidakTersedia::create([
+                    'transaksi_id'=> $transaksi->id,
+                    'nama_barang'=> $keranjang_barang_tidak_tersedia->nama_barang,
+                    'jumlah_barang'=> $keranjang_barang_tidak_tersedia->jumlah_barang,
+                    'satuan_id'=> $keranjang_barang_tidak_tersedia->satuan_id,
+                    'status_item_pengajuan_id'=> '1'
+                ]);
+                // $keranjang = Keranjang::find($keranjang->id);
+                $keranjang_barang_tidak_tersedia->delete();
+            }
         }
 
         return response()->json(['success'=>1, 'text'=>$nomor_transaksi]);
@@ -107,8 +126,10 @@ class TransaksiController extends Controller
                         $jumlah_barang_terkonfirmasi = $item->revisi_jumlah_barang;
                     }
 
+                    //Jika jumlah pengajuan barang kurang dari stok maka item pengajuan disetujui
                     if($jumlah_barang_terkonfirmasi <= $item->barang->stok){
                         Barang::where('id','=', $item->barang_id)->update(['stok'=>\DB::raw('stok-'.$jumlah_barang_terkonfirmasi)]);
+                    //Jika jumlah pengajuan barang lebih dari stok maka item pengajuan ditolak
                     }else{
                         $item->status_item_pengajuan_id = "2";
                         $item->save();

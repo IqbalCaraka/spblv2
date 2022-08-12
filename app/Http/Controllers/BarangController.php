@@ -179,7 +179,6 @@ class BarangController extends Controller
             $data = Kategori::all();
         }
         return response()->json($data);
-            // ini berhasil
 
     }
 }

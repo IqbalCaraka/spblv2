@@ -6,7 +6,7 @@
                 <p>Cek List Seluruh Barang</p>
             </header>
             <div class="d-flex justify-content-center">
-                <input type="text" class="form-control mb-4 " wire:model="search" placeholder="Search" style="width:50% ;">
+                <input type="text" class="form-control mb-4 search" wire:model="search" placeholder="Search" style="width:50% ;">
             </div> 
             <div class="spinner-load" wire:loading.inline >
                 <div class="container" data-aos="fade-up">
@@ -22,15 +22,24 @@
             <div class="content" >     
                 <div class="row gy-4" id="list-barang" >    
                     @if ($barangs->count() == 0)
-                    <div id="empty-chart" class="empty-chart">
+                    <div id="empty-data" class="empty-data">
                         <div class="container" data-aos="fade-up">
                             <div class="content">
                                 <div class="row gx-0">
-                                    <img src="{{asset('storage/nodata.jpg')}}" class="" alt="">
+                                    <img src="{{asset('storage/emptydata.jpg')}}" class="" alt="">
+                                    <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
+                                        <div class="text-center text-lg-start">
+                                            <h3>Data tidak ditemukan!</h3>
+                                            <a href="javascript:void(0)" class="btn-tidak-tersedia d-inline-flex align-items-center justify-content-center align-self-center" data-bs-toggle="modal" data-bs-target="#modalPengajuan" onclick="selectSatuan()">
+                                                <span>Isi Pengajuan Barang Tidak Tersedia</span>
+                                            </a>
+                                        </div>
+                                    </div>  
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
                     @else
                     @foreach($barangs as $barang)
                     <div class="col-lg-3 col-md-6" data-aos-delay="100">
@@ -59,7 +68,47 @@
                 {{$barangs->onEachSide(1)->links()}}
             </div>     
         </div>
-        
+        <!--Modal show pengajuan barang tidak tersedia-->
+        <div class="modal fade bd-example-modal-lg" id="modalPengajuan" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="pengajuan-barang-tidak-tersedia-title">Tambah Pengajuan Barang Tidak Tersedia</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form-tambah" name="ItemForm">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col mb-3">
+                                        <label for="nama_barang" class="form-label">Nama Barang Yang Diajukan</label>
+                                        <input style="text-align: left;" type="text" id="nama_barang" name="nama_barang" class="form-control" placeholder="Masukan Nama Barang"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mb-3">
+                                        <label for="jumlah_barang" class="form-label">Jumlah Pengajuan</label>
+                                        <input style="text-align: left;" type="number" id="jumlah_barang" name="jumlah_barang" class="form-control" placeholder="Masukan Jumlah Pengajuan"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mb-3">
+                                        <label for="satuan_id" class="form-label" >Satuan</label>
+                                        <select name="satuan_id" id="satuan_id" style="width: 100% ;" class="js-example-basic-single select2 form-control" name="states" id="satuan_id">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"> Batal </button>
+                                <button type="button" class="btn btn-outline-primary" onclick="createKeranjang()"> Simpan </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Modal show pengajuan barang tidak tersedia-->   
     </section><!-- End Pricing Section -->
     
 </div>
@@ -108,19 +157,58 @@
             }
         })
 
-        // document.onreadystatechange = function () {
-        //     var state = document.readyState
-        //     if (state == 'interactive') {
-        //         document.getElementById('list-barang').style.visibility="hidden";
-        //     } else if (state == 'complete') {
-        //         setTimeout(function(){
-        //             document.getElementById('interactive');
-        //             document.getElementById('spinner-load').style.visibility="hidden";
-        //             document.getElementById('list-barang').style.visibility="visible";
-        //         },1000);
-        //     }
-        // }
     }
 
+    function selectSatuan(){
+        $('.js-example-basic-single').select2({
+            placeholder: 'Pilih Satuan...',
+            dropdownParent: $('#modalPengajuan'),
+            allowClear: true,
+            ajax:{
+                url: "{{route('get-satuan')}}",
+                dataType: 'json',
+                type:'get',
+                delay: 250,
+                dropdownCssClass: "bigdrop",
+                processResults: function (data) {
+                    return {
+                        results:  $.map(data, function (item) {
+                            return {
+                                text: item.nama_satuan,
+                                id: item.id
+                            }   
+                        })
+                    };
+                }
+            }
+           
+        })
+    }
+
+    function createKeranjang(){
+        var nama_barang = $("#nama_barang").val();
+        var jumlah_barang = $("#jumlah_barang").val();
+        var satuan_id = $("#satuan_id").val();
+        $.ajax({
+            url:"{{route('keranjang-barang-tidak-tersedia.store')}}",
+            type:"POST",
+            typeData:"JSON",
+            data:{
+                nama_barang:nama_barang,
+                jumlah_barang:jumlah_barang,
+                satuan_id : satuan_id
+            },
+            success: function(data){
+                $('#modalPengajuan').modal('hide');
+                $('#form-tambah').trigger("reset");
+                $('#barang').trigger("reset");
+                $('.js-example-basic-single').html("");
+                swal("Selamat!", "Data berhasil disimpan! Cek Keranjang Anda!", "success"); 
+            },
+            error: function (xhr) { //jika error tampilkan error pada console
+                toastr.error(xhr.responseJSON.text,'Gagal Menyimpan Data!')
+            }
+        })
+    }
 </script>
 @endpush

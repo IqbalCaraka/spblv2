@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Barang;
+use App\Satuan;
 use DB;
 use App\Kategori;
 use Illuminate\Http\Request;
 
 class MenuController extends Controller
 {
-    /**
+/**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -20,6 +21,21 @@ class MenuController extends Controller
         $title = "Menu";
         return view('pengguna.menu')->with('title', $title);
  
+    }
+
+    public function getSatuan(Request $request){
+
+        $data = [];
+
+        if($request->has('q')){
+            $search = $request->q;
+            $data =Satuan::select("id","nama_satuan")
+                    ->where('nama_satuan','LIKE',"%$search%")
+                    ->get();
+        }else{
+            $data = Satuan::all();
+        }
+        return response()->json($data);
     }
 
 

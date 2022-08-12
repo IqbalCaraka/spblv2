@@ -81,7 +81,7 @@ class LaporanPengajuanController extends Controller
             ->addColumn('action', function($data){
                 return <<<EOD
                         <div class="batal">
-                            <button class="btn btn-sm btn-danger btn-check-out" data-id="$data->id" onclick="batalTransaksi(event.target)">
+                            <button class="btn btn-sm btn-outline-danger btn-check-out" data-id="$data->id" onclick="batalTransaksi(event.target)">
                                 Batal
                             </button>
                         </div>

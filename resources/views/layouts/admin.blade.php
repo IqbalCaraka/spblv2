@@ -95,7 +95,6 @@
     <script src="{{asset('admin/js/popper.js')}}"></script>
     <script src="{{asset('admin/js/bootstrap.js')}}"></script>
     <script src="{{asset('admin/js/perfect-scrollbar.js')}}"></script>
-
     <script src="{{asset('admin/js/menu.js')}}"></script>
     <!-- endbuild -->
 

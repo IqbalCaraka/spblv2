@@ -23,4 +23,20 @@ class MenuBarang extends Component
     public function updatingSearch(){
         $this->resetPage();
     }
+
+    public function getSatuan(Request $request){
+        if($request->ajax()){
+            $data = [];
+    
+            if($request->has('q')){
+                $search = $request->q;
+                $data =Satuan::select("id","nama_satuan")
+                        ->where('nama_satuan','LIKE',"%$search%")
+                        ->get();
+            }else{
+                $data = Satuan::all();
+            }
+            return response()->json('hi');
+        };
+    }
 }

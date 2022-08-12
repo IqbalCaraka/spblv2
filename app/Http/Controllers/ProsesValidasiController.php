@@ -92,12 +92,16 @@ class ProsesValidasiController extends Controller
             return response()->json(['success'=>0,'text' => $validasi->errors()->first()],422);
         }
 
-        if($request->revisi_jumlah_barang <= $request->stok){
-            LaporanPengajuan::where('id','=',$request->laporan_pengajuan_id)
+        //Penjagaan agar jumlah revisi tidak melebihi stok
+        // if($request->revisi_jumlah_barang <= $request->stok){
+        //     LaporanPengajuan::where('id','=',$request->laporan_pengajuan_id)
+        //                     ->update(['revisi_jumlah_barang'=>$request->revisi_jumlah_barang]);
+        // }else{
+        //     return response()->json(['success'=>0,'text' => "Revisi jumlah barang melebihi stok!"],422);
+        // }
+
+        LaporanPengajuan::where('id','=',$request->laporan_pengajuan_id)
                             ->update(['revisi_jumlah_barang'=>$request->revisi_jumlah_barang]);
-        }else{
-            return response()->json(['success'=>0,'text' => "Revisi jumlah barang melebihi stok!"],422);
-        }
 
     }
 

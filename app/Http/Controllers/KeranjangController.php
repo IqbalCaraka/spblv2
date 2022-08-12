@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Keranjang;
+use App\KeranjangBarangTidakTersedia;
 use Illuminate\Support\Facades\Auth;
 
 class KeranjangController extends Controller
@@ -15,17 +16,20 @@ class KeranjangController extends Controller
      */
     public function index(Request $request)
     {
-        $keranjangCount = Keranjang::Where('user_id','=', Auth::user()->id)->get();
+        $keranjang_barang_tidak_tersedia = KeranjangBarangTidakTersedia::where('user_id', Auth::user()->id)->get();
         $keranjangs = new Keranjang();
         $keranjangs = $keranjangs->getKeranjang();
         if($request->ajax()){
             return response()->json([
                 'success'=>true,
-                'keranjangs'=>$keranjangs
+                'keranjangs'=>$keranjangs,
+                'keranjang_barang_tidak_tersedia'=>$keranjang_barang_tidak_tersedia
             ]);
         }
         $title = "Keranjang";
-        return view ('pengguna.keranjang')->with('keranjangs', $keranjangs)->with('keranjangCount', $keranjangCount)->with('title',$title);
+        return view ('pengguna.keranjang')->with('keranjangs', $keranjangs)
+                                            ->with('keranjang_barang_tidak_tersedia', $keranjang_barang_tidak_tersedia)
+                                            ->with('title',$title);
     }
 
     /**
@@ -55,13 +59,20 @@ class KeranjangController extends Controller
                 'user_id'=>$request->user_id,
                 'jumlah_barang'=> $request->jumlah_barang
             ]);
-            return response()->json(['success'=>true, $text],200);
+            return response()->json(['success'=>true],200);
         }else{  
-            if($keranjang->jumlah_barang < $keranjang->barang->stok && $request->jumlah_barang == 1){
+            //cek apakah pengajuan barang tidak melebihi stok
+            // if($keranjang->jumlah_barang < $keranjang->barang->stok && $request->jumlah_barang == 1){
+            //     Keranjang::where('id', $keranjang->id)->update(['jumlah_barang' =>\DB::raw('jumlah_barang+1')]);
+            // }elseif($keranjang->jumlah_barang == 1 ){
+            //     return response()->json(['success'=>false],442);
+            // }
+            if($request->jumlah_barang == 1 ){
                 Keranjang::where('id', $keranjang->id)->update(['jumlah_barang' =>\DB::raw('jumlah_barang+1')]);
             }elseif($keranjang->jumlah_barang == 1 ){
                 return response()->json(['success'=>false],442);
-            }elseif($request->jumlah_barang == -1){
+            }
+            elseif($request->jumlah_barang == -1){
                 Keranjang::where('id', $keranjang->id)->update(['jumlah_barang' =>\DB::raw('jumlah_barang-1')]);
             }
             else{
