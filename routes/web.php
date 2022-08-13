@@ -47,6 +47,7 @@ Route::group(['middleware' => ['auth']], function(){
     Route::resource('transaksi', 'TransaksiController');
     Route::put('transaksi-validasi', 'TransaksiController@updateValidasi')->name('update-validasi');
     Route::resource('laporan-pengajuan', 'LaporanPengajuanController');
+    Route::resource('laporan-barang-tidak-tersedia', 'LaporanPengajuanBarangTidakTersediaController');
     Route::get('laporan-pengajuan-pengajuan', 'LaporanPengajuanController@getPengajuan')->name('laporan-pengajuan.pengajuan');
     Route::get('laporan-pengajuan-validasi', 'LaporanPengajuanController@getValidasi')->name('laporan-pengajuan.validasi');
     Route::get('laporan-pengajuan-selesai', 'LaporanPengajuanController@getSelesai')->name('laporan-pengajuan.selesai');

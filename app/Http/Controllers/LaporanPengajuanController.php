@@ -22,7 +22,7 @@ class LaporanPengajuanController extends Controller
             ->addColumn('nomor_transaksi', function($data){
                 return <<<EOD
                             <div>
-                                <a href="javascript:void(0);" data-id="$data->id" data-bs-toggle="modal" data-bs-target="#laporan" onClick="detailLaporanPengajuan(event.target)">$data->nomor_transaksi</a>
+                                <a href="javascript:void(0);" data-id="$data->id" data-bs-toggle="modal" data-bs-target="#laporan" onClick="detailLaporanPengajuanBarangTersedia(event.target)">$data->nomor_transaksi</a>
                             </div>
                         EOD;
             })
@@ -71,7 +71,7 @@ class LaporanPengajuanController extends Controller
             ->addColumn('nomor_transaksi', function($data){
                 return <<<EOD
                             <div>
-                                <a href="javascript:void(0);" data-id="$data->id" data-bs-toggle="modal" data-bs-target="#laporan" onClick="detailLaporanPengajuan(event.target)">$data->nomor_transaksi</a>
+                                <a href="javascript:void(0);" data-id="$data->id" data-bs-toggle="modal" data-bs-target="#laporan" onClick="detailLaporanPengajuanBarangTersedia(event.target)">$data->nomor_transaksi</a>
                             </div>
                         EOD;
             })
@@ -102,7 +102,7 @@ class LaporanPengajuanController extends Controller
             ->addColumn('nomor_transaksi', function($data){
                 return <<<EOD
                             <div>
-                                <a href="javascript:void(0);" data-id="$data->id" data-bs-toggle="modal" data-bs-target="#laporan" onClick="detailLaporanPengajuan(event.target)">$data->nomor_transaksi</a>
+                                <a href="javascript:void(0);" data-id="$data->id" data-bs-toggle="modal" data-bs-target="#laporan" onClick="detailLaporanPengajuanBarangTersedia(event.target)">$data->nomor_transaksi</a>
                             </div>
                         EOD;
             })
@@ -124,7 +124,7 @@ class LaporanPengajuanController extends Controller
             ->addColumn('nomor_transaksi', function($data){
                 return <<<EOD
                             <div>
-                                <a href="javascript:void(0);" data-id="$data->id" data-bs-toggle="modal" data-bs-target="#laporan" onClick="detailLaporanPengajuan(event.target)">$data->nomor_transaksi</a>
+                                <a href="javascript:void(0);" data-id="$data->id" data-bs-toggle="modal" data-bs-target="#laporan" onClick="detailLaporanPengajuanBarangTersedia(event.target)">$data->nomor_transaksi</a>
                             </div>
                         EOD;
             })
@@ -146,7 +146,7 @@ class LaporanPengajuanController extends Controller
             ->addColumn('nomor_transaksi', function($data){
                 return <<<EOD
                             <div>
-                                <a href="javascript:void(0);" data-id="$data->id" data-bs-toggle="modal" data-bs-target="#laporan" onClick="detailLaporanPengajuan(event.target)">$data->nomor_transaksi</a>
+                                <a href="javascript:void(0);" data-id="$data->id" data-bs-toggle="modal" data-bs-target="#laporan" onClick="detailLaporanPengajuanBarangTersedia(event.target)">$data->nomor_transaksi</a>
                             </div>
                         EOD;
             })
@@ -168,7 +168,7 @@ class LaporanPengajuanController extends Controller
             ->addColumn('nomor_transaksi', function($data){
                 return <<<EOD
                             <div>
-                                <a href="javascript:void(0);" data-id="$data->id" data-bs-toggle="modal" data-bs-target="#laporan" onClick="detailLaporanPengajuan(event.target)">$data->nomor_transaksi</a>
+                                <a href="javascript:void(0);" data-id="$data->id" data-bs-toggle="modal" data-bs-target="#laporan" onClick="detailLaporanPengajuanBarangTersedia(event.target)">$data->nomor_transaksi</a>
                             </div>
                         EOD;
             })
@@ -214,9 +214,37 @@ class LaporanPengajuanController extends Controller
         if($request->ajax()){
             return datatables()->of($laporanPengajuan)
             ->addColumn('nama_barang', function($data){
-                return $data->barang->nama_barang;
+                $nama_barang = $data->barang->nama_barang;
+                $status = $data->statusItemPengajuan->status;
+                if($status == "Disetujui"){
+                    return <<<EOD
+                                <span class="badge bg-label-diterima">$nama_barang</span>
+                            EOD;
+                }elseif($status == "Ditolak"){
+                    return <<<EOD
+                                <span class="badge bg-label-ditolak">$nama_barang</span>
+                            EOD;
+                }
             })
-            ->rawColumns(['nama_barang'])
+            ->addColumn('revisi_jumlah_barang', function($data){
+                if($data->revisi_jumlah_barang == "")
+                    return "-";
+                else
+                    return $data->revisi_jumlah_barang;
+            })
+            ->addColumn('persetujuan_barang', function($data){
+                $status = $data->statusItemPengajuan->status;
+                if($status == "Disetujui"){
+                    return <<<EOD
+                                <span class="badge bg-label-diterima">$status</span>
+                            EOD;
+                }elseif($status == "Ditolak"){
+                    return <<<EOD
+                                <span class="badge bg-label-ditolak">$status</span>
+                            EOD;
+                }
+            })
+            ->rawColumns(['nama_barang', 'persetujuan_barang'])
             ->addIndexColumn()
             ->make(true);
         };

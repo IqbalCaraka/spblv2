@@ -118,22 +118,57 @@
     
 </div>
 <!--Modal show laporan-pengajuan-->
-<div class="modal fade bd-example-modal-lg" id="laporan" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade" id="laporan" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="laporan-pengajuan-title">Detail Pengajuan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table id="detail-laporan-datatable" class="datatable row-border hover" style="width: 100%;" cellspacing="0">
-                    <thead style="text-align: center; width: 100%;">
-                        <tr>
-                            <th>Nama Barang</th>
-                            <th>Jumlah Pengajuan</th>
-                        </tr>
-                    </thead>
-                </table>
+                <!-- Feature Tabs -->
+                <div class="row keranjang-tabs" data-aos="fade-up">
+                    <!-- Tabs -->
+                    <ul class="nav nav-pills mb-3 d-flex justify-content-center">
+                        <li>
+                            <a class="nav-link active" data-bs-toggle="pill" href="#laporan-barang-tresedia">Laporan Barang Tersedia</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" data-bs-toggle="pill" href="#laporan-barang-tidak-tersedia">Laporan Barang Tidak Tersedia</a>
+                        </li>
+                    </ul><!-- End Tabs -->
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="laporan-barang-tresedia">
+                            <div class="table-responsive text-nowrap">
+                                <table id="detail-laporan-pengajuan-barang-tersedia-datatable" class="datatable row-border hover" style="width: 100%;" cellspacing="0">
+                                    <thead style="text-align: center; width: 100%;">
+                                        <tr>
+                                            <th>Nama Barang</th>
+                                            <th>Jumlah Pengajuan</th>
+                                            <th>Revisi Jumlah Pengajuan</th>
+                                            <th>Persetujuan Barang</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade show" id="laporan-barang-tidak-tersedia">
+                            <div class="table-responsive text-nowrap">
+                                <table id="detail-laporan-pengajuan-barang-tidak-tersedia-datatable" class="datatable row-border hover" style="width: 100%;" cellspacing="0">
+                                    <thead style="text-align: center; width: 100%;">
+                                        <tr>
+                                            <th>Nama Barang</th>
+                                            <th>Jumlah Pengajuan</th>
+                                            <th>Satuan</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </div>
@@ -151,7 +186,6 @@
     });
 
     $(document).ready(function () {
-        // $('#laporan-pengajuan').modal('show')
         $('a[data-bs-toggle="pill"]').on('shown.bs.tab', function (e) {
             $($.fn.dataTable.tables(true)).DataTable()
                 .columns.adjust();
@@ -294,11 +328,12 @@
         
     });
 
-    function detailLaporanPengajuan (event){
-        var id = $(event).data('id');
-        var URL = "{{route('laporan-pengajuan.show', 'id')}}";
-        var newURL = URL.replace('id', id);
-        $('#detail-laporan-datatable').DataTable({
+    function detailLaporanPengajuanBarangTersedia (event){
+        var id = $(event).attr('data-id');
+        var URL = "{{route('laporan-pengajuan.show', ':id')}}";
+        var newURL = URL.replace(':id', id);
+        detailLaporanPengajuanBarangTidakTersedia(id);
+        $('#detail-laporan-pengajuan-barang-tersedia-datatable').DataTable({
             processing: true,
             serverSide: true, 
             responsive: true,
@@ -315,6 +350,46 @@
                     data: 'jumlah_barang',
                     name: 'jumlah_barang'
                 },
+                {
+                    data: 'revisi_jumlah_barang',
+                    name: 'revisi_jumlah_barang'
+                },
+                {
+                    data: 'persetujuan_barang',
+                    name: 'persetujuan_barang'
+                },
+            ],
+                order: [
+                    [0, 'desc']
+            ]
+        });
+
+        
+    }
+    function detailLaporanPengajuanBarangTidakTersedia(id){
+        var URL = "{{route('laporan-barang-tidak-tersedia.show', ':id')}}";
+        var newURL = URL.replace(':id', id);
+        $('#detail-laporan-pengajuan-barang-tidak-tersedia-datatable').DataTable({
+            processing: true,
+            serverSide: true, 
+            responsive: true,
+            searching :false,
+            bDestroy: true,
+            ajax: {
+                url:newURL,
+                type: 'GET'
+            }, columns: [{
+                    data: 'nama_barang',
+                    name: 'nama_barang'
+                },
+                {
+                    data: 'jumlah_barang',
+                    name: 'jumlah_barang'
+                },
+                {
+                    data: 'satuan',
+                    name: 'satuan'
+                },
             ],
                 order: [
                     [0, 'desc']
@@ -322,11 +397,12 @@
         });
     }
 
+
     function batalTransaksi(event){
         var data = 6;
-        var data_id = $(event).data('id')
-        var URL = "{{route('transaksi.update', 'id')}}";
-        var newURL = URL.replace('id', data_id);
+        var id = $(event).attr('data-id')
+        var URL = "{{route('transaksi.update', ':id')}}";
+        var newURL = URL.replace(':id', id);
         swal({
             title: 'Apakah Anda yakin?',
             text: 'Membatalkan transaksi ini?',

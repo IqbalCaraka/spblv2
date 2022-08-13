@@ -15,6 +15,10 @@ class LaporanPengajuanBarangTidakTersedia extends Model
         return $this->belongsTo(Transaksi::class, 'transaksi_id');
     }
 
+    public function satuan(){
+        return $this->belongsTo(Satuan::class, 'satuan_id');
+    }
+
     public function statusItemPengajuan(){
         return $this->belongsTo(StatusItemPengajuan::class, 'status_item_pengajuan_id');
     }

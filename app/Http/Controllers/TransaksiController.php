@@ -64,7 +64,6 @@ class TransaksiController extends Controller
                     'jumlah_barang'=> $keranjang->jumlah_barang,
                     'status_item_pengajuan_id'=> '1'
                 ]);
-                // $keranjang = Keranjang::find($keranjang->id);
                 $keranjang->delete();
             }
         }
@@ -77,7 +76,6 @@ class TransaksiController extends Controller
                     'satuan_id'=> $keranjang_barang_tidak_tersedia->satuan_id,
                     'status_item_pengajuan_id'=> '1'
                 ]);
-                // $keranjang = Keranjang::find($keranjang->id);
                 $keranjang_barang_tidak_tersedia->delete();
             }
         }
