@@ -146,7 +146,7 @@
                                             <th>Nama Barang</th>
                                             <th>Jumlah Pengajuan</th>
                                             <th>Revisi Jumlah Pengajuan</th>
-                                            <th>Persetujuan Barang</th>
+                                            <th>Status</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -161,6 +161,7 @@
                                             <th>Nama Barang</th>
                                             <th>Jumlah Pengajuan</th>
                                             <th>Satuan</th>
+                                            <th>Status</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -355,8 +356,8 @@
                     name: 'revisi_jumlah_barang'
                 },
                 {
-                    data: 'persetujuan_barang',
-                    name: 'persetujuan_barang'
+                    data: 'status',
+                    name: 'status'
                 },
             ],
                 order: [
@@ -390,6 +391,10 @@
                     data: 'satuan',
                     name: 'satuan'
                 },
+                {
+                    data: 'status',
+                    name: 'status'
+                },
             ],
                 order: [
                     [0, 'desc']
@@ -399,7 +404,7 @@
 
 
     function batalTransaksi(event){
-        var data = 6;
+        var status = 6;
         var id = $(event).attr('data-id')
         var URL = "{{route('transaksi.update', ':id')}}";
         var newURL = URL.replace(':id', id);
@@ -415,7 +420,7 @@
                     url:newURL,
                     type:"PUT",
                     data:{
-                        data:data
+                        status:status
                     },
                     success: function($data){
                         $('#pengajuan-datatable').DataTable().ajax.reload();

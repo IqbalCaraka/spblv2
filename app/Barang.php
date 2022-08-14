@@ -16,6 +16,10 @@ class Barang extends Model
         return $this->belongsTo(Kategori::class,'kategori_id');
     }
 
+    public function satuan(){
+        return $this->belongsTo(Satuan::class,'satuan_id');
+    }
+
     public function keranjang(){
         return $this->hasMany(Keranjang::class);
     }
@@ -27,6 +31,7 @@ class Barang extends Model
     public function deleteImage(){
         Storage::delete($this->gambar);
     }
+    
     public function getAllBarang(){
         $barang = DB::table('barangs')->paginate(8);
         return $barang;

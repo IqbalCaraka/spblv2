@@ -38,15 +38,49 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table id="detail-laporan-datatable" class="datatable row-border hover" style="width: 100%;" cellspacing="0">
-                    <thead style="text-align: center; width: 100%;">
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Barang</th>
-                            <th>Jumlah Barang</th>
-                        </tr>
-                    </thead>
-                </table>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="nav-align-top">
+                            <ul class="nav nav-pills" role="tablist">
+                                <li class="nav-item">
+                                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#tersedia" aria-controls="tersedia" aria-selected="true">
+                                        Pengajuan Barang Tersedia
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#tidak-tersedia" aria-controls="tidak-tersedia" aria-selected="false">
+                                        Pengajuan Barang Tidak Tersedia
+                                    </button>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="tersedia" role="tabpanel">
+                                    <table id="detail-laporan-datatable" class="datatable row-border hover" style="width: 100%;" cellspacing="0">
+                                        <thead style="text-align: center; width: 100%;">
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Nama Barang</th>
+                                                <th>Jumlah Barang</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="tab-pane fade show" id="tidak-tersedia" role="tabpanel">
+                                    <table id="detail-laporan-tidak-tersedia-datatable" class="datatable row-border hover" style="width: 100%;" cellspacing="0">
+                                        <thead style="text-align: center; width: 100%;">
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Nama Barang</th>
+                                                <th>Jumlah Barang</th>
+                                                <th>Satuan</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer"> 
                 <button type="button" class="update-status btn btn-outline-danger" data-transaksi="" data-notransaksi="" data-update="4" onclick="updateTransaksi(event.target)"> Tolak </button>
@@ -111,6 +145,7 @@
         var newURL = URL.replace('id', transaksi_id);
         $('.update-status').attr("data-transaksi",transaksi_id);
         $('.update-status').attr("data-notransaksi",nomor_transaksi);
+        detailLaporanPengajuanTidakTersedia(transaksi_id); 
         $('#detail-laporan-datatable').DataTable({
             processing: true,
             serverSide: true, 
@@ -140,19 +175,55 @@
         });
     };
 
+    function detailLaporanPengajuanTidakTersedia (id){
+        var URL = "{{route('laporan-barang-tidak-tersedia.show', ':id')}}";
+        var newURL = URL.replace(':id', id);
+        $('#detail-laporan-tidak-tersedia-datatable').DataTable({
+            processing: true,
+            serverSide: true, 
+            responsive: true,
+            searching :false,
+            bDestroy: true,
+            ajax: {
+                url:newURL,
+                type: 'GET'
+            }, columns: [
+                { "data": null,"sortable": false, 
+                    render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                            }  
+                },{
+                    data: 'nama_barang',
+                    name: 'nama_barang'
+                },
+                {
+                    data: 'jumlah_barang',
+                    name: 'jumlah_barang'
+                },
+                {
+                    data: 'satuan',
+                    name: 'satuan'
+                },
+            ],
+                order: [
+                    [0, 'desc']
+            ]
+        });
+    };
+
     function updateTransaksi (event){
-        var data = $(event).attr('data-update')
+        var status = $(event).attr('data-update')
         var nomor_transaksi = $(event).attr('data-notransaksi')
         var transaksi_id = $(event).attr('data-transaksi')
         var URL = "{{route('transaksi.update', 'id')}}";
         var newURL = URL.replace('id', transaksi_id);
-        if(data == 2){
+        if(status == 2){
             var text = 'Yakin melakukan proses validasi pada transaksi ini?'
             var dangerMode = false;
             var icon = "info";
             var swall_success = "Transaksi berhasil divalidasi!"
             var error_title = "Gagal mevalidasi transaksi!"
-        }else if(data == 4){
+        }else if(status == 4){
             var text = 'Yakin melakukan penolakan pada transaksi ini?'
             var dangerMode = true;
             var icon = "warning";
@@ -171,7 +242,7 @@
                     url:newURL,
                     type:"PUT",
                     data:{
-                        data:data
+                        status:status
                     },
                     success: function($data){
                         $('.modal').modal('hide');
@@ -188,6 +259,6 @@
                 })
             };
         });
-    }
+    };
 </script>
 @endsection

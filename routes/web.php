@@ -24,19 +24,24 @@ Route::group(['middleware' => ['auth','superadmin']], function(){
     Route::resource('admin/kategori', 'KategoriController');
     Route::get('admin/get-jenis', 'KategoriController@getJenis')->name('get-jenis.index');
     Route::resource('admin/barang', 'BarangController',['except' => ['update']]);
+    Route::get('admin/get-barang', 'BarangController@getBarangPenyesuaian')->name('get-barang');
     Route::post('admin/barang-update', 'BarangController@update')->name('barang.update');
+    Route::get('admin/get-satuan', 'BarangController@getSatuan')->name('get-satuan');
     Route::get('admin/get-kategori', 'BarangController@getKategori')->name('get-kategori.index');
     Route::resource('admin/satuan', 'SatuanController');
     Route::resource('admin/to-do-list', 'ToDoListController');
     Route::resource('admin/proses-validasi', 'ProsesValidasiController');
+    Route::post('admin/sesuaikan-permintaan', 'ProsesValidasiController@sesuaikanPermintaan')->name('sesuaikan-permintaan');
     Route::resource('admin/semua-status', 'SemuaStatusController');
     Route::resource('admin/kebutuhan-permintaan', 'KebutuhanPermintaanController');
+    Route::get('admin/permintaan-tidak-tersedia', 'KebutuhanPermintaanController@tidakTersedia')->name(('permintaan-tidak-tersedia'));
     Route::resource('admin/riwayat-transaksi', 'RiwayatTransaksiController');
     Route::resource('admin/profil', 'ProfilController');
     Route::post('admin/profil-reset-password', 'ProfilController@resetPassword')->name('reset-password');
     Route::get('admin/get-jabatan', 'ProfilController@getJabatan')->name('get-jabatan');
     Route::get('admin/get-bidang', 'ProfilController@getBidang')->name('get-bidang');
     Route::get('admin/get-peran', 'ProfilController@getPeran')->name('get-peran');
+
 });
 Route::group(['middleware' => ['auth']], function(){
     //Pengguna

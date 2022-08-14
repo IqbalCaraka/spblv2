@@ -6,19 +6,16 @@
             <div class="col-md-12">
                 <div class="card h-100">
                     <div class="card-header mb-3 d-flex align-items-center justify-content-between pb-0">
-                        <h3 class="m-2 me-2">Daftar Riwayat Transaksi</h3>
+                        <h3 class="m-2 me-2">Daftar Kebutuhan Permintaan Barang Tidak Tersedia</h3>
                     </div>
                     <div class="card-body">
-                        <table id="riwayat-datatable" class="datatable row-border hover" style="width: 100%;" cellspacing="0">
+                        <table id="kebutuhanpermintaan-datatable" class="datatable row-border hover" style="width: 100%;" cellspacing="0">
                             <thead style="text-align: center; width: 100%;">
                                 <tr>
                                     <th>No</th>
-                                    <th>Nomor Transaksi</th>
-                                    <th>Pembuat Pengajuan</th>
-                                    <th>Pemroses</th>
-                                    <th>Status Telah Diproses</th>
-                                    <th>Tanggal Proses</th>
-                                    <th>Status Saat Ini</th>
+                                    <th>Nama Barang</th>
+                                    <th>Total Permintaan</th>
+                                    <th>Satuan</th>
                                 </tr>
                             </thead>
                         </table>
@@ -36,12 +33,12 @@
         }   
     });
 
-    $('#riwayat-datatable').DataTable({
+    $('#kebutuhanpermintaan-datatable').DataTable({
             processing: true,
             serverSide: true, 
             responsive: true,
             ajax: {
-                url: "{{ route('riwayat-transaksi.index') }}",
+                url: "{{ route('permintaan-tidak-tersedia') }}",
                 type: 'GET'
             }, columns: [
                 { "data": null,"sortable": false, 
@@ -50,30 +47,19 @@
                             }  
                 },
                 {
-                    data: 'nomor_transaksi',
-                    name: 'nomor_transaksi'
+                    data: 'nama_barang',
+                    name: 'nama_barang'
                 },
                 {
-                    data: 'pembuat_pengajuan',
-                    name: 'pembuat_pengajuan'
+                    data: 'jumlah_barang',
+                    name: 'jumlah_barang'
                 },
                 {
-                    data: 'pemroses',
-                    name: 'pemroses'
+                    data: 'satuan',
+                    name: 'satuan'
                 },
-                {
-                    data: 'status_telah_proses',
-                    name: 'status_telah_proses'
-                },
-                {
-                    data: 'waktu_proses',
-                    name: 'waktu_proses'
-                },
-                {
-                    data: 'status_saat_ini',
-                    name: 'status_saat_ini'
-                },
+                
             ]
-    });
+    }); 
 </script>
 @endsection

@@ -216,15 +216,35 @@ class LaporanPengajuanController extends Controller
             ->addColumn('nama_barang', function($data){
                 $nama_barang = $data->barang->nama_barang;
                 $status = $data->statusItemPengajuan->status;
-                if($status == "Disetujui"){
+                if($status == "Pengajuan"){
                     return <<<EOD
-                                <span class="badge bg-label-diterima">$nama_barang</span>
+                                <span class="badge bg-label-pengajuan">$nama_barang</span>
                             EOD;
                 }elseif($status == "Ditolak"){
                     return <<<EOD
                                 <span class="badge bg-label-ditolak">$nama_barang</span>
                             EOD;
                 }
+                elseif($status == "Disesuaikan"){
+                    return <<<EOD
+                                <span class="badge bg-label-diterima">$nama_barang</span>
+                            EOD;
+                }  
+                elseif($status == "Dibatalkan"){
+                    return <<<EOD
+                                <span class="badge bg-label-dibatalkan">$nama_barang</span>
+                            EOD;
+                }
+                elseif($status == "Proses Validasi"){
+                    return <<<EOD
+                                <span class="badge bg-label-validasi">$nama_barang</span>
+                            EOD;
+                }    
+                elseif($status == "Disetujui"){
+                    return <<<EOD
+                                <span class="badge bg-label-disetujui">$nama_barang</span>
+                            EOD;
+                }  
             })
             ->addColumn('revisi_jumlah_barang', function($data){
                 if($data->revisi_jumlah_barang == "")
@@ -232,19 +252,74 @@ class LaporanPengajuanController extends Controller
                 else
                     return $data->revisi_jumlah_barang;
             })
-            ->addColumn('persetujuan_barang', function($data){
+            ->addColumn('stok', function($data){
+                return $data->barang->stok;
+            })
+            ->addColumn('harga_satuan', function($data){
+                return $data->barang->harga_satuan;
+            })
+            ->addColumn('total_harga', function($data){
+                $total_harga = $data->barang->harga_satuan * $data->jumlah_barang;
+                return $total_harga;
+                
+            })
+            ->addColumn('status', function($data){
                 $status = $data->statusItemPengajuan->status;
-                if($status == "Disetujui"){
+                if($status == "Pengajuan"){
                     return <<<EOD
-                                <span class="badge bg-label-diterima">$status</span>
+                                <span class="badge bg-label-pengajuan">$status</span>
                             EOD;
                 }elseif($status == "Ditolak"){
                     return <<<EOD
                                 <span class="badge bg-label-ditolak">$status</span>
                             EOD;
                 }
+                elseif($status == "Disesuaikan"){
+                    return <<<EOD
+                                <span class="badge bg-label-diterima">$status</span>
+                            EOD;
+                }  
+                elseif($status == "Dibatalkan"){
+                    return <<<EOD
+                                <span class="badge bg-label-dibatalkan">$status</span>
+                            EOD;
+                }
+                elseif($status == "Proses Validasi"){
+                    return <<<EOD
+                                <span class="badge bg-label-validasi">$status</span>
+                            EOD;
+                }    
+                elseif($status == "Disetujui"){
+                    return <<<EOD
+                                <span class="badge bg-label-disetujui">$status</span>
+                            EOD;
+                }  
             })
-            ->rawColumns(['nama_barang', 'persetujuan_barang'])
+            ->addColumn('action', function($data){
+                if($data->status_item_pengajuan_id == 1){
+                    $a = '<a class="dropdown-item" href="javascript:void(0);" data-transaksi="'.$data->transaksi->id.'"data-laporan="'.$data->id.'" data-update="2" data-barang="'.$data->barang->nama_barang.'" onClick="updateStatusItemPengajuan(event.target)">Tolak Item Pengajuan</a>';
+                } else{
+                    $a = '<a class="dropdown-item" href="javascript:void(0);" data-transaksi="'.$data->transaksi->id.'"data-laporan="'.$data->id.'" data-update="1" data-barang="'.$data->barang->nama_barang.'" onClick="updateStatusItemPengajuan(event.target)">Setujui Item Pengajuan</a>';
+                }
+                return '
+                        <div class="dropdown" style="text-align: left;">
+                            <button class="btn btn-sm btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow" type="button" id="orederStatistics" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
+                                <a class="dropdown-item" href="javascript:void(0);" data-laporan="'.$data->id.'"data-transaksi="'.$data->transaksi->id.'" data-notransaksi="'.$data->transaksi->nomor_transaksi.'" data-bs-toggle="modal" data-bs-target="#revisiPengajuan" onClick="revisiItemPengajuan(event.target)" data-jumlahbarang="'.$data->jumlah_barang.'" data-stok="'.$data->barang->stok.'">Revisi Item Pengajuan</a>
+                                '.$a.'
+                            </div>
+                        </div>
+                        ';
+            })
+            ->rawColumns(['nama_barang',
+                           'revisi_jumlah_barang',
+                           'stok',
+                           'harga_satuan',
+                           'total_harga',
+                           'status',
+                           'action' ])
             ->addIndexColumn()
             ->make(true);
         };

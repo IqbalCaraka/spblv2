@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Transaksi;
 use App\LaporanPengajuan;
+use App\LaporanPengajuanBarangTidakTersedia;
 use App\RevisiLaporanPengajuan;
 use Illuminate\Support\Facades\Validator;
 
@@ -57,7 +58,8 @@ class ProsesValidasiController extends Controller
             ->make(true);
         };
         $title = 'Proses Validasi';
-        return view('prosesvalidasi.index')->with('title', $title);
+        $task=$transaksi->count(); 
+        return view('prosesvalidasi.index')->with('title', $title)->with('task', $task);
     }
 
     /**
@@ -105,6 +107,45 @@ class ProsesValidasiController extends Controller
 
     }
 
+    public function sesuaikanPermintaan(Request $request){
+        
+        $rules =[
+            'barang_id'=>'required',
+            'jumlah_barang'=>'required',
+        ];
+
+        $text =[
+            'barang_id.required' => 'Mohon data barang yang akan disesuaikan pada persediaan!',
+            'jumlah_barang.required' => 'Mohon kolom jumlah barang!',
+        ];
+
+        $validasi = Validator::make($request->all(),$rules,$text);
+
+        if($validasi->fails()){
+            return response()->json(['success'=>0,'text' => $validasi->errors()->first()],422);
+        }
+
+        $laporanPengajuan = LaporanPengajuan::where('transaksi_id', $request->transaksi_id)
+                                            ->where('barang_id', $request->barang_id)
+                                            ->first();
+        if($laporanPengajuan == ""){
+            $laporanPengajuan =  LaporanPengajuan::create([
+                     'transaksi_id'=> $request->transaksi_id,
+                     'barang_id'=> $request->barang_id,
+                     'jumlah_barang'=> $request->jumlah_barang,
+                     'status_item_pengajuan_id'=> '1',
+                 ]);
+        }else{
+            $laporanPengajuan->jumlah_barang = $laporanPengajuan->jumlah_barang + $request->jumlah_barang;
+            $laporanPengajuan->save();
+        }
+        LaporanPengajuanBarangTidakTersedia::where('id', $request->id)
+                                            ->update([
+                                                'laporan_pengajuan_id' => $laporanPengajuan->id,
+                                                'status_item_pengajuan_id' => '6'
+                                            ]);
+     }
+
     /**
      * Display the specified resource.
      *
@@ -113,69 +154,69 @@ class ProsesValidasiController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $laporanPengajuan = LaporanPengajuan::where('transaksi_id','=',$id)->get();
-        if($request->ajax()){
-            return datatables()->of($laporanPengajuan)
-            ->addColumn('nama_barang', function($data){
-                if($data->status_item_pengajuan_id == 1){
-                    return '<span class="badge bg-label-disetujui">'.$data->barang->nama_barang.'</span>';
-                }else{
-                    return '<span class="badge bg-label-ditolak">'.$data->barang->nama_barang.'</span>';
-                }
-            })
-            ->addColumn('revisi_jumlah_barang', function($data){
-                if($data->revisi_jumlah_barang == ""){
-                    return '-';
-                }else{
-                    return $data->revisi_jumlah_barang;
-                }
-            })
-            ->addColumn('stok', function($data){
-                return $data->barang->stok;
-            })
-            ->addColumn('harga_satuan', function($data){
-                return $data->barang->harga_satuan;
-            })
-            ->addColumn('total_harga', function($data){
-                $total_harga = $data->barang->harga_satuan * $data->jumlah_barang;
-                return $total_harga;
+        // $laporanPengajuan = LaporanPengajuan::where('transaksi_id','=',$id)->get();
+        // if($request->ajax()){
+        //     return datatables()->of($laporanPengajuan)
+        //     ->addColumn('nama_barang', function($data){
+        //         if($data->status_item_pengajuan_id == 1){
+        //             return '<span class="badge bg-label-disetujui">'.$data->barang->nama_barang.'</span>';
+        //         }else{
+        //             return '<span class="badge bg-label-ditolak">'.$data->barang->nama_barang.'</span>';
+        //         }
+        //     })
+        //     ->addColumn('revisi_jumlah_barang', function($data){
+        //         if($data->revisi_jumlah_barang == ""){
+        //             return '-';
+        //         }else{
+        //             return $data->revisi_jumlah_barang;
+        //         }
+        //     })
+        //     ->addColumn('stok', function($data){
+        //         return $data->barang->stok;
+        //     })
+        //     ->addColumn('harga_satuan', function($data){
+        //         return $data->barang->harga_satuan;
+        //     })
+        //     ->addColumn('total_harga', function($data){
+        //         $total_harga = $data->barang->harga_satuan * $data->jumlah_barang;
+        //         return $total_harga;
                 
-            })
-            ->addColumn('persetujuan', function($data){
-                if($data->status_item_pengajuan_id == 1){
-                    return '<span class="badge bg-label-disetujui">'.$data->statusItemPengajuan->status.'</span>';
-                }else{
-                    return '<span class="badge bg-label-ditolak">'.$data->statusItemPengajuan->status.'</span>';
-                }
-            })
-            ->addColumn('action', function($data){
-                if($data->status_item_pengajuan_id == 1){
-                    $a = '<a class="dropdown-item" href="javascript:void(0);" data-transaksi="'.$data->transaksi->id.'"data-laporan="'.$data->id.'" data-update="2" data-barang="'.$data->barang->nama_barang.'" onClick="updateStatusItemPengajuan(event.target)">Tolak Item Pengajuan</a>';
-                } else{
-                    $a = '<a class="dropdown-item" href="javascript:void(0);" data-transaksi="'.$data->transaksi->id.'"data-laporan="'.$data->id.'" data-update="1" data-barang="'.$data->barang->nama_barang.'" onClick="updateStatusItemPengajuan(event.target)">Setujui Item Pengajuan</a>';
-                }
-                return '
-                        <div class="dropdown" style="text-align: left;">
-                            <button class="btn btn-sm btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow" type="button" id="orederStatistics" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
-                                <a class="dropdown-item" href="javascript:void(0);" data-laporan="'.$data->id.'"data-transaksi="'.$data->transaksi->id.'" data-notransaksi="'.$data->transaksi->nomor_transaksi.'" data-bs-toggle="modal" data-bs-target="#revisiPengajuan" onClick="revisiItemPengajuan(event.target)" data-jumlahbarang="'.$data->jumlah_barang.'" data-stok="'.$data->barang->stok.'">Revisi Item Pengajuan</a>
-                                '.$a.'
-                            </div>
-                        </div>
-                        ';
-            })
-            ->rawColumns(['nama_barang',
-                           'revisi_jumlah_barang',
-                           'stok',
-                           'harga_satuan',
-                           'total_harga',
-                           'persetujuan',
-                           'action' ])
-            ->addIndexColumn()
-            ->make(true);
-        };
+        //     })
+        //     ->addColumn('persetujuan', function($data){
+        //         if($data->status_item_pengajuan_id == 1){
+        //             return '<span class="badge bg-label-disetujui">'.$data->statusItemPengajuan->status.'</span>';
+        //         }else{
+        //             return '<span class="badge bg-label-ditolak">'.$data->statusItemPengajuan->status.'</span>';
+        //         }
+        //     })
+        //     ->addColumn('action', function($data){
+        //         if($data->status_item_pengajuan_id == 1){
+        //             $a = '<a class="dropdown-item" href="javascript:void(0);" data-transaksi="'.$data->transaksi->id.'"data-laporan="'.$data->id.'" data-update="2" data-barang="'.$data->barang->nama_barang.'" onClick="updateStatusItemPengajuan(event.target)">Tolak Item Pengajuan</a>';
+        //         } else{
+        //             $a = '<a class="dropdown-item" href="javascript:void(0);" data-transaksi="'.$data->transaksi->id.'"data-laporan="'.$data->id.'" data-update="1" data-barang="'.$data->barang->nama_barang.'" onClick="updateStatusItemPengajuan(event.target)">Setujui Item Pengajuan</a>';
+        //         }
+        //         return '
+        //                 <div class="dropdown" style="text-align: left;">
+        //                     <button class="btn btn-sm btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow" type="button" id="orederStatistics" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        //                             <i class="bx bx-dots-vertical-rounded"></i>
+        //                     </button>
+        //                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
+        //                         <a class="dropdown-item" href="javascript:void(0);" data-laporan="'.$data->id.'"data-transaksi="'.$data->transaksi->id.'" data-notransaksi="'.$data->transaksi->nomor_transaksi.'" data-bs-toggle="modal" data-bs-target="#revisiPengajuan" onClick="revisiItemPengajuan(event.target)" data-jumlahbarang="'.$data->jumlah_barang.'" data-stok="'.$data->barang->stok.'">Revisi Item Pengajuan</a>
+        //                         '.$a.'
+        //                     </div>
+        //                 </div>
+        //                 ';
+        //     })
+        //     ->rawColumns(['nama_barang',
+        //                    'revisi_jumlah_barang',
+        //                    'stok',
+        //                    'harga_satuan',
+        //                    'total_harga',
+        //                    'persetujuan',
+        //                    'action' ])
+        //     ->addIndexColumn()
+        //     ->make(true);
+        // };
     }
 
     /**

@@ -62,7 +62,8 @@ class ToDoListController extends Controller
             ->make(true);
         };
         $title='To Do List';
-        return view('todolist.index')->with('title', $title);
+        $task=$transaksis->count(); 
+        return view('todolist.index')->with('title', $title)->with('task', $task);
     }
 
     /**

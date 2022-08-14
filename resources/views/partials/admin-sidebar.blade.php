@@ -28,8 +28,8 @@
                             {{( $title === 'Barang')? 'open': ''}}
                             {{( $title === 'Satuan')? 'open': ''}}">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-dock-top"></i>
-        <div data-i18n="Account Settings">Pendataan Barang</div>
+            <i class="menu-icon tf-icons bx bx-dock-top"></i>
+            <div data-i18n="Account Settings">Pendataan Barang</div>
         </a>
         <ul class="menu-sub">
             <li class="menu-item {{( $title === 'Jenis')? 'active': ''}}">
@@ -68,6 +68,7 @@
         <a href="{{route('to-do-list.index')}}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-task"></i>
             <div data-i18n="Basic">To Do List</div>
+            <!-- <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger">{{($task)}}</span> -->
         </a>
     </li>
 
@@ -88,11 +89,24 @@
     </li>
 
     <!-- Kebutuhan Permintaan -->
-    <li class="menu-item {{( $title === 'Kebutuhan Permintaan')? 'active': ''}}">
-        <a href="{{route('kebutuhan-permintaan.index')}}" class="menu-link">
-            <i class="menu-icon tf-icons bx bx-package"></i>
-            <div data-i18n="Basic">Kebutuhan Permintaan</div>
+    <li class="menu-item {{( $title === 'Kebutuhan Permintaan')? 'open': ''}}
+                            {{( $title === 'Permintaan Tidak Tersedia')? 'open': ''}}">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx bx-package"></i>
+            <div data-i18n="Account Settings">Pendataan Barang</div>
         </a>
+        <ul class="menu-sub">
+            <li class="menu-item {{( $title === 'Kebutuhan Permintaan')? 'active': ''}}">
+                <a href="{{route('kebutuhan-permintaan.index')}}" class="menu-link">
+                    <div data-i18n="Account">Permintaan Tersedia</div>
+                </a>
+            </li>
+            <li class="menu-item {{( $title === 'Permintaan Tidak Tersedia')? 'active': ''}}">
+                <a href="{{route ('permintaan-tidak-tersedia')}}" class="menu-link">
+                    <div data-i18n="Account">Permintaan Tidak Tersedia</div>
+                </a>
+            </li>
+        </ul>
     </li>
 
 

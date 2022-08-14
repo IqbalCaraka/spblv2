@@ -62,7 +62,7 @@ class TransaksiController extends Controller
                     'transaksi_id'=> $transaksi->id,
                     'barang_id'=> $keranjang->barang_id,
                     'jumlah_barang'=> $keranjang->jumlah_barang,
-                    'status_item_pengajuan_id'=> '1'
+                    'status_item_pengajuan_id'=> '3'
                 ]);
                 $keranjang->delete();
             }
@@ -74,7 +74,7 @@ class TransaksiController extends Controller
                     'nama_barang'=> $keranjang_barang_tidak_tersedia->nama_barang,
                     'jumlah_barang'=> $keranjang_barang_tidak_tersedia->jumlah_barang,
                     'satuan_id'=> $keranjang_barang_tidak_tersedia->satuan_id,
-                    'status_item_pengajuan_id'=> '1'
+                    'status_item_pengajuan_id'=> '3'
                 ]);
                 $keranjang_barang_tidak_tersedia->delete();
             }
@@ -114,8 +114,11 @@ class TransaksiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($request->data == 3){
+        if($request->status == 3){
             $laporanPengajuan = LaporanPengajuan::with(['barang'])->where('transaksi_id','=',$id)->get();
+            LaporanPengajuanBarangTidakTersedia::where('transaksi_id','=',$id)
+                                                ->where('status_item_pengajuan_id', '!=', '6' )
+                                                ->update(['status_item_pengajuan_id'=>'2']);
             foreach ($laporanPengajuan as $item){
                 if($item->status_item_pengajuan_id == "1"){
                     if($item->revisi_jumlah_barang == ""){
@@ -123,7 +126,6 @@ class TransaksiController extends Controller
                     }else{
                         $jumlah_barang_terkonfirmasi = $item->revisi_jumlah_barang;
                     }
-
                     //Jika jumlah pengajuan barang kurang dari stok maka item pengajuan disetujui
                     if($jumlah_barang_terkonfirmasi <= $item->barang->stok){
                         Barang::where('id','=', $item->barang_id)->update(['stok'=>\DB::raw('stok-'.$jumlah_barang_terkonfirmasi)]);
@@ -135,11 +137,24 @@ class TransaksiController extends Controller
                 }
             }
         }
-        Transaksi::where('id', '=', $id)->update(['status_id'=> $request->data]);
+        Transaksi::where('id', '=', $id)->update(['status_id'=> $request->status]);
+        
+        if($request->status == '2'){
+            LaporanPengajuan::where('transaksi_id', '=', $id)->update(['status_item_pengajuan_id'=> '1']);
+            LaporanPengajuanBarangTidakTersedia::where('transaksi_id', '=', $id)->update(['status_item_pengajuan_id'=> '4']);    
+        }elseif($request->status == '4'){
+            LaporanPengajuan::where('transaksi_id', '=', $id)->update(['status_item_pengajuan_id'=> '2']);
+            LaporanPengajuanBarangTidakTersedia::where('transaksi_id', '=', $id)->update(['status_item_pengajuan_id'=> '2']);
+        }
+        elseif($request->status == '6') {
+            LaporanPengajuan::where('transaksi_id', '=', $id)->update(['status_item_pengajuan_id'=> '5']);
+            LaporanPengajuanBarangTidakTersedia::where('transaksi_id', '=', $id)->update(['status_item_pengajuan_id'=> '5']);
+        }
+        
         RiwayatTransaksi::create([
             'transaksi_id'=> $id,
             'user_id'=> Auth::user()->id,
-            'status_id'=>$request->data,
+            'status_id'=>$request->status,
         ]);
     }
 

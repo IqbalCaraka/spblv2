@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Barang;
 use App\LaporanPengajuan;
+use App\LaporanPengajuanBarangTidakTersedia;
 use App\Transaksi;
 use Illuminate\Http\Request;
 
@@ -48,6 +49,21 @@ class KebutuhanPermintaanController extends Controller
         }
         $title ='Kebutuhan Permintaan';
         return view('kebutuhanpermintaan.index')->with('title', $title);
+    }
+
+    public function tidakTersedia(Request $request){
+        $laporan_pengajuan = LaporanPengajuanBarangTidakTersedia::all();
+        if($request->ajax()){
+            return datatables()->of($laporan_pengajuan)
+        ->addColumn('satuan', function($data){
+            return $data->satuan->nama_satuan;
+        })
+        ->rawColumns(['satuan'])
+        ->addIndexColumn()
+        ->make(true);
+        }
+        $title ='Permintaan Tidak Tersedia';
+        return view('kebutuhanpermintaan.permintaantidaktersedia')->with('title', $title);
     }
 
     /**

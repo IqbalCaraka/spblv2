@@ -3,44 +3,47 @@
 <div class="content-wrapper" >
     <div class="container-xxl flex-grow-1 container-p-y" >
         <div class="row">
-            <div class="card h-100">
-                <div class="card-header mb-3 d-flex align-items-center justify-content-between pb-0">
-                    <h3 class="m-2 me-2">List Barang</h3>
-                    <div class="demo-inline-spacing">
-                        <div class="btn" role="">
-                            <a href="javascript:void(0);" >
-                                <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" title="<i class='bx bx-bell bx-xs' ></i> <span>Download file excel</span>">
-                                    <i class="tf-icons bx bxs-spreadsheet">  </i>
-                                </button>
-                            </a> 
-                            <a href="javascript:void(0);" target="_blank">
-                                <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" title="<i class='bx bx-bell bx-xs' ></i> <span>Download file PDF</span>">
-                                <i class="tf-icons bx bxs-file-pdf"></i>
-                                </button>
-                            </a>
+            <div class="col-md-12">
+                <div class="card h-100">
+                    <div class="card-header mb-3 d-flex align-items-center justify-content-between pb-0">
+                        <h3 class="m-2 me-2">List Barang</h3>
+                        <div class="demo-inline-spacing">
+                            <div class="btn" role="">
+                                <a href="javascript:void(0);" >
+                                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" title="<i class='bx bx-bell bx-xs' ></i> <span>Download file excel</span>">
+                                        <i class="tf-icons bx bxs-spreadsheet">  </i>
+                                    </button>
+                                </a> 
+                                <a href="javascript:void(0);" target="_blank">
+                                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" title="<i class='bx bx-bell bx-xs' ></i> <span>Download file PDF</span>">
+                                    <i class="tf-icons bx bxs-file-pdf"></i>
+                                    </button>
+                                </a>
+                            </div>
+                            
+                            <button type="button" class="btn rounded-pill btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambah">
+                                <span class="tf-icons bx bx-plus-circle"></span>&nbsp; Tambah Barang
+                            </button>                            
+                            
+                            
                         </div>
-                        
-                        <button type="button" class="btn rounded-pill btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambah">
-                            <span class="tf-icons bx bx-plus-circle"></span>&nbsp; Tambah Barang
-                        </button>                            
-                        
-                        
                     </div>
-                </div>
-                <div class="card-body">
-                    <table id="datatable" class="cell-border compact hover" style="width: 100%; text-align: left;" cellspacing="0">
-                        <thead style="text-align: center;">
-                            <tr>
-                                <th>Gambar</th>
-                                <th>Nomor Barang</th>
-                                <th>Nama Barang</th>
-                                <th>Stok</th>
-                                <th>Kategori</th>
-                                <th>Harga Satuan</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                    </table>
+                    <div class="card-body">
+                        <table id="datatable" class="cell-border compact hover" style="width: 100%; text-align: left;" cellspacing="0">
+                            <thead style="text-align: center;">
+                                <tr>
+                                    <th>Gambar</th>
+                                    <th>Nomor Barang</th>
+                                    <th>Nama Barang</th>
+                                    <th>Stok</th>
+                                    <th>Satuan</th>
+                                    <th>Kategori</th>
+                                    <th>Harga Satuan</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -76,8 +79,15 @@
                     </div>
                     <div class="row">
                         <div class="col mb-3">
+                            <label for="satuan_id" class="form-label" >Satuan</label>
+                            <select name="satuan_id" id="satuan_id" style="width: 100% ;" class="js-example-basic-single-satuan select2 form-control" name="states">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
                             <label for="kategori_id" class="form-label" >Kategori</label>
-                            <select name="kategori_id" id="kategori_id" style="width: 100% ;" class="js-example-basic-single select2 form-control" name="states">
+                            <select name="kategori_id" id="kategori_id" style="width: 100% ;" class="js-example-basic-single-kategori select2 form-control" name="states">
                             </select>
                         </div>
                     </div>
@@ -139,8 +149,15 @@
                     </div>
                     <div class="row">
                         <div class="col mb-3">
+                            <label for="satuan_id_edit" class="form-label" >Satuan</label>
+                            <select name="satuan_id" id="satuan_id_edit" style="width: 100% ;" class="js-example-basic-single-satuan-edit select2 form-control" name="states">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
                             <label for="kategori_id_edit" class="form-label" >Kategori</label>
-                            <select name="kategori_id" id="kategori_id_edit" style="width: 100% ;" class="js-example-basic-single-edit select2 form-control" name="states">
+                            <select name="kategori_id" id="kategori_id_edit" style="width: 100% ;" class="js-example-basic-single-kategori-edit select2 form-control" name="states">
                             </select>
                         </div>
                     </div>
@@ -207,6 +224,10 @@
             name: 'stok'
             },
             {
+            data: 'satuan',
+            name: 'satuan'
+            },
+            {
             data: 'kategori',
             name: 'kategori'
             },
@@ -227,7 +248,28 @@
     //select
     $(document).ready(function() {
         //select untuk create
-        $('.js-example-basic-single').select2({
+        $('.js-example-basic-single-satuan').select2({
+            placeholder: 'Pilih Kategori...',
+            dropdownParent: $('#modalTambah'),
+            allowClear: true,
+            ajax:{
+                url: "{{route('get-satuan')}}",
+                dataType: 'json',
+                delay: 250,
+                dropdownCssClass: "bigdrop",
+                processResults: function (data) {
+                    return {
+                        results:  $.map(data, function (item) {
+                            return {
+                                text: item.nama_satuan,
+                                id: item.id
+                            }   
+                        })
+                    };
+                }
+            }
+        })
+        $('.js-example-basic-single-kategori').select2({
             placeholder: 'Pilih Kategori...',
             dropdownParent: $('#modalTambah'),
             allowClear: true,
@@ -249,7 +291,29 @@
             }
         })
         //select untuk edit
-        $('.js-example-basic-single-edit').select2({
+        $('.js-example-basic-single-satuan-edit').select2({
+            placeholder: 'Pilih Kategori...',
+            dropdownParent: $('#modalEdit'),
+            allowClear: true,
+            ajax:{
+                url: "{{route('get-satuan')}}",
+                dataType: 'json',
+                delay: 250,
+                dropdownCssClass: "bigdrop",
+                processResults: function (data) {
+                    return {
+                        results:  $.map(data, function (item) {
+                            return {
+                                text: item.nama_satuan,
+                                id: item.id
+                            }   
+                        })
+                    };
+                }
+            }
+        })
+
+        $('.js-example-basic-single-kategori-edit').select2({
             dropdownParent: $('#modalEdit'),
             ajax:{
                 url: "{{route('get-kategori.index')}}",
@@ -273,7 +337,6 @@
     $(document).on('submit', '#form-tambah', function (e) { 
         e.preventDefault();
         var formData = new FormData($('#form-tambah')[0])
-        // console.log(formData);
         $.ajax({
             type:"POST",
             url:"{{route('barang.store')}}",
@@ -313,6 +376,7 @@
                     $('#nomor_barang_edit').val(barang.nomor_barang);
                     $('#nama_barang_edit').val(barang.nama_barang);
                     $('#stok_edit').val(barang.stok);
+                    $("#satuan_id_edit").html('<option value = "'+barang.satuan.id+'" selected >'+barang.satuan.nama_satuan+'</option>');
                     $("#kategori_id_edit").html('<option value = "'+barang.kategori.id+'" selected >'+barang.kategori.nama+'</option>');
                     $('#harga_satuan_edit').val(barang.harga_satuan);
                     $("#gambar-edit").attr("src", gambar);
@@ -326,7 +390,6 @@
         e.preventDefault();
         var url = "{{route('barang.update')}}";
         var formData = new FormData($('#form-edit')[0]);
-        console.log(formData);
         $.ajax({
             type:"POST",
             url:url,

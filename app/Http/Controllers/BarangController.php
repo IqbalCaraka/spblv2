@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Barang;
 use App\Kategori;
+use App\Satuan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -28,6 +29,9 @@ class BarangController extends Controller
                 }
                 return '<img src="'.$url.'" border="0" width="40" height="40">';
             })
+            ->addColumn('satuan', function($data){
+                return $data->satuan->nama_satuan;
+            })
             ->addColumn('kategori', function($data){
                 return $data->kategori->nama;
             })
@@ -44,7 +48,7 @@ class BarangController extends Controller
                        </div>
                        EOD;     
            })
-           ->rawColumns(['gambar','kategori','action'])
+           ->rawColumns(['gambar','satuan','kategori','action'])
            ->addIndexColumn()
            ->make(true);
        }
@@ -106,6 +110,7 @@ class BarangController extends Controller
             'stok' => $request->stok,
             'harga_satuan' => $request->harga_satuan,
             'kategori_id' => $request->kategori_id,
+            'satuan_id' => $request->satuan_id,
             'gambar' => $gambar,
         ]);
     }
@@ -118,7 +123,8 @@ class BarangController extends Controller
      */
     public function show($id)
     {
-        //
+        $barang = Barang::find($id)->load('kategori')->load('satuan');
+        return response()->json($barang);
     }
 
     /**
@@ -129,7 +135,7 @@ class BarangController extends Controller
      */
     public function edit($id)
     {
-        $barang = Barang::find($id)->load('kategori');
+        $barang = Barang::find($id)->load('kategori')->load('satuan');
         return response()->json($barang);
     }
 
@@ -143,7 +149,7 @@ class BarangController extends Controller
 
     public function update(Request $request){
         $barang = Barang::find($request->id);
-        $data = $request->only(['nomor_barang','nama_barang','kategori_id','stok','harga_satuan']);        
+        $data = $request->only(['nomor_barang','nama_barang','satuan_id','kategori_id','stok','harga_satuan']);        
         $gambar ='';
         if(! is_null ($request->gambar)){
             $gambar = $request->gambar->store('barangs');
@@ -167,6 +173,21 @@ class BarangController extends Controller
         return response()->json();
     }
 
+    public function getSatuan(Request $request){
+        $data = [];
+
+        if($request->has('q')){
+            $search = $request->q;
+            $data =Satuan::select("id","nama_satuan")
+            		->where('nama_satuan','LIKE',"%$search%")
+            		->get();
+        }else{
+            $data = Satuan::all();
+        }
+        return response()->json($data);
+
+    }
+
     public function getKategori(Request $request){
         $data = [];
 
@@ -180,5 +201,19 @@ class BarangController extends Controller
         }
         return response()->json($data);
 
+    }
+
+    public function getBarangPenyesuaian(Request $request){
+        $data = [];
+
+        if($request->has('q')){
+            $search = $request->q;
+            $data =Barang::select("id","nama_barang")
+            		->where('nama_barang','LIKE',"%$search%")
+            		->get();
+        }else{
+            $data = Barang::all();
+        }
+        return response()->json($data);
     }
 }

@@ -1181,7 +1181,12 @@ section {
 
 .bg-label-diterima {
   background-color: #e3ffd5 !important;
-  color: #6acc35 !important;
+  color: #49cc02 !important;
+}
+
+.bg-label-disetujui {
+  background-color: #e8fadf !important;
+  color: #13aa7d !important;
 }
 
 .bg-label-dibatalkan {
