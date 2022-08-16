@@ -79,7 +79,7 @@ class BarangController extends Controller
             'nama_barang'=>'required|unique:barangs',
             'stok'=>'required',
             'kategori_id'=>'required',
-            'harga_satuan'=>'required',
+            // 'harga_total'=>'required',
             'gambar'=>'image'
         ];
 
@@ -90,7 +90,7 @@ class BarangController extends Controller
             'nama_barang.unique' => 'Nama Barang telah terdata sebelumnya!',
             'stok.required' => 'Mohon isi kolom Stok!',
             'kategori_id.required' => 'Mohon isi kolom Kategori!',
-            'harga_satuan.required' => 'Mohon isi kolom Harga Satuan!',
+            // 'harga_total.required' => 'Mohon isi kolom Harga Total!',
             'gambar.image' => 'Data yang di upload haruslah berupa file gambar!',
 
         ];
@@ -108,7 +108,7 @@ class BarangController extends Controller
             'nomor_barang' => $request->nomor_barang,
             'nama_barang' => $request->nama_barang,
             'stok' => $request->stok,
-            'harga_satuan' => $request->harga_satuan,
+            // 'harga_total' => "",
             'kategori_id' => $request->kategori_id,
             'satuan_id' => $request->satuan_id,
             'gambar' => $gambar,
@@ -149,7 +149,7 @@ class BarangController extends Controller
 
     public function update(Request $request){
         $barang = Barang::find($request->id);
-        $data = $request->only(['nomor_barang','nama_barang','satuan_id','kategori_id','stok','harga_satuan']);        
+        $data = $request->only(['nomor_barang','nama_barang','satuan_id','kategori_id','stok']);//,'harga_total']);        
         $gambar ='';
         if(! is_null ($request->gambar)){
             $gambar = $request->gambar->store('barangs');

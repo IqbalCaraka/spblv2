@@ -6,7 +6,7 @@
             <div class="col-md-12">
                 <div class="card h-100">
                     <div class="card-header mb-3 d-flex align-items-center justify-content-between pb-0">
-                        <h3 class="m-2 me-2">Daftar Transaksi Seluruh Status</h3>
+                        <h3 class="m-2 me-2">Daftar Transaksi Sedang Proses Dokumen</h3>
                     </div>
                     <div class="card-body">
                         <table id="pengajuan-datatable" class="datatable row-border hover" style="width: 100%;" cellspacing="0">
@@ -15,10 +15,11 @@
                                     <th>No</th>
                                     <th>Nomor Transaksi</th>
                                     <th>Pembuat Pengajuan</th>
+                                    <th>Bidang</th>
                                     <th>Jumlah Item Barang</th>
                                     <th>Total Barang</th>
                                     <th>Tanggal Pengajuan</th>
-                                    <th>Status</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                         </table>
@@ -111,7 +112,7 @@
             serverSide: true, 
             responsive: true,
             ajax: {
-                url: "{{ route('semua-status.index') }}",
+                url: "{{ route('proses-dokumen.index') }}",
                 type: 'GET'
             }, columns: [
                 { "data": null,"sortable": false, 
@@ -128,6 +129,10 @@
                     name: 'pembuat_pengajuan'
                 },
                 {
+                    data: 'bidang',
+                    name: 'bidang'
+                },
+                {
                     data: 'jumlah_barang',
                     name: 'jumlah_barang'
                 },
@@ -140,11 +145,15 @@
                     name: 'tanggal_pengajuan'
                 },
                 {
-                    data: 'status',
-                    name: 'status'
+                    data: 'action',
+                    name: 'action'
                 },
             ]
     });
+
+    function lihatDokumen(){
+        
+    }
 
     function detailLaporanPengajuan (event){
         var transaksi_id = $(event).attr('data-transaksi')

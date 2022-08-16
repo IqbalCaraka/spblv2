@@ -47,6 +47,13 @@ class LaporanPengajuanController extends Controller
                     return <<<EOD
                                 <span class="badge bg-label-ditolak">$status</span>
                             EOD;
+                            
+                }
+                elseif($status == "Proses Dokumen"){
+                    return <<<EOD
+                                <span class="badge bg-label-dokumen">$status</span>
+                            EOD;
+                            
                 }elseif($status == "Dibatalkan"){
                     return <<<EOD
                                 <span class="badge bg-label-dibatalkan">$status</span>
@@ -255,14 +262,14 @@ class LaporanPengajuanController extends Controller
             ->addColumn('stok', function($data){
                 return $data->barang->stok;
             })
-            ->addColumn('harga_satuan', function($data){
-                return $data->barang->harga_satuan;
-            })
-            ->addColumn('total_harga', function($data){
-                $total_harga = $data->barang->harga_satuan * $data->jumlah_barang;
-                return $total_harga;
+            // ->addColumn('harga_satuan', function($data){
+            //     return $data->barang->harga_satuan;
+            // })
+            // ->addColumn('total_harga', function($data){
+            //     $total_harga = $data->barang->harga_satuan * $data->jumlah_barang;
+            //     return $total_harga;
                 
-            })
+            // })
             ->addColumn('status', function($data){
                 $status = $data->statusItemPengajuan->status;
                 if($status == "Pengajuan"){
@@ -316,8 +323,8 @@ class LaporanPengajuanController extends Controller
             ->rawColumns(['nama_barang',
                            'revisi_jumlah_barang',
                            'stok',
-                           'harga_satuan',
-                           'total_harga',
+                        //    'harga_satuan',
+                        //    'total_harga',
                            'status',
                            'action' ])
             ->addIndexColumn()

@@ -68,7 +68,7 @@
         <a href="{{route('to-do-list.index')}}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-task"></i>
             <div data-i18n="Basic">To Do List</div>
-            <!-- <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger">{{($task)}}</span> -->
+            <!-- <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger"></span> -->
         </a>
     </li>
 
@@ -77,6 +77,14 @@
         <a href="{{route('proses-validasi.index')}}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-cube-alt"></i>
             <div data-i18n="Basic">Proses Validasi</div>
+        </a>
+    </li>
+
+    <!-- Proses Dokumen -->
+    <li class="menu-item {{( $title === 'Proses Dokumen')? 'active': ''}}">
+        <a href="{{route('proses-dokumen.index')}}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-file-blank"></i>
+            <div data-i18n="Basic">Proses Dokumen</div>
         </a>
     </li>
     

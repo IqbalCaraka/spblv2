@@ -38,7 +38,7 @@
                                     <th>Stok</th>
                                     <th>Satuan</th>
                                     <th>Kategori</th>
-                                    <th>Harga Satuan</th>
+                                    <!-- <th>Harga Total</th> -->
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -91,16 +91,15 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col mb-3">
-                            <label for="harga_satuan" class="form-label">Harga Satuan</label>
+                            <label for="harga_total" class="form-label">Harga Total</label>
                             <div class="input-group">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="number" id="harga_satuan" name="harga_satuan" class="form-control"/>
-                                <span class="input-group-text">,00</span>
+                                <input type="number" step=any id="harga_total" name="harga_total" class="form-control"/>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="row">
                         <div class="col mb-3">
                             <label for="gambar" class="form-label">Gambar</label>
@@ -161,16 +160,16 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col mb-3">
-                            <label for="harga_satuan" class="form-label">Harga Satuan</label>
+                            <label for="harga_total" class="form-label">Harga Total</label>
                             <div class="input-group">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="number" id="harga_satuan_edit" name="harga_satuan" class="form-control"/>
+                                <input type="number" id="harga_total_edit" name="harga_total" class="form-control"/>
                                 <span class="input-group-text">,00</span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="row position-relative">
                         <div class="col mb-3">
                             <label for="gambar" class="form-label">Gambar</label>
@@ -231,10 +230,10 @@
             data: 'kategori',
             name: 'kategori'
             },
-            {
-            data: 'harga_satuan',
-            name: 'harga_satuan'
-            },
+            // {
+            // data: 'harga_total',
+            // name: 'harga_total'
+            // },
             {
             data: 'action',
             name: 'action'
@@ -249,7 +248,7 @@
     $(document).ready(function() {
         //select untuk create
         $('.js-example-basic-single-satuan').select2({
-            placeholder: 'Pilih Kategori...',
+            placeholder: 'Pilih Satuan...',
             dropdownParent: $('#modalTambah'),
             allowClear: true,
             ajax:{
@@ -292,7 +291,7 @@
         })
         //select untuk edit
         $('.js-example-basic-single-satuan-edit').select2({
-            placeholder: 'Pilih Kategori...',
+            placeholder: 'Pilih Satuan...',
             dropdownParent: $('#modalEdit'),
             allowClear: true,
             ajax:{
@@ -378,7 +377,7 @@
                     $('#stok_edit').val(barang.stok);
                     $("#satuan_id_edit").html('<option value = "'+barang.satuan.id+'" selected >'+barang.satuan.nama_satuan+'</option>');
                     $("#kategori_id_edit").html('<option value = "'+barang.kategori.id+'" selected >'+barang.kategori.nama+'</option>');
-                    $('#harga_satuan_edit').val(barang.harga_satuan);
+                    // $('#harga_total_edit').val(barang.harga_total);
                     $("#gambar-edit").attr("src", gambar);
                 }
             }

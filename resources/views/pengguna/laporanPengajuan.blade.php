@@ -19,7 +19,10 @@
                                         <a class="nav-link" data-bs-toggle="pill" href="#validasi">Proses Validasi</a>
                                     </li>
                                     <li>
-                                        <a class="nav-link" data-bs-toggle="pill" href="#selesai">Diterima</a>
+                                        <a class="nav-link" data-bs-toggle="pill" href="#dokumen">Proses Dokumen</a>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link" data-bs-toggle="pill" href="#selesai">Selesai</a>
                                     </li>
                                     <li>
                                         <a class="nav-link" data-bs-toggle="pill" href="#ditolak">Ditolak</a>
@@ -59,9 +62,9 @@
                                             </table>
                                         </div>
                                     </div><!-- End Tab valdasi Content -->
-                                    <div class="tab-pane fade show" id="selesai">
+                                    <div class="tab-pane fade show" id="dokumen">
                                         <div class="table-responsive text-nowrap">
-                                            <table id="selesai-datatable" class="datatable row-border hover" style="width: 100%;" cellspacing="0">
+                                            <table id="dokumen-datatable" class="datatable row-border hover" style="width: 100%;" cellspacing="0">
                                                 <thead style="text-align: center; width: 100%;">
                                                     <tr>
                                                         <th>Nomor Transaksi</th>
@@ -70,7 +73,12 @@
                                                 </thead>
                                             </table>
                                         </div>
-                                    </div><!-- End Tab selesai Content -->
+                                    </div><!-- End Tab dokumen Content -->
+                                    <div class="tab-pane fade show" id="selesai">
+                                        <div class="table-responsive text-nowrap">
+                                            Proses Selesai
+                                        </div>
+                                    </div><!-- End Tab dokumen Content -->
                                     <div class="tab-pane fade show" id="ditolak">
                                         <div class="table-responsive text-nowrap">
                                             <table id="ditolak-datatable" class="datatable row-border hover" style="width: 100%;" cellspacing="0">
@@ -238,7 +246,7 @@
             ]
         });
     
-        $('#selesai-datatable').DataTable({
+        $('#dokumen-datatable').DataTable({
             processing: true,
             serverSide: true, 
             responsive: true,

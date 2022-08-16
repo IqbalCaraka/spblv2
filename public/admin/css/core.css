@@ -16662,6 +16662,11 @@ html:not(.layout-footer-fixed) .content-wrapper {
   color: #ebeef0 !important;
 }
 
+.bg-label-dokumen {
+  background-color: #b2a1ff !important;
+  color: #70ff70 !important;
+}
+
 .bg-label-diterima {
   background-color: #e8fadf !important;
   color: #71dd37 !important;

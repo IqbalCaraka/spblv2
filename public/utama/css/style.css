@@ -1179,6 +1179,11 @@ section {
   color: #ebeef0 !important;
 }
 
+.bg-label-dokumen {
+  background-color: #d3d3d3 !important;
+  color: #00c400 !important;
+}
+
 .bg-label-diterima {
   background-color: #e3ffd5 !important;
   color: #49cc02 !important;

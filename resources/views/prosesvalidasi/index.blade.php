@@ -63,8 +63,8 @@
                                             <th>Jumlah Pengajuan Barang</th>
                                             <th>Revisi Jumlah Pengajuan Barang</th>
                                             <th>Jumlah Stok</th>
-                                            <th>Harga Satuan</th>
-                                            <th>Total Harga Diajukan</th>
+                                            <!-- <th>Harga Satuan</th>
+                                            <th>Total Harga Diajukan</th> -->
                                             <th>Persetujuan Barang</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -287,14 +287,14 @@
                     data: 'stok',
                     name: 'stok'
                 },
-                {
-                    data: 'harga_satuan',
-                    name: 'harga_satuan'
-                },
-                {
-                    data: 'total_harga',
-                    name: 'total_harga'
-                },
+                // {
+                //     data: 'harga_satuan',
+                //     name: 'harga_satuan'
+                // },
+                // {
+                //     data: 'total_harga',
+                //     name: 'total_harga'
+                // },
                 {
                     data: 'status',
                     name: 'status'
