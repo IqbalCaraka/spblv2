@@ -53,5 +53,9 @@ class User extends Authenticatable
     public function peran(){
         return $this->belongsTo(Peran::class,'peran_id');
     }
+
+    public function administratorUser(){
+        return $this->belongsTo(Jabatan::class,'jabatan_id');
+    }
     
 }

@@ -31,7 +31,6 @@
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="{{asset('admin/css/perfect-scrollbar.css')}}" />
-
     <link rel="stylesheet" href="{{asset('admin/css/apex-charts.css')}}" />
 
     <!-- Helpers -->

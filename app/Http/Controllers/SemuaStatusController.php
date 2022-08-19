@@ -43,9 +43,9 @@ class SemuaStatusController extends Controller
                 return <<<EOD
                             <span class="badge bg-label-pengajuan">$status</span>
                         EOD;
-            }elseif($status == "Proses Validasi"){
+            }elseif($status == "Proses Dokumen"){
                 return <<<EOD
-                            <span class="badge bg-label-validasi">$status</span>
+                            <span class="badge bg-label-dokumen">$status</span>
                         EOD;
             }elseif($status == "Diterima"){
                     return <<<EOD

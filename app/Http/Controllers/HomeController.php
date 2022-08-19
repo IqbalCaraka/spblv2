@@ -26,4 +26,5 @@ class HomeController extends Controller
         $title='Dashboard';
         return view('home')->with('title', $title);
     }
+
 }

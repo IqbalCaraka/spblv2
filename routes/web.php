@@ -33,6 +33,8 @@ Route::group(['middleware' => ['auth','superadmin']], function(){
     Route::resource('admin/proses-validasi', 'ProsesValidasiController');
     Route::post('admin/sesuaikan-permintaan', 'ProsesValidasiController@sesuaikanPermintaan')->name('sesuaikan-permintaan');
     Route::resource('admin/proses-dokumen', 'ProsesDokumenController');
+    // Route::get('laporan-pdf','ProsesDokumenController@generatePDF')->name('laporanpdf');
+    Route::get('get-dokumen/{id}','ProsesDokumenController@getDokumen')->name('get-dokumen');
     Route::resource('admin/semua-status', 'SemuaStatusController');
     Route::resource('admin/kebutuhan-permintaan', 'KebutuhanPermintaanController');
     Route::get('admin/permintaan-tidak-tersedia', 'KebutuhanPermintaanController@tidakTersedia')->name(('permintaan-tidak-tersedia'));
@@ -60,6 +62,4 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('laporan-pengajuan-ditolak', 'LaporanPengajuanController@getDitolak')->name('laporan-pengajuan.ditolak');
     Route::get('laporan-pengajuan-dibatalkan', 'LaporanPengajuanController@getDibatalkan')->name('laporan-pengajuan.dibatalkan');
     Route::resource('setting', 'SettingController');
-
-    // Route::get ('/menu/search', 'MenuController@search');
 });

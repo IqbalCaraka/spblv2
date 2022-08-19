@@ -36,9 +36,9 @@ class RiwayatTransaksiController extends Controller
                     return <<<EOD
                                 <span class="badge bg-label-validasi">$status</span>
                             EOD;
-                }elseif($status == "Diterima"){
+                }elseif($status == "Proses Dokumen"){
                         return <<<EOD
-                                    <span class="badge bg-label-diterima">$status</span>
+                                    <span class="badge bg-label-dokumen">$status</span>
                                 EOD;
                 }elseif($status == "Ditolak"){
                     return <<<EOD
@@ -63,9 +63,9 @@ class RiwayatTransaksiController extends Controller
                     return <<<EOD
                                 <span class="badge bg-label-validasi">$status</span>
                             EOD;
-                }elseif($status == "Diterima"){
+                }elseif($status == "Proses Dokumen"){
                         return <<<EOD
-                                    <span class="badge bg-label-diterima">$status</span>
+                                    <span class="badge bg-label-dokumen">$status</span>
                                 EOD;
                 }elseif($status == "Ditolak"){
                     return <<<EOD

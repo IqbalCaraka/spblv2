@@ -31,69 +31,77 @@
 </div>
 
 
-<!--Modal show laporan-pengajuan-->
-<div class="modal fade" id="exLargeModal" tabindex="-1" role="dialog" aria-hidden="true">
+<!--Modal show aksi-->
+<div class="modal fade" id="modalAksi" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="laporan-pengajuan-title">Detail Pengajuan</h5>
+                <h5 class="modal-title" id="laporan-pengajuan-title">Status Dokumen</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            <div class="row">
-                <div class="col-12">
-                    <div class="nav-align-top">
-                        <ul class="nav nav-pills" role="tablist">
-                            <li class="nav-item">
-                                <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#tersedia" aria-controls="tersedia" aria-selected="true">
-                                    Pengajuan Barang Tersedia
-                                </button>
-                            </li>
-                            <li class="nav-item">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#tidak-tersedia" aria-controls="tidak-tersedia" aria-selected="false">
-                                    Pengajuan Barang Tidak Tersedia
-                                </button>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane fade show active" id="tersedia" role="tabpanel">
-                                <table id="detail-laporan-datatable" class="datatable row-border hover" style="width: 100%;" cellspacing="0">
-                                    <thead style="text-align: center; width: 100%;">
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nama Barang</th>
-                                            <th>Jumlah Pengajuan Barang</th>
-                                            <th>Revisi Jumlah Pengajuan Barang</th>
-                                            <th>Jumlah Stok</th>
-                                            <!-- <th>Harga Satuan</th>
-                                            <th>Total Harga Diajukan</th> -->
-                                            <th>Persetujuan Barang</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                            <div class="tab-pane fade show" id="tidak-tersedia" role="tabpanel">
-                                <table id="detail-laporan-tidak-tersedia-datatable" class="datatable row-border hover" style="width: 100%;" cellspacing="0">
-                                    <thead style="text-align: center; width: 100%;">
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nama Barang</th>
-                                            <th>Jumlah Barang</th>
-                                            <th>Satuan</th>
-                                            <th>Status Barang</th>
-                                            <th>Disesuaikan Dengan</th>
-                                            <th>Jumlah Disesuaikan</th>
-                                        </tr>
-                                    </thead>
-                                </table>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card-body">
+                                <div class="hori-timeline" dir="ltr">
+                                    <ul class="list-inline events">
+                                        <li class="list-inline-item event-list">
+                                            <div class="px-4">                                           
+                                                <h5 class="font-size-16">Kasubag Umum</h5>
+                                                <p class="text-muted" id="nama_kasubag_umum"></p>
+                                                <div class="check_kasub_umum mb-3">
+                                                </div> 
+                                                <div>
+                                                    <a href="#" class="btn btn-primary btn-sm">Tanda Tangan</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-inline-item event-list">
+                                            <div class="px-4">
+                                                <h5 class="font-size-16" id="jabatan_administrator"></h5>
+                                                <p class="text-muted" id="nama_administrator"></p>
+                                                <div class="check_administrator mb-3">
+                                                </div>
+                                                <div>
+                                                    <a href="#" class="btn btn-primary btn-sm">Tanda Tangan</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-inline-item event-list">
+                                            <div class="px-4">
+                                                <h5 class="font-size-16">Yang Menerima</h5>
+                                                <p class="text-muted" id="nama_penerima"></p>
+                                                <div class="check_penerima mb-3">
+                                                </div>
+                                                <div>
+                                                    <a href="#" class="btn btn-primary btn-sm">Tanda Tangan</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-inline-item event-list">
+                                            <div class="px-4">
+                                                <h5 class="font-size-16">Yang Menyerahkan</h5>
+                                                <p class="text-muted" id="nama_penyerah">{{Auth::user()->name}}</p>
+                                                <div class="check_penyerah mb-3">
+                                                </div>
+                                                <div>
+                                                    <a href="#" class="btn btn-primary btn-sm">Tanda Tangan</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </div> 
             </div>
             <div class="modal-footer"> 
                 <button type="button" class="update-status btn btn-outline-danger" data-transaksi="" data-notransaksi="" data-bs-dismiss="modal"> Kembali </button>
+                <a href="" id="unduhDokumen" target=”_blank”>
+                    <button type="button" class="update-status btn btn-outline-primary"> Lihat Dokumen </button>
+                </a>
             </div>
         </div>
     </div>
@@ -151,8 +159,74 @@
             ]
     });
 
-    function lihatDokumen(){
-        
+    function lihatDokumen(event){
+        var id = $(event).attr('data-transaksi');
+        var URL = "{{route('proses-dokumen.show', ':id')}}";
+        var newURL = URL.replace(':id', id);
+        $('#unduhDokumen').attr("href", newURL);
+        $('#unduhDokumen').attr("data-id", id);
+
+        var urlGetDokumen = "{{route('get-dokumen',':id')}}";
+        var newUrlGetDokumen= urlGetDokumen.replace(':id', id)
+        // alert(newUrlGetDokumen)
+        $.ajax({
+            url: newUrlGetDokumen,
+            method:"GET",
+            dataType: 'json',
+            success:function(dokumenPenyerahan){
+                $('#nama_kasubag_umum').html(dokumenPenyerahan.kasubumum_user.name);
+                $('#nama_administrator').html(dokumenPenyerahan.administrator_user.name);
+                $('#nama_penerima').html(dokumenPenyerahan.penerima_user.name);
+                $('#jabatan_administrator').html(dokumenPenyerahan.administrator_user.jabatan.jabatan)
+                if(dokumenPenyerahan.ttd_kasub_umum =="0"){
+                    $('.check_kasub_umum').html(
+                        `<i class="event-date text-danger bx bx-md bx-x-circle"></i>`
+                    )
+                }else{
+                    $('.check_kasub_umum').html(
+                       ` <i class="event-date text-success bx bx-md bx-check-circle"></i>`
+                    )
+                }
+
+                if(dokumenPenyerahan.ttd_administrator =="0"){
+                    $('.check_administrator').html(
+                        `<i class="event-date text-danger bx bx-md bx-x-circle"></i>`
+                    )
+                }else{
+                    $('.check_administrator').html(
+                       ` <i class="event-date text-success bx bx-md bx-check-circle"></i>`
+                    )
+                }
+
+                if(dokumenPenyerahan.ttd_penerima =="0"){
+                    $('.check_penerima').html(
+                        `<i class="event-date text-danger bx bx-md bx-x-circle"></i>`
+                    )
+                }else{
+                    $('.check_penerima').html(
+                       ` <i class="event-date text-success bx bx-md bx-check-circle"></i>`
+                    )
+                }
+
+                if(dokumenPenyerahan.ttd_penyerah =="0"){
+                    $('.check_penyerah').html(
+                        `<i class="event-date text-danger bx bx-md bx-x-circle"></i>`
+                    )
+                }else{
+                    $('.check_penyerah').html(
+                       ` <i class="event-date text-success bx bx-md bx-check-circle"></i>`
+                    )
+                }
+                // <i class="bx bx-md bx-x-circle" style="color: #ff3e1d;"></i>
+                console.log(dokumenPenyerahan.kasubumum_user.name)
+                console.log(dokumenPenyerahan.administrator_user.jabatan.jabatan)
+                console.log(dokumenPenyerahan.penerima_user.name)
+                // if(dokumenPenyerahan.kasubagUmumUser=="0"){
+                //     alert('kosong')
+                // }
+            }
+        })
+
     }
 
     function detailLaporanPengajuan (event){
@@ -261,5 +335,6 @@
             ]
         });
     };
+    
 </script>
 @endsection
