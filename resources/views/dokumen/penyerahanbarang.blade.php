@@ -16,8 +16,8 @@
 <body>
 	
 	<div class="header">
-		<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/storage/garuda.png'))) }}" alt="" style="width: 80px; height: 80px">
-		<!-- <img src="{{asset('storage/addtochart.jpg')}}" class="" alt=""> -->
+		<!-- <img src="{{asset('storage/garuda.jpg')}}" class="" alt=""> -->
+		<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/storage/garuda.png'))) }}" alt="" style="width: 90px; height: 90px">
 		<h1>BADAN KEPEGAWAIAN NEGARA</h1>
 		<h1>KANTOR REGIONAL VIII</h1>
 		<p class="m-0 p-0">
@@ -46,7 +46,7 @@
 		<div class="line3">
 			<div class="justify-start">
 				<p class="konten">No. Agenda</p>
-				<p>: {{$no_agenda}}</p>
+				<p>: {{$dokumenPenyerahan->no_agenda}}</p>
 			</div>
 			<div class="justify-end">
 				<p class="konten">No. Revisi</p>
@@ -110,7 +110,7 @@
 					</td>
 
 					<td width="25%">
-						{{strtoupper($administrator->jabatan->jabatan)}}
+						{{strtoupper($dokumenPenyerahan->administratorUser->jabatan->jabatan)}}
 					</td>
 					<td width="25%">
 						YANG MENERIMA
@@ -121,44 +121,68 @@
 				</tr>
 				<tr>
 					<td>
-						TTD
+						@if(isset($dokumenPenyerahan->ttdKasubUmum->ttdUser))
+						<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/storage/'.$dokumenPenyerahan->ttdKasubUmum->ttdUser->ttd))) }}" alt="" style="width: 150px; height: 150px;">
+						@else
+						XXXXXXX
+						@endif
 					</td>
 					<td>
-						TTD
+						@if(isset($dokumenPenyerahan->ttdAdministrator->ttdUser))
+						<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/storage/'.$dokumenPenyerahan->ttdAdministrator->ttdUser->ttd))) }}" alt="" style="width: 150px; height: 150px">
+						@else
+						XXXXXXX
+						@endif
 					</td>
 					<td>
-						TTD
+						@if(isset($dokumenPenyerahan->ttdPenerima->ttdUser))
+						<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/storage/'.$dokumenPenyerahan->ttdPenerima->ttdUser->ttd))) }}" alt="" style="width: 150px; height: 150px">
+						@else
+						XXXXXXX
+						@endif
 					</td>
 					<td>
-						TTD
+						@if(isset($dokumenPenyerahan->ttdPenyerah->ttdUser))
+						<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/storage/'.$dokumenPenyerahan->ttdPenyerah->ttdUser->ttd))) }}" alt="" style="width: 150px; height: 150px">
+						@else
+						XXXXXXX
+						@endif
 					</td>
 				</tr>
 				<tr>
 					<td>
-					{{strtoupper ($kasubumum->name)}}
+					{{strtoupper ($dokumenPenyerahan->kasubumumUser->name)}}
 					</td>
 					<td>
-					{{strtoupper($administrator->name)}}
+					{{strtoupper($dokumenPenyerahan->administratorUser->name)}}
 					</td>
 					<td>
-					{{strtoupper($penerima->name)}}
+					{{strtoupper($dokumenPenyerahan->penerimaUser->name)}}
 					</td>
 					<td>
-					{{strtoupper($penyerah->name)}}
+					@if($dokumenPenyerahan->penyerahUser =="")
+					-
+					@else
+					{{strtoupper($dokumenPenyerahan->penyerahUser->name)}}
+					@endif
 					</td>
 				</tr>
 				<tr>
 					<td>
-					NIP. {{$kasubumum->nip}}	
+					NIP. {{$dokumenPenyerahan->kasubumumUser->nip}}	
 					</td>
 					<td>
-					NIP. {{$administrator->nip}}	
+					NIP. {{$dokumenPenyerahan->administratorUser->nip}}	
 					</td>
 					<td>
-					NIP. {{$penerima->nip}}
+					NIP. {{$dokumenPenyerahan->penerimaUser->nip}}
 					</td>
 					<td>
-					NIP. {{$penyerah->nip}}
+					@if($dokumenPenyerahan->penyerahUser == "")
+					-
+					@else
+					{{strtoupper($dokumenPenyerahan->penyerahUser->nip)}}
+					@endif
 					</td>
 				</tr>
 			</tbody>

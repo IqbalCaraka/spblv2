@@ -2,10 +2,13 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
+use App\DokumenPenyerahan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\Auth\Guard;
 
-class SuperAdmin
+use Closure;
+
+class TandaTangan
 {
     /**
      * Handle an incoming request.
@@ -14,12 +17,15 @@ class SuperAdmin
      * @param  \Closure  $next
      * @return mixed
      */
+
+
     public function handle($request, Closure $next)
     {
-        if(Auth::user() && (Auth::user()->peran_id=='1' || Auth::user()->peran_id == '2')){
+        $url = $request->path();
+        $id = substr($url, -1);
+        if(Auth::user()->id == $id ){
             return $next($request);
         }
-
-        return redirect('menu')->with('error', 'Kamu tidak memiliki akses Admin!');
+        return redirect('denied')->with('error', 'Kamu tidak memiliki akses Admin!');
     }
 }

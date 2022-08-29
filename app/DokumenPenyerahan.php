@@ -23,4 +23,24 @@ class DokumenPenyerahan extends Model
     public function penerimaUser(){
         return $this->belongsTo(User::class,'penerima');
     }
+
+    public function penyerahUser(){
+        return $this->belongsTo(User::class,'penyerah');
+    }
+
+    public function ttdKasubUmum(){
+        return $this->belongsTo(User::class, 'ttd_kasub_umum');
+    }
+
+    public function ttdAdministrator(){
+        return $this->belongsTo(User::class, 'ttd_administrator');
+    }
+
+    public function ttdPenerima(){
+        return $this->belongsTo(User::class, 'ttd_penerima');
+    }
+
+    public function ttdPenyerah(){
+        return $this->belongsTo(User::class, 'ttd_penyerah');
+    }
 }

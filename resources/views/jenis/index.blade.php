@@ -171,7 +171,7 @@
 
     //Untuk mendapatkan data yang diedit
     function editJenis(event){
-        data_id = $(event).data('id');        
+        data_id = $(event).attr('data-id');        
         var URL = "{{route('jenis.edit', 'id')}}";
         var newURL = URL.replace('id', data_id);
         $.ajax({

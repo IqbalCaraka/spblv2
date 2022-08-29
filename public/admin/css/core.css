@@ -16663,13 +16663,13 @@ html:not(.layout-footer-fixed) .content-wrapper {
 }
 
 .bg-label-dokumen {
-  background-color: #b2a1ff !important;
-  color: #70ff70 !important;
+  background-color: #f0ff99 !important;
+  color: #009e00 !important;
 }
 
-.bg-label-diterima {
-  background-color: #e8fadf !important;
-  color: #71dd37 !important;
+.bg-label-selesai {
+  background-color: #e3ffd5 !important;
+  color: #49cc02 !important;
 }
 
 .bg-label-dibatalkan {

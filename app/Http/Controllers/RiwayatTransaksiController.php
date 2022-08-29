@@ -32,13 +32,19 @@ class RiwayatTransaksiController extends Controller
                     return <<<EOD
                                 <span class="badge bg-label-pengajuan">$status</span>
                             EOD;
-                }elseif($status == "Proses Validasi"){
+                }
+                elseif($status == "Proses Validasi"){
                     return <<<EOD
                                 <span class="badge bg-label-validasi">$status</span>
                             EOD;
-                }elseif($status == "Proses Dokumen"){
+                }
+                elseif($status == "Proses Dokumen"){
+                    return <<<EOD
+                                <span class="badge bg-label-dokumen">$status</span>
+                            EOD;
+                }elseif($status == "Selesai"){
                         return <<<EOD
-                                    <span class="badge bg-label-dokumen">$status</span>
+                                    <span class="badge bg-label-selesai">$status</span>
                                 EOD;
                 }elseif($status == "Ditolak"){
                     return <<<EOD
@@ -48,7 +54,7 @@ class RiwayatTransaksiController extends Controller
                     return <<<EOD
                                 <span class="badge bg-label-dibatalkan">$status</span>
                             EOD;
-                }; 
+                };      
             })
             ->addColumn('waktu_proses', function($data){
                 return $data->created_at->format('d-m-Y H:i:s');
@@ -59,13 +65,19 @@ class RiwayatTransaksiController extends Controller
                     return <<<EOD
                                 <span class="badge bg-label-pengajuan">$status</span>
                             EOD;
-                }elseif($status == "Proses Validasi"){
+                }
+                elseif($status == "Proses Validasi"){
                     return <<<EOD
                                 <span class="badge bg-label-validasi">$status</span>
                             EOD;
-                }elseif($status == "Proses Dokumen"){
+                }
+                elseif($status == "Proses Dokumen"){
+                    return <<<EOD
+                                <span class="badge bg-label-dokumen">$status</span>
+                            EOD;
+                }elseif($status == "Selesai"){
                         return <<<EOD
-                                    <span class="badge bg-label-dokumen">$status</span>
+                                    <span class="badge bg-label-selesai">$status</span>
                                 EOD;
                 }elseif($status == "Ditolak"){
                     return <<<EOD
@@ -75,7 +87,7 @@ class RiwayatTransaksiController extends Controller
                     return <<<EOD
                                 <span class="badge bg-label-dibatalkan">$status</span>
                             EOD;
-                };       
+                };        
             })
             ->rawColumns(['nomor_transaksi',
                         'pembuat_pengajuan',

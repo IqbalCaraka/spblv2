@@ -27,6 +27,9 @@ class SemuaStatusController extends Controller
         ->addColumn('pembuat_pengajuan', function($data){
             return $data->user->name;
         })
+        ->addColumn('bidang', function($data){
+            return $data->user->bidang->bidang;
+        })
         ->addColumn('jumlah_barang', function($data){
             return $data->laporanPengajuan->count();
         })
@@ -43,13 +46,19 @@ class SemuaStatusController extends Controller
                 return <<<EOD
                             <span class="badge bg-label-pengajuan">$status</span>
                         EOD;
-            }elseif($status == "Proses Dokumen"){
+            }
+            elseif($status == "Proses Validasi"){
+                return <<<EOD
+                            <span class="badge bg-label-validasi">$status</span>
+                        EOD;
+            }
+            elseif($status == "Proses Dokumen"){
                 return <<<EOD
                             <span class="badge bg-label-dokumen">$status</span>
                         EOD;
-            }elseif($status == "Diterima"){
+            }elseif($status == "Selesai"){
                     return <<<EOD
-                                <span class="badge bg-label-diterima">$status</span>
+                                <span class="badge bg-label-selesai">$status</span>
                             EOD;
             }elseif($status == "Ditolak"){
                 return <<<EOD
@@ -63,6 +72,7 @@ class SemuaStatusController extends Controller
         })
         ->rawColumns(['nomor_transaksi',
                 'pembuat_pengajuan',
+                'bidang',
                 'jumlah_barang',
                 'total_barang',
                 'tanggal_pengajuan',

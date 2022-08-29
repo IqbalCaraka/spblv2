@@ -57,5 +57,9 @@ class User extends Authenticatable
     public function administratorUser(){
         return $this->belongsTo(Jabatan::class,'jabatan_id');
     }
+
+    public function ttdUser(){
+        return $this->hasOne(TandaTangan::class,'user_id');
+    }
     
 }

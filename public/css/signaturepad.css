@@ -1,0 +1,12 @@
+/* mengatur ukuran canvas tanda tangan  */
+canvas {
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    width: 100%;
+    max-width: 300px;
+    height: 150px;
+    display: block;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+}

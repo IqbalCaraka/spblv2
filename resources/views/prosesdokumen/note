@@ -1,0 +1,18 @@
+        var urlQRCode = "{{route('generate-qrcode',[':id',':peran',':user'])}}";
+        var newUrlQRCode= urlQRCode.replace(':id', id);
+        var newUrlQRCode= newUrlQRCode.replace(':user', user_id);
+        var newUrlQRCode= newUrlQRCode.replace(':peran', peran);
+        
+        $.ajax({
+            url:newUrlQRCode,
+            method:"GET",
+            dataType: 'json',
+            success:function(qrCode){
+                $('.url_halaman_tanda_tangan').html(qrCode);
+            }
+        })
+        $('#kembali_lihat_dokumen').attr('data-transaksi',id);
+
+
+
+        jQuery('.url_halaman_tanda_tangan').qrcode("halo")

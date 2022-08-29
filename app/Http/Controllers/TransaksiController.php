@@ -120,38 +120,15 @@ class TransaksiController extends Controller
     public function update(Request $request, $id)
     {
         //ketika status proses dokumen
-        if($request->status == 3){
-            // $laporanPengajuan = LaporanPengajuan::with(['barang'])->where('transaksi_id','=',$id)->get();
-            // LaporanPengajuanBarangTidakTersedia::where('transaksi_id','=',$id)
-            //                                     ->where('status_item_pengajuan_id', '!=', '6' )
-            //                                     ->update(['status_item_pengajuan_id'=>'2']);
-            // foreach ($laporanPengajuan as $item){
-            //     if($item->status_item_pengajuan_id == "1"){
-            //         if($item->revisi_jumlah_barang == ""){
-            //             $jumlah_barang_terkonfirmasi = $item->jumlah_barang;
-            //         }else{
-            //             $jumlah_barang_terkonfirmasi = $item->revisi_jumlah_barang;
-            //         }
-            //         //Jika jumlah pengajuan barang kurang dari stok maka item pengajuan disetujui
-            //         if($jumlah_barang_terkonfirmasi <= $item->barang->stok){
-            //             Barang::where('id','=', $item->barang_id)->update(['stok'=>\DB::raw('stok-'.$jumlah_barang_terkonfirmasi)]);
-            //         //Jika jumlah pengajuan barang lebih dari stok maka item pengajuan ditolak
-            //         }else{
-            //             $item->status_item_pengajuan_id = "2";
-            //             $item->save();
-            //         }
-            //     }
-            // }
-
+        if($request->status == 3){           
+            //Pembuatan Dokumen Penyerahan
             $transaksi = Transaksi::where('id', $id)->first();
             $penerima = User::where('id', $transaksi->user_id)->first();
             $bidang = Bidang::where('id', $penerima->bidang_id)->first();
             $kasub_umum = Jabatan::where('jabatan', 'like', '%Kepala Sub Bagian Umum%')->first();
             $administrator = Jabatan::where('jabatan', 'like', '%Kepala '.$bidang->bidang.'%')->first();
             
-
             $dokumenPenyerahan = DokumenPenyerahan::all()->last();
-            // return response()->json( now()->format('Y'));
             if($dokumenPenyerahan == ""){
                 $nomor = '1';
             }
@@ -164,6 +141,7 @@ class TransaksiController extends Controller
             }
             $bulan = $this->convertBulanToRomawi($transaksi->created_at->format('m'));
             $no_agenda = $nomor.'/TU/PER/'.$bulan.'/'.$transaksi->created_at->format('Y');
+            
             DokumenPenyerahan::create([
                 'no_agenda' => $no_agenda,
                 'kasub_umum' => $kasub_umum->user[0]->id,
@@ -176,6 +154,28 @@ class TransaksiController extends Controller
                 'tgl_pengajuan' => $transaksi->created_at,
                 'transaksi_id'=>$transaksi->id
             ]);
+        } elseif($request->status == 5){
+            $laporanPengajuan = LaporanPengajuan::with(['barang'])->where('transaksi_id','=',$id)->get();
+            LaporanPengajuanBarangTidakTersedia::where('transaksi_id','=',$id)
+                                                ->where('status_item_pengajuan_id', '!=', '6' )
+                                                ->update(['status_item_pengajuan_id'=>'2']);
+            foreach ($laporanPengajuan as $item){
+                if($item->status_item_pengajuan_id == "1"){
+                    if($item->revisi_jumlah_barang == ""){
+                        $jumlah_barang_terkonfirmasi = $item->jumlah_barang;
+                    }else{
+                        $jumlah_barang_terkonfirmasi = $item->revisi_jumlah_barang;
+                    }
+                    //Jika jumlah pengajuan barang kurang dari stok maka item pengajuan disetujui
+                    if($jumlah_barang_terkonfirmasi <= $item->barang->stok){
+                        Barang::where('id','=', $item->barang_id)->update(['stok'=>\DB::raw('stok-'.$jumlah_barang_terkonfirmasi)]);
+                    //Jika jumlah pengajuan barang lebih dari stok maka item pengajuan ditolak
+                    }else{
+                        $item->status_item_pengajuan_id = "2";
+                        $item->save();
+                    }
+                }
+            }
         }
 
         Transaksi::where('id', '=', $id)->update(['status_id'=> $request->status]);

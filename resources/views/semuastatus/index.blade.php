@@ -15,6 +15,7 @@
                                     <th>No</th>
                                     <th>Nomor Transaksi</th>
                                     <th>Pembuat Pengajuan</th>
+                                    <th>Bidang</th>
                                     <th>Jumlah Item Barang</th>
                                     <th>Total Barang</th>
                                     <th>Tanggal Pengajuan</th>
@@ -28,7 +29,6 @@
         </div>
     </div>
 </div>
-
 
 <!--Modal show laporan-pengajuan-->
 <div class="modal fade" id="exLargeModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -126,6 +126,10 @@
                 {
                     data: 'pembuat_pengajuan',
                     name: 'pembuat_pengajuan'
+                },
+                {
+                    data: 'bidang',
+                    name: 'bidang'
                 },
                 {
                     data: 'jumlah_barang',
