@@ -110,6 +110,7 @@
                 <a href="" id="unduhDokumen" target=”_blank”>
                     <button type="button" class="btn btn-outline-primary"> Lihat Dokumen </button>
                 </a>
+                <button type="button" class="btn btn-success" id="transaksi_selesai" data-transaksi="$data->id" data-update="5" data-notransaksi="$data->nomor_transaksi" onClick="updateTransaksi(event.target)"> Selesaikan Transaksi </button>
             </div>
         </div>
     </div>
@@ -262,12 +263,15 @@
 
     function lihatDokumen(event){
         var id = $(event).attr('data-transaksi');
+        var no_transaksi = $(event).attr('data-notransaksi');
         var URL = "{{route('proses-dokumen.show', ':id')}}";
         var newURL = URL.replace(':id', id);
         $('#unduhDokumen').attr("href", newURL);
         $('#unduhDokumen').attr("data-id", id);
         $('.tanda_tangan').attr("data-transaksi", id);
         $('.url_halaman_tanda_tangan').html("");
+        $('#transaksi_selesai').attr('data-transaksi', id);
+        $('#transaksi_selesai').attr('data-notransaksi', no_transaksi);
 
         var urlGetDokumen = "{{route('get-dokumen',':id')}}";
         var newUrlGetDokumen= urlGetDokumen.replace(':id', id)
@@ -505,6 +509,7 @@
                     error: function (xhr) {
                         swal({
                             title: error_title,
+                            text: xhr.responseJSON.text,
                             icon: 'warning',
                             buttons: "Kembali"
                         })

@@ -50,17 +50,13 @@ class ProsesDokumenController extends Controller
                 return $data->created_at->format('d-m-Y');
             })
             ->addColumn('action', function($data){
-                return <<<EOD
-                            <div class="dropdown" style="text-align: left;">
-                                <button class="btn btn-sm btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow" type="button" id="orederStatistics" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
-                                    <a class="dropdown-item" href="javascript:void(0);" id="lihatdokumen" data-transaksi="$data->id" data-notransaksi="$data->nomor_transaksi" data-bs-toggle="modal" data-bs-target="#modalAksi" onClick="lihatDokumen(event.target)">Status Tanda Tangan</a>
-                                    <a class="dropdown-item" href="javascript:void(0);" id="transaksi_selesai" data-transaksi="$data->id" data-update="5" data-notransaksi="$data->nomor_transaksi" onClick="updateTransaksi(event.target)">Selesai</a>
-                                </div>
+                return
+                        <<<EOD
+                            <div style="text-align: left;">
+                                <button class="btn btn-sm btn-outline-primary" id="lihatdokumen" data-transaksi="$data->id" data-notransaksi="$data->nomor_transaksi" data-bs-toggle="modal" data-bs-target="#modalAksi" onClick="lihatDokumen(event.target)">Status</button>
                             </div>
                         EOD;
+                
             })
             ->rawColumns(['nomor_transaksi',
                         'pembuat_pengajuan',

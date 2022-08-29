@@ -154,28 +154,40 @@ class TransaksiController extends Controller
                 'tgl_pengajuan' => $transaksi->created_at,
                 'transaksi_id'=>$transaksi->id
             ]);
+        
+        //Ketika status dari proses dokumen menjadi selesai
         } elseif($request->status == 5){
-            $laporanPengajuan = LaporanPengajuan::with(['barang'])->where('transaksi_id','=',$id)->get();
-            LaporanPengajuanBarangTidakTersedia::where('transaksi_id','=',$id)
-                                                ->where('status_item_pengajuan_id', '!=', '6' )
-                                                ->update(['status_item_pengajuan_id'=>'2']);
-            foreach ($laporanPengajuan as $item){
-                if($item->status_item_pengajuan_id == "1"){
-                    if($item->revisi_jumlah_barang == ""){
-                        $jumlah_barang_terkonfirmasi = $item->jumlah_barang;
-                    }else{
-                        $jumlah_barang_terkonfirmasi = $item->revisi_jumlah_barang;
-                    }
-                    //Jika jumlah pengajuan barang kurang dari stok maka item pengajuan disetujui
-                    if($jumlah_barang_terkonfirmasi <= $item->barang->stok){
-                        Barang::where('id','=', $item->barang_id)->update(['stok'=>\DB::raw('stok-'.$jumlah_barang_terkonfirmasi)]);
-                    //Jika jumlah pengajuan barang lebih dari stok maka item pengajuan ditolak
-                    }else{
-                        $item->status_item_pengajuan_id = "2";
-                        $item->save();
-                    }
-                }
+            $dokumenPenyerahan = DokumenPenyerahan::where('transaksi_id', $id)->first();
+            if($dokumenPenyerahan->ttd_kasub_umum == "0"){
+                return response()->json(['success'=>0,'text'=>'Kasubag Umum belum menandatangani dokumen!'], 442);
+            }elseif($dokumenPenyerahan->ttd_administrator == "0"){
+                return response()->json(['success'=>0,'text'=>'Administrator belum menandatangani dokumen!'], 442);
+            }elseif($dokumenPenyerahan->ttd_penerima == "0"){
+                return response()->json(['success'=>0,'text'=>'Penerima belum menandatangani dokumen!'], 442);
+            }elseif($dokumenPenyerahan->ttd_penyerah == "0"){   
+                return response()->json(['success'=>0,'text'=>'Penyerah belum menandatangani dokumen!'], 442);
             }
+            // $laporanPengajuan = LaporanPengajuan::with(['barang'])->where('transaksi_id','=',$id)->get();
+            // LaporanPengajuanBarangTidakTersedia::where('transaksi_id','=',$id)
+            //                                     ->where('status_item_pengajuan_id', '!=', '6' )
+            //                                     ->update(['status_item_pengajuan_id'=>'2']);
+            // foreach ($laporanPengajuan as $item){
+            //     if($item->status_item_pengajuan_id == "1"){
+            //         if($item->revisi_jumlah_barang == ""){
+            //             $jumlah_barang_terkonfirmasi = $item->jumlah_barang;
+            //         }else{
+            //             $jumlah_barang_terkonfirmasi = $item->revisi_jumlah_barang;
+            //         }
+            //         //Jika jumlah pengajuan barang kurang dari stok maka item pengajuan disetujui
+            //         if($jumlah_barang_terkonfirmasi <= $item->barang->stok){
+            //             Barang::where('id','=', $item->barang_id)->update(['stok'=>\DB::raw('stok-'.$jumlah_barang_terkonfirmasi)]);
+            //         //Jika jumlah pengajuan barang lebih dari stok maka item pengajuan ditolak
+            //         }else{
+            //             $item->status_item_pengajuan_id = "2";
+            //             $item->save();
+            //         }
+            //     }
+            // }
         }
 
         Transaksi::where('id', '=', $id)->update(['status_id'=> $request->status]);
