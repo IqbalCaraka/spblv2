@@ -39,6 +39,9 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+    <!--Qr Code jquery -->
+    <script type="text/javascript" src="{{asset('js/jquery.qrcode.min.js')}}"></script>
+
     @stack('styles')
     
 </head>

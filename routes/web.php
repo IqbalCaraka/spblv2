@@ -1,6 +1,8 @@
 <?php
 
 use App\DokumenPenyerahan;
+use App\LaporanPengajuan;
+use App\Transaksi;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,6 +32,7 @@ Route::group(['middleware' => ['auth','superadmin']], function(){
     Route::get('admin/get-satuan', 'BarangController@getSatuan')->name('get-satuan');
     Route::get('admin/get-kategori', 'BarangController@getKategori')->name('get-kategori.index');
     Route::resource('admin/satuan', 'SatuanController');
+    Route::resource('admin/mutasi-barang', 'MutasiBarangController');
     Route::resource('admin/to-do-list', 'ToDoListController');
     Route::resource('admin/proses-validasi', 'ProsesValidasiController');
     Route::post('admin/sesuaikan-permintaan', 'ProsesValidasiController@sesuaikanPermintaan')->name('sesuaikan-permintaan');
@@ -38,6 +41,7 @@ Route::group(['middleware' => ['auth','superadmin']], function(){
     Route::resource('admin/kebutuhan-permintaan', 'KebutuhanPermintaanController');
     Route::get('admin/permintaan-tidak-tersedia', 'KebutuhanPermintaanController@tidakTersedia')->name(('permintaan-tidak-tersedia'));
     Route::resource('admin/riwayat-transaksi', 'RiwayatTransaksiController');
+    Route::get('admin/riwayat-mutasi-barang', 'MutasiBarangController@riwayatMutasi')->name(('riwayat-mutasi'));
     Route::resource('admin/profil', 'ProfilController');
     Route::post('admin/profil-reset-password', 'ProfilController@resetPassword')->name('reset-password');
     Route::get('admin/get-jabatan', 'ProfilController@getJabatan')->name('get-jabatan');
@@ -57,6 +61,7 @@ Route::group(['middleware' => ['auth']], function(){
     Route::resource('laporan-barang-tidak-tersedia', 'LaporanPengajuanBarangTidakTersediaController');
     Route::get('laporan-pengajuan-pengajuan', 'LaporanPengajuanController@getPengajuan')->name('laporan-pengajuan.pengajuan');
     Route::get('laporan-pengajuan-validasi', 'LaporanPengajuanController@getValidasi')->name('laporan-pengajuan.validasi');
+    Route::get('laporan-pengajuan-dokumen', 'LaporanPengajuanController@getDokumen')->name('laporan-pengajuan.dokumen');
     Route::get('laporan-pengajuan-selesai', 'LaporanPengajuanController@getSelesai')->name('laporan-pengajuan.selesai');
     Route::get('laporan-pengajuan-ditolak', 'LaporanPengajuanController@getDitolak')->name('laporan-pengajuan.ditolak');
     Route::get('laporan-pengajuan-dibatalkan', 'LaporanPengajuanController@getDibatalkan')->name('laporan-pengajuan.dibatalkan');

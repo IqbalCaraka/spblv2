@@ -53,12 +53,12 @@
                 </a>
             </li>
         </ul>
-        <li class="menu-item">
-            <a href="{{route('to-do-list.index')}}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-transfer-alt"></i>
-                <div data-i18n="Basic">Mutasi Barang</div>
-            </a>
-        </li>
+    </li>
+    <li class="menu-item {{( $title === 'Mutasi')? 'active': ''}}">
+        <a href="{{route('mutasi-barang.index')}}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-transfer-alt"></i>
+            <div data-i18n="Basic">Mutasi Barang</div>
+        </a>
     </li>
     
     <!-- Pengajuan -->
@@ -68,7 +68,10 @@
         <a href="{{route('to-do-list.index')}}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-task"></i>
             <div data-i18n="Basic">To Do List</div>
-            <!-- <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger"></span> -->
+            @if($data[0]=="0")
+            @else
+            <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger">{{$data[0]}}</span>
+            @endif
         </a>
     </li>
 
@@ -77,6 +80,10 @@
         <a href="{{route('proses-validasi.index')}}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-cube-alt"></i>
             <div data-i18n="Basic">Proses Validasi</div>
+            @if($data[1]=="0")
+            @else
+            <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger">{{$data[1]}}</span>
+            @endif
         </a>
     </li>
 
@@ -85,6 +92,10 @@
         <a href="{{route('proses-dokumen.index')}}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-file-blank"></i>
             <div data-i18n="Basic">Proses Dokumen</div>
+            @if($data[2]=="0")
+            @else
+            <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger">{{$data[2]}}</span>
+            @endif
         </a>
     </li>
     
@@ -101,7 +112,7 @@
                             {{( $title === 'Permintaan Tidak Tersedia')? 'open': ''}}">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons bx bx bx-package"></i>
-            <div data-i18n="Account Settings">Pendataan Barang</div>
+            <div data-i18n="Account Settings">Kebutuhan Barang</div>
         </a>
         <ul class="menu-sub">
             <li class="menu-item {{( $title === 'Kebutuhan Permintaan')? 'active': ''}}">
@@ -128,8 +139,14 @@
             <div data-i18n="Basic">Riwayat Transaksi</div>
         </a>
     </li>
+    <li class="menu-item {{( $title === 'Riwayat Mutasi')? 'active': ''}}">
+        <a href="{{route('riwayat-mutasi')}}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-history"></i>
+            <div data-i18n="Basic">Riwayat Mutasi</div>
+        </a>
+    </li>
 
-    <!-- Aktivitas -->
+    <!-- Setting -->
     <li class="menu-header small text-uppercase"><span class="menu-header-text">Setting</span></li>
 
     <!-- Tambah Profil -->

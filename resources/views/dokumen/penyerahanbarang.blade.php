@@ -11,7 +11,7 @@
 	<!-- Vendor CSS Files -->
     <!-- <link href="{{asset('/utama/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet"> -->
 
-	<title>Hi</title>
+	<title>Dokumen Penyerahan</title>
 </head>
 <body>
 	
@@ -56,7 +56,7 @@
 		<div class="line4">
 			<div class="justify-start">
 				<p class="konten">Tgl Penyerahan</p>
-				<p>:</p>
+				<p>: {{$tgl_penyerahan}}</p>
 			</div>
 		</div>
 	</div>
@@ -122,28 +122,28 @@
 				<tr>
 					<td>
 						@if(isset($dokumenPenyerahan->ttdKasubUmum->ttdUser))
-						<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/storage/'.$dokumenPenyerahan->ttdKasubUmum->ttdUser->ttd))) }}" alt="" style="width: 150px; height: 150px;">
+						<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/storage/'.$dokumenPenyerahan->ttdKasubUmum->ttdUser->ttd))) }}" alt="" style="width: 150px; height: 80px;">
 						@else
 						XXXXXXX
 						@endif
 					</td>
 					<td>
 						@if(isset($dokumenPenyerahan->ttdAdministrator->ttdUser))
-						<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/storage/'.$dokumenPenyerahan->ttdAdministrator->ttdUser->ttd))) }}" alt="" style="width: 150px; height: 150px">
+						<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/storage/'.$dokumenPenyerahan->ttdAdministrator->ttdUser->ttd))) }}" alt="" style="width: 150px; height: 80px">
 						@else
 						XXXXXXX
 						@endif
 					</td>
 					<td>
 						@if(isset($dokumenPenyerahan->ttdPenerima->ttdUser))
-						<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/storage/'.$dokumenPenyerahan->ttdPenerima->ttdUser->ttd))) }}" alt="" style="width: 150px; height: 150px">
+						<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/storage/'.$dokumenPenyerahan->ttdPenerima->ttdUser->ttd))) }}" alt="" style="width: 150px; height: 80px">
 						@else
 						XXXXXXX
 						@endif
 					</td>
 					<td>
 						@if(isset($dokumenPenyerahan->ttdPenyerah->ttdUser))
-						<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/storage/'.$dokumenPenyerahan->ttdPenyerah->ttdUser->ttd))) }}" alt="" style="width: 150px; height: 150px">
+						<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/storage/'.$dokumenPenyerahan->ttdPenyerah->ttdUser->ttd))) }}" alt="" style="width: 150px; height: 80px">
 						@else
 						XXXXXXX
 						@endif

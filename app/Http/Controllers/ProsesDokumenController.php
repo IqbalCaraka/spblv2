@@ -8,7 +8,9 @@ use App\DokumenPenyerahan;
 use App\LaporanPengajuan;
 use Illuminate\Http\Request;
 use App\Transaksi;
+use DateTime;
 use App\TandaTangan;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Auth;
@@ -186,7 +188,8 @@ class ProsesDokumenController extends Controller
         $dokumenPenyerahan = DokumenPenyerahan::where('transaksi_id', $id)->first();
         $data = [
                 'dokumenPenyerahan' => $dokumenPenyerahan,
-                'tgl_pengajuan' => $dokumenPenyerahan->transaksi->created_at->format('d-m-Y')
+                'tgl_pengajuan' => Carbon::parse($dokumenPenyerahan->tgl_pengajuan)->format('d-m-Y'),
+                'tgl_penyerahan' => Carbon::parse($dokumenPenyerahan->tgl_penyerahan)->format('d-m-Y'),
             ];
 
         $laporanPengajuan =['laporanPengajuan'=> $laporanPengajuan];

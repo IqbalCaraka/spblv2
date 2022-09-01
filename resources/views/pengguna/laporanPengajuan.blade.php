@@ -43,6 +43,7 @@
                                                 <thead style="text-align: center; width: 100%;">
                                                     <tr>
                                                         <th>Nomor Transaksi</th>
+                                                        <th>Pembuat Pengajuan</th>
                                                         <th>Tanggal Pengajuan</th>
                                                         <th>Aksi</th>
                                                     </tr>
@@ -56,19 +57,22 @@
                                                 <thead style="text-align: center; width: 100%;">
                                                     <tr>
                                                         <th>Nomor Transaksi</th>
+                                                        <th>Pembuat Pengajuan</th>
                                                         <th>Tanggal Pengajuan</th>
                                                     </tr>
                                                 </thead>
                                             </table>
                                         </div>
-                                    </div><!-- End Tab valdasi Content -->
+                                    </div><!-- End Tab validasi Content -->
                                     <div class="tab-pane fade show" id="dokumen">
                                         <div class="table-responsive text-nowrap">
                                             <table id="dokumen-datatable" class="datatable row-border hover" style="width: 100%;" cellspacing="0">
                                                 <thead style="text-align: center; width: 100%;">
                                                     <tr>
                                                         <th>Nomor Transaksi</th>
+                                                        <th>Pembuat Pengajuan</th>
                                                         <th>Tanggal Pengajuan</th>
+                                                        <th>Aksi</th>
                                                     </tr>
                                                 </thead>
                                             </table>
@@ -76,15 +80,25 @@
                                     </div><!-- End Tab dokumen Content -->
                                     <div class="tab-pane fade show" id="selesai">
                                         <div class="table-responsive text-nowrap">
-                                            Proses Selesai
+                                            <table id="selesai-datatable" class="datatable row-border hover" style="width: 100%;" cellspacing="0">
+                                                <thead style="text-align: center; width: 100%;">
+                                                    <tr>
+                                                        <th>Nomor Transaksi</th>
+                                                        <th>Pembuat Pengajuan</th>
+                                                        <th>Tanggal Pengajuan</th>
+                                                        <th>Unduh Dokumen Pengajuan</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
                                         </div>
-                                    </div><!-- End Tab dokumen Content -->
+                                    </div><!-- End Tab selesai Content -->
                                     <div class="tab-pane fade show" id="ditolak">
                                         <div class="table-responsive text-nowrap">
                                             <table id="ditolak-datatable" class="datatable row-border hover" style="width: 100%;" cellspacing="0">
                                                 <thead style="text-align: center; width: 100%;">
                                                     <tr>
                                                         <th>Nomor Transaksi</th>
+                                                        <th>Pembuat Pengajuan</th>
                                                         <th>Tanggal Pengajuan</th>
                                                     </tr>
                                                 </thead>
@@ -97,6 +111,7 @@
                                                 <thead style="text-align: center; width: 100%;">
                                                     <tr>
                                                         <th>Nomor Transaksi</th>
+                                                        <th>Pembuat Pengajuan</th>
                                                         <th>Tanggal Pengajuan</th>
                                                     </tr>
                                                 </thead>
@@ -109,13 +124,14 @@
                                                 <thead style="text-align: center; width: 100%;">
                                                     <tr>
                                                         <th>Nomor Transaksi</th>
+                                                        <th>Pembuat Pengajuan</th>
                                                         <th>Tanggal Pengajuan</th>
                                                         <th>Status</th>
                                                     </tr>
                                                 </thead>
                                             </table>
                                         </div>
-                                    </div><!-- End Tab dibatalkan Content -->
+                                    </div><!-- End Tab semua  Content -->
                                 </div>
                         </div><!-- End Feature Tabs -->
                     </div>
@@ -183,6 +199,47 @@
     </div>
 </div>
 <!--Modal show laporan-pengajuan-->
+<!--Modal show halaman tanda tangan-->
+<div class="modal fade" id="modalHalamanTandaTangan" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="laporan-pengajuan-title">Link Halaman Tanda Tangan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex flex-row justify-content-around mx-5">
+                    <div class="tanda-tangan-administrator">
+                        <p style="text-align: center; font-weight: 500;">Link Administrator</p>
+                        <div class="url_halaman_tanda_tangan_administrator" style="text-align: center;" data-id="">     
+                        </div>
+                        <div style="text-align: center;">
+                            <p>Dapat Juga Diakses Melalui : </p>
+                            <h5 class="alamat_link_administrator"></h5>
+                        </div>
+                    </div>
+                    <div class="tanda-tangan-penerima">
+                        <p style="text-align: center; font-weight: 500;">Link Penerima</p>
+                        <div class="url_halaman_tanda_tangan_penerima" style="text-align: center;" data-id="">     
+                        </div>
+                        <div style="text-align: center;">
+                            <p>Dapat Juga Diakses Melalui : </p>
+                            <h5 class="alamat_link_penerima"></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-dismiss="modal">Keluar</button>
+                <a href="" id="unduhDokumen" target=”_blank”>
+                    <button type="button" class="btn btn-sm btn-outline-primary" style="width: max-content ;">Lihat Dokumen</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal show halaman tanda tangan-->
+
 <!-- End laporan pengajuan Section -->
 @endsection
 @push('scripts')
@@ -212,6 +269,10 @@
                     name: 'nomor_transaksi'
                 },
                 {
+                    data: 'pembuat_pengajuan',
+                    name: 'pembuat_pengajuan'
+                },
+                {
                     data: 'tanggal_pengajuan',
                     name: 'tanggal_pengajuan'
                 },
@@ -237,6 +298,10 @@
                     name: 'nomor_transaksi'
                 },
                 {
+                    data: 'pembuat_pengajuan',
+                    name: 'pembuat_pengajuan'
+                },
+                {
                     data: 'tanggal_pengajuan',
                     name: 'tanggal_pengajuan'
                 },
@@ -251,6 +316,35 @@
             serverSide: true, 
             responsive: true,
             ajax: {
+                url: "{{ route('laporan-pengajuan.dokumen') }}",
+                type: 'GET'
+            }, columns: [{
+                    data: 'nomor_transaksi',
+                    name: 'nomor_transaksi'
+                },
+                {
+                    data: 'pembuat_pengajuan',
+                    name: 'pembuat_pengajuan'
+                },
+                {
+                    data: 'tanggal_pengajuan',
+                    name: 'tanggal_pengajuan'
+                },
+                {
+                    data: 'action',
+                    name: 'action'
+                },
+            ],
+                order: [
+                    [0, 'desc']
+            ]
+        });
+
+        $('#selesai-datatable').DataTable({
+            processing: true,
+            serverSide: true, 
+            responsive: true,
+            ajax: {
                 url: "{{ route('laporan-pengajuan.selesai') }}",
                 type: 'GET'
             }, columns: [{
@@ -258,9 +352,17 @@
                     name: 'nomor_transaksi'
                 },
                 {
+                    data: 'pembuat_pengajuan',
+                    name: 'pembuat_pengajuan'
+                },
+                {
                     data: 'tanggal_pengajuan',
                     name: 'tanggal_pengajuan'
                 },
+                {
+                    data: 'cetak_dokumen',
+                    name: 'cetak_dokumen'
+                }
             ],
                 order: [
                     [0, 'desc']
@@ -277,6 +379,10 @@
             }, columns: [{
                     data: 'nomor_transaksi',
                     name: 'nomor_transaksi'
+                },
+                {
+                    data: 'pembuat_pengajuan',
+                    name: 'pembuat_pengajuan'
                 },
                 {
                     data: 'tanggal_pengajuan',
@@ -300,6 +406,10 @@
                     name: 'nomor_transaksi'
                 },
                 {
+                    data: 'pembuat_pengajuan',
+                    name: 'pembuat_pengajuan'
+                },
+                {
                     data: 'tanggal_pengajuan',
                     name: 'tanggal_pengajuan'
                 },
@@ -321,6 +431,10 @@
                     name: 'nomor_transaksi'
                 },
                 {
+                    data: 'pembuat_pengajuan',
+                    name: 'pembuat_pengajuan'
+                },
+                {
                     data: 'tanggal_pengajuan',
                     name: 'tanggal_pengajuan'
                 },
@@ -332,6 +446,11 @@
                 order: [
                     [0, 'desc']
             ]
+        });
+
+        $("#modalHalamanTandaTangan").on("hidden.bs.modal", function(){
+            $(".url_halaman_tanda_tangan_administrator").html("");
+            $(".url_halaman_tanda_tangan_penerima").html("");
         });
 
         
@@ -409,8 +528,6 @@
             ]
         });
     }
-
-
     function batalTransaksi(event){
         var status = 6;
         var id = $(event).attr('data-id')
@@ -446,5 +563,22 @@
             };
         });
     };
+    function halamanTandaTangan(event){
+        var id = $(event).attr('data-transaksi');
+        var administratorId = $(event).attr('data-administratorId');
+        var penerimaId = $(event).attr('data-penerimaId');
+        var urlQRCode = "{{route('tandatangan.index',[':id',':peran',':user'])}}";
+        var newUrlQRCode= urlQRCode.replace(':id', id);
+        var administratorQrCode = newUrlQRCode.replace(':user', administratorId).replace(':peran', 'administrator')
+        var penerimaQrCode = newUrlQRCode.replace(':user', penerimaId).replace(':peran', 'penerima')
+        var unduhDokumen = "{{route('proses-dokumen.show', ':id')}}";
+        var urlUnduhDokumen = unduhDokumen.replace(':id', id);
+        jQuery('.url_halaman_tanda_tangan_administrator').qrcode(administratorQrCode)
+        $('.alamat_link_administrator').html(administratorQrCode);
+        jQuery('.url_halaman_tanda_tangan_penerima').qrcode(penerimaQrCode)
+        $('.alamat_link_penerima').html(penerimaQrCode);
+        $('#kembali_lihat_dokumen').attr('data-transaksi',id);
+        $('#unduhDokumen').attr('href', urlUnduhDokumen);
+    }
 </script>
 @endpush

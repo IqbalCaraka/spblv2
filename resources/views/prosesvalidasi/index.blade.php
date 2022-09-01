@@ -395,10 +395,15 @@
                     data:{
                         status:status
                     },
-                    success: function($data){
+                    success: function(xhr){
+                        if(xhr.text == '0'){
+                            swal("Status Transaksi Telah Ditolak!", "Daftar pengajuan barang tidak tersedia, tidak ada yang disetujui!", 'warning')
+                        }else{
+                            swal("Selamat!", swall_success, "success");
+                        }
                         $('.modal').modal('hide');
                         $('#pengajuan-datatable').DataTable().ajax.reload();
-                        swal("Selamat!", swall_success, "success");
+                        console.log(xhr.text=='0');
                     },
                     error: function (xhr) {
                         swal({

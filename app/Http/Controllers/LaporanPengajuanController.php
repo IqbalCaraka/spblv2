@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\DokumenPenyerahan;
 use App\LaporanPengajuan;
 use App\Transaksi;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +18,12 @@ class LaporanPengajuanController extends Controller
      */
     public function index(Request $request)
     {
-        $transaksi = Transaksi::where('user_id','=',Auth::user()->id)->get();
+        $user = User::find(Auth::user()->id);
+        if(strtok($user->jabatan->jabatan,' ') != "Kepala"){
+            $transaksi = Transaksi::where('user_id','=',Auth::user()->id)->get();    
+        }else{
+            $transaksi = Transaksi::where('bidang_id', Auth::user()->bidang_id)->get();
+        }
         if($request->ajax()){
             return datatables()->of($transaksi)
             ->addColumn('nomor_transaksi', function($data){
@@ -29,6 +36,9 @@ class LaporanPengajuanController extends Controller
             ->addColumn('tanggal_pengajuan', function($data){
                 return $data->created_at->format('d-m-Y');
             })
+            ->addColumn('pembuat_pengajuan', function($data){
+                return $data->user->name;
+            })
             ->addColumn('status', function($data){
                 $status = $data->status->status;
                 if($status == "Pengajuan"){
@@ -39,15 +49,14 @@ class LaporanPengajuanController extends Controller
                     return <<<EOD
                                 <span class="badge bg-label-validasi">$status</span>
                             EOD;
-                }elseif($status == "Diterima"){
+                }elseif($status == "Selesai"){
                         return <<<EOD
-                                    <span class="badge bg-label-diterima">$status</span>
+                                    <span class="badge bg-label-selesai">$status</span>
                                 EOD;
                 }elseif($status == "Ditolak"){
                     return <<<EOD
                                 <span class="badge bg-label-ditolak">$status</span>
                             EOD;
-                            
                 }
                 elseif($status == "Proses Dokumen"){
                     return <<<EOD
@@ -70,17 +79,28 @@ class LaporanPengajuanController extends Controller
     }
 
     public function getPengajuan(Request $request){
-        $transaksis = Transaksi::where('user_id','=',Auth::user()->id)
-                                        ->where('status_id','=',1)
-                                        ->get();
+        $user = User::find(Auth::user()->id);
+        if(strtok($user->jabatan->jabatan,' ') != "Kepala"){
+            $transaksi = Transaksi::where('user_id','=',Auth::user()->id)
+                        ->where('status_id','=',1)
+                        ->get();    
+        }else{
+            $transaksi = Transaksi::where('bidang_id', Auth::user()->bidang_id)
+                            ->where('status_id','=',1)
+                            ->get();  
+        }
+
         if($request->ajax()){
-            return datatables()->of($transaksis)
+            return datatables()->of($transaksi)
             ->addColumn('nomor_transaksi', function($data){
                 return <<<EOD
                             <div>
                                 <a href="javascript:void(0);" data-id="$data->id" data-bs-toggle="modal" data-bs-target="#laporan" onClick="detailLaporanPengajuanBarangTersedia(event.target)">$data->nomor_transaksi</a>
                             </div>
                         EOD;
+            })
+            ->addColumn('pembuat_pengajuan', function($data){
+                return $data->user->name;
             })
             ->addColumn('tanggal_pengajuan', function($data){
                 return $data->created_at->format('d-m-Y');
@@ -101,11 +121,18 @@ class LaporanPengajuanController extends Controller
     }
 
     public function getValidasi (Request $request){
-        $transaksis = Transaksi::where('user_id','=',Auth::user()->id)
-                                    ->where('status_id','=',2)
-                                    ->get();
+        $user = User::find(Auth::user()->id);
+        if(strtok($user->jabatan->jabatan,' ') != "Kepala"){
+            $transaksi = Transaksi::where('user_id','=',Auth::user()->id)
+                        ->where('status_id','=',2)
+                        ->get();    
+        }else{
+            $transaksi = Transaksi::where('bidang_id', Auth::user()->bidang_id)
+                            ->where('status_id','=',2)
+                            ->get();  
+        }
         if($request->ajax()){
-            return datatables()->of($transaksis)
+            return datatables()->of($transaksi)
             ->addColumn('nomor_transaksi', function($data){
                 return <<<EOD
                             <div>
@@ -113,49 +140,124 @@ class LaporanPengajuanController extends Controller
                             </div>
                         EOD;
             })
+            ->addColumn('pembuat_pengajuan', function($data){
+                return $data->user->name;
+            })
             ->addColumn('tanggal_pengajuan', function($data){
                 return $data->created_at->format('d-m-Y');
             })
             ->rawColumns(['nomor_transaksi','tanggal_pengajuan'])
+            ->addIndexColumn()
+            ->make(true);
+        };
+    }
+
+    public function getDokumen (Request $request){
+        $user = User::find(Auth::user()->id);
+        if(strtok($user->jabatan->jabatan,' ') != "Kepala"){
+            $transaksi = Transaksi::where('user_id','=',Auth::user()->id)
+                        ->where('status_id','=',3)
+                        ->get();    
+        }else{
+            $transaksi = Transaksi::where('bidang_id', Auth::user()->bidang_id)
+                            ->where('status_id','=',3)
+                            ->get();  
+        }
+        if($request->ajax()){
+            return datatables()->of($transaksi)
+            ->addColumn('nomor_transaksi', function($data){
+                return <<<EOD
+                            <div>
+                                <a href="javascript:void(0);" data-id="$data->id" data-bs-toggle="modal" data-bs-target="#laporan" onClick="detailLaporanPengajuanBarangTersedia(event.target)">$data->nomor_transaksi</a>
+                            </div>
+                        EOD;
+            })
+            ->addColumn('pembuat_pengajuan', function($data){
+                return $data->user->name;
+            })
+            ->addColumn('tanggal_pengajuan', function($data){
+                return $data->created_at->format('d-m-Y');
+            })
+            ->addColumn('action', function($data){
+                $penerimaId = $data->dokumenPenyerahan->penerimaUser->id;
+                $administratorId = $data->dokumenPenyerahan->administratorUser->id;
+                return <<<EOD
+                        <div class="Tanda Tangan">
+                            <button class="btn btn-sm btn-outline-primary" style="width:max-content;" data-penerimaid="$penerimaId" data-administratorid="$administratorId" data-transaksi="$data->id" onclick="halamanTandaTangan(event.target)" data-bs-toggle="modal" data-bs-target="#modalHalamanTandaTangan">
+                                Tanda Tangan
+                            </button>
+                        </div>
+                        EOD;
+            })
+            ->rawColumns(['nomor_transaksi','tanggal_pengajuan','action'])
             ->addIndexColumn()
             ->make(true);
         };
     }
 
     public function getSelesai (Request $request){
-        $transaksis = Transaksi::where('user_id','=',Auth::user()->id)
-                                ->where('status_id','=',3)
-                                ->get();
+        $user = User::find(Auth::user()->id);
+        if(strtok($user->jabatan->jabatan,' ') != "Kepala"){
+            $transaksi = Transaksi::where('user_id','=',Auth::user()->id)
+                        ->where('status_id','=',5)
+                        ->get();    
+        }else{
+            $transaksi = Transaksi::where('bidang_id', Auth::user()->bidang_id)
+                            ->where('status_id','=',5)
+                            ->get();  
+        }
         if($request->ajax()){
-            return datatables()->of($transaksis)
+            return datatables()->of($transaksi)
             ->addColumn('nomor_transaksi', function($data){
                 return <<<EOD
                             <div>
                                 <a href="javascript:void(0);" data-id="$data->id" data-bs-toggle="modal" data-bs-target="#laporan" onClick="detailLaporanPengajuanBarangTersedia(event.target)">$data->nomor_transaksi</a>
                             </div>
                         EOD;
+            })
+            ->addColumn('pembuat_pengajuan', function($data){
+                return $data->user->name;
             })
             ->addColumn('tanggal_pengajuan', function($data){
                 return $data->created_at->format('d-m-Y');
             })
-            ->rawColumns(['nomor_transaksi','tanggal_pengajuan'])
+            ->addColumn('cetak_dokumen', function($data){
+                $url = route('proses-dokumen.show', $data->id);
+                return <<<EOD
+                            <a href="$url" id="unduhDokumen" target=”_blank”>
+                                <button type="button" class="btn btn-sm btn-outline-primary" style="width: max-content ;">Unduh Dokumen</button>
+                            </a>
+                        EOD;
+            })
+            ->rawColumns(['nomor_transaksi','tanggal_pengajuan', 'cetak_dokumen'])
             ->addIndexColumn()
             ->make(true);
         };
     }
+    
 
     public function getDitolak (Request $request){
-        $transaksis = Transaksi::where('user_id','=',Auth::user()->id)
-                                ->where('status_id','=',4)
-                                ->get();
+        $user = User::find(Auth::user()->id);
+        if(strtok($user->jabatan->jabatan,' ') != "Kepala"){
+            $transaksi = Transaksi::where('user_id','=',Auth::user()->id)
+                        ->where('status_id','=',4)
+                        ->get();    
+        }else{
+            $transaksi = Transaksi::where('bidang_id', Auth::user()->bidang_id)
+                            ->where('status_id','=',4)
+                            ->get();  
+        }
         if($request->ajax()){
-            return datatables()->of($transaksis)
+            return datatables()->of($transaksi)
             ->addColumn('nomor_transaksi', function($data){
                 return <<<EOD
                             <div>
                                 <a href="javascript:void(0);" data-id="$data->id" data-bs-toggle="modal" data-bs-target="#laporan" onClick="detailLaporanPengajuanBarangTersedia(event.target)">$data->nomor_transaksi</a>
                             </div>
                         EOD;
+            })
+            ->addColumn('pembuat_pengajuan', function($data){
+                return $data->user->name;
             })
             ->addColumn('tanggal_pengajuan', function($data){
                 return $data->created_at->format('d-m-Y');
@@ -167,17 +269,27 @@ class LaporanPengajuanController extends Controller
     }
 
     public function getDibatalkan(Request $request){
-        $transaksis = Transaksi::where('user_id','=',Auth::user()->id)
-                                ->where('status_id','=', 6)
-                                ->get();
+        $user = User::find(Auth::user()->id);
+        if(strtok($user->jabatan->jabatan,' ') != "Kepala"){
+            $transaksi = Transaksi::where('user_id','=',Auth::user()->id)
+                        ->where('status_id','=',6)
+                        ->get();    
+        }else{
+            $transaksi = Transaksi::where('bidang_id', Auth::user()->bidang_id)
+                            ->where('status_id','=',6)
+                            ->get();  
+        }
         if($request->ajax()){
-            return datatables()->of($transaksis)
+            return datatables()->of($transaksi)
             ->addColumn('nomor_transaksi', function($data){
                 return <<<EOD
                             <div>
                                 <a href="javascript:void(0);" data-id="$data->id" data-bs-toggle="modal" data-bs-target="#laporan" onClick="detailLaporanPengajuanBarangTersedia(event.target)">$data->nomor_transaksi</a>
                             </div>
                         EOD;
+            })
+            ->addColumn('pembuat_pengajuan', function($data){
+                return $data->user->name;
             })
             ->addColumn('tanggal_pengajuan', function($data){
                 return $data->created_at->format('d-m-Y');

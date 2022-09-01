@@ -26,5 +26,9 @@ class Transaksi extends Model
         return $this->hasMany(RiwayatTransaksi::class, 'transaksi_id');
     }
 
+    public function dokumenPenyerahan(){
+        return $this->hasOne(DokumenPenyerahan::class,'transaksi_id');
+    }
+
 
 }

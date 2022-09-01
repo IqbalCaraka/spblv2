@@ -6,7 +6,9 @@ use App\Barang;
 use App\LaporanPengajuan;
 use App\LaporanPengajuanBarangTidakTersedia;
 use App\Transaksi;
+use Faker\Provider\Base;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class KebutuhanPermintaanController extends Controller
 {
@@ -17,31 +19,53 @@ class KebutuhanPermintaanController extends Controller
      */
     public function index(Request $request)
     {                    
-        $barang = Barang::all();
+        $barang = Barang::selectRaw("SUM(CASE WHEN laporan_pengajuans.revisi_jumlah_barang IS NULL 
+                                        THEN laporan_pengajuans.jumlah_barang 
+                                        ELSE laporan_pengajuans.revisi_jumlah_barang END) 
+                                        AS permintaan, 
+                                        barangs.id,
+                                        barangs.nomor_barang,
+                                        barangs.nama_barang,
+                                        barangs.stok")
+                        ->join('laporan_pengajuans', 'barangs.id', 'laporan_pengajuans.barang_id')
+                        ->join('transaksis', 'transaksis.id', 'laporan_pengajuans.transaksi_id')
+                        ->where('status_item_pengajuan_id','3')
+                        ->orWhere(function($q){
+                            $q->where('status_item_pengajuan_id','1')
+                                ->where('status_id', '2');
+                        })
+                        ->groupBy('barangs.id')
+                        ->get();    
         if($request->ajax()){
-            return datatables()->of($barang)
-            ->addColumn('total_permintaan', function($data){
-                $laporan_pengajuan = LaporanPengajuan:: where('status_item_pengajuan_id','=','1')
-                ->where('barang_id','=',$data->id)
-                ->whereHas('transaksi', function ($q){
-                    $q->where('status_id','=','1')
-                        ->orWhere('status_id','=','2');
-                })
-                ->get();
-            $total_permintaan = 0;
-            foreach($laporan_pengajuan as $item){
-                if($item->revisi_jumlah_barang == null){
-                    $total_permintaan += (int)$item->jumlah_barang;
-                }else{
-                    $total_permintaan += (int)$item->revisi_jumlah_barang;
-                }
-            } 
-            return $total_permintaan;   
+        return datatables()->of($barang)
+        ->addColumn('permintaan', function($data){
+            return $data->permintaan;   
         })
-        ->addColumn('selisih', function($data){
+        ->addColumn('nomor_barang', function($data){
+            return $data->nomor_barang;   
+        })
+        ->addColumn('nama_barang', function($data){
+            return $data->nama_barang;
+        })
+        ->addColumn('stok', function($data){
             return $data->stok;
         })
-        ->rawColumns(['total_permintaan',
+        ->addColumn('selisih', function($data){
+            $selisih = $data->stok - $data->permintaan;
+            if($selisih >= 0){
+                return <<<EOD
+                            <span class="badge bg-label-disetujui">$selisih</span>
+                        EOD;
+            }else{
+                return <<<EOD
+                            <span class="badge bg-label-ditolak">$selisih</span>
+                        EOD;
+            }
+        })
+        ->rawColumns(['permintaan',
+                    'nomor_barang',
+                    'nama_barang',
+                    'stok',
                     'selisih'
                     ])
             ->addIndexColumn()
@@ -52,7 +76,9 @@ class KebutuhanPermintaanController extends Controller
     }
 
     public function tidakTersedia(Request $request){
-        $laporan_pengajuan = LaporanPengajuanBarangTidakTersedia::all();
+        $laporan_pengajuan = LaporanPengajuanBarangTidakTersedia::where('status_item_pengajuan_id', '3')
+                                                                ->orWhere('status_item_pengajuan_id', '4')
+                                                                ->get();
         if($request->ajax()){
             return datatables()->of($laporan_pengajuan)
         ->addColumn('satuan', function($data){

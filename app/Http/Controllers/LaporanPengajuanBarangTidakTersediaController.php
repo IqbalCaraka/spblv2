@@ -64,7 +64,7 @@ class LaporanPengajuanBarangTidakTersediaController extends Controller
                 }
                 elseif($status == "Disesuaikan"){
                     return <<<EOD
-                                <span class="badge bg-label-diterima">$nama_barang</span>
+                                <span class="badge bg-label-disetujui">$nama_barang</span>
                             EOD;
                 }  
                 elseif($status == "Dibatalkan"){
@@ -91,7 +91,7 @@ class LaporanPengajuanBarangTidakTersediaController extends Controller
                 }
                 elseif($status == "Disesuaikan"){
                     return <<<EOD
-                                <span class="badge bg-label-diterima">$status</span>
+                                <span class="badge bg-label-disetujui">$status</span>
                             EOD;
                 }  
                 elseif($status == "Dibatalkan"){
