@@ -15,12 +15,7 @@ class MutasiBarangController extends Controller
     public function index(Request $request)
     {
     
-        $title = 'Mutasi';
-        return view('mutasibarang.index')->with('title', $title);
-    }
-
-    public function riwayatMutasi(Request $request){
-        $riwayat_mutasi = MutasiBarang::all();
+        $riwayat_mutasi = MutasiBarang::orderBy('id', 'DESC')->get();
         if($request->ajax()){
             return datatables()->of($riwayat_mutasi)
             ->addColumn('nama_barang', function($data){
@@ -31,7 +26,7 @@ class MutasiBarangController extends Controller
                             EOD;
                 }else{
                     return <<<EOD
-                                <span class="badge bg-label-ditolak">$nama_barang</span>
+                                <span class="badge bg-label-disetujui">$nama_barang</span>
                             EOD;
                 }
             })
@@ -64,8 +59,9 @@ class MutasiBarangController extends Controller
             ->make(true);
         };
         $title= 'Riwayat Mutasi';
-        return view('mutasibarang.riwayatmutasi')->with('title', $title);
+        return view('mutasibarang.index')->with('title', $title);
     }
+
 
     /**
      * Show the form for creating a new resource.

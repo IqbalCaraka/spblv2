@@ -31,8 +31,13 @@ Route::group(['middleware' => ['auth','superadmin']], function(){
     Route::post('admin/barang-update', 'BarangController@update')->name('barang.update');
     Route::get('admin/get-satuan', 'BarangController@getSatuan')->name('get-satuan');
     Route::get('admin/get-kategori', 'BarangController@getKategori')->name('get-kategori.index');
+    Route::get('admin/tambah-stok/{id}', 'BarangController@tambahStok')->name('tambah-stok.get');
+    Route::put('admin/tambah-stok', 'BarangController@updateTambahStok')->name('update-tambah-stok');
     Route::resource('admin/satuan', 'SatuanController');
     Route::resource('admin/mutasi-barang', 'MutasiBarangController');
+    Route::resource('admin/laporan-barang', 'LaporanBarangController');
+    Route::get('admin/get-laporan-barang', 'LaporanBarangController@getLaporanBarang')->name('get-laporan-barang');
+    Route::resource('admin/periode-laporan-barang', 'PeriodeLaporanBarangController');
     Route::resource('admin/to-do-list', 'ToDoListController');
     Route::resource('admin/proses-validasi', 'ProsesValidasiController');
     Route::post('admin/sesuaikan-permintaan', 'ProsesValidasiController@sesuaikanPermintaan')->name('sesuaikan-permintaan');
@@ -41,7 +46,6 @@ Route::group(['middleware' => ['auth','superadmin']], function(){
     Route::resource('admin/kebutuhan-permintaan', 'KebutuhanPermintaanController');
     Route::get('admin/permintaan-tidak-tersedia', 'KebutuhanPermintaanController@tidakTersedia')->name(('permintaan-tidak-tersedia'));
     Route::resource('admin/riwayat-transaksi', 'RiwayatTransaksiController');
-    Route::get('admin/riwayat-mutasi-barang', 'MutasiBarangController@riwayatMutasi')->name(('riwayat-mutasi'));
     Route::resource('admin/profil', 'ProfilController');
     Route::post('admin/profil-reset-password', 'ProfilController@resetPassword')->name('reset-password');
     Route::get('admin/get-jabatan', 'ProfilController@getJabatan')->name('get-jabatan');

@@ -8776,6 +8776,11 @@ button.list-group-item-gray.active {
   height: 3rem;
   border-width: 0.3em;
 }
+.spinner-border-lg-laporan-barang{
+  width: 10rem;
+  height: 10rem;
+  border-width: 1.5em;
+}
 
 .spinner-grow-lg {
   width: 3rem;

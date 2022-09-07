@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Barang;
 use App\Kategori;
+use App\MutasiBarang;
 use App\Satuan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
+use App\PeriodeLaporanBarang;
+use App\LaporanBarang;
 
 class BarangController extends Controller
 {
@@ -43,6 +47,7 @@ class BarangController extends Controller
                            </button>
                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
                                <a class="dropdown-item" data-id="$data->id" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modalEdit" onClick="editBarang(event.target)">Edit</a>
+                               <a class="dropdown-item" data-id="$data->id" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modalTambahStok" onClick="tambahStok(event.target)">Tambah Stok</a>
                                <a class="dropdown-item" data-id="$data->id" href="javascript:void(0);" onClick="deleteBarang(event.target)">Delete</a>
                            </div>
                        </div>
@@ -100,11 +105,19 @@ class BarangController extends Controller
         if($validasi->fails()){
             return response()->json(['success'=>0,'text' => $validasi->errors()->first()],422);
         }
+
+        $periodeSebelumnya = Carbon::parse(now()->subMonth()->locale('id'));
+        $periodeLaporanBarang = PeriodeLaporanBarang::where('bulan', now()->format('m'))
+                                                            ->where('tahun', now()->format('Y'))
+                                                            ->first();
+        if($periodeLaporanBarang == ""){
+            return response()->json(['success'=>0,'text'=>'Periode Laporan Bulan '.$periodeSebelumnya->translatedFormat('F').' Tahun '. $periodeSebelumnya->translatedFormat('Y'). ' belum ditutup!'], 442);
+        }
         $gambar ='';
         if(! is_null ($request->gambar)){
             $gambar = $request->gambar->store('barangs');
         }
-        Barang::create([
+        $barang = Barang::create([
             'nomor_barang' => $request->nomor_barang,
             'nama_barang' => $request->nama_barang,
             'stok' => $request->stok,
@@ -112,6 +125,19 @@ class BarangController extends Controller
             'kategori_id' => $request->kategori_id,
             'satuan_id' => $request->satuan_id,
             'gambar' => $gambar,
+        ]);
+
+        LaporanBarang::create([
+            'barang_id' => $barang->id,
+            'saldo_awal' => '0',
+            'periode_laporan_barang_id' => $periodeLaporanBarang->id
+        ]);
+
+        MutasiBarang::create([
+            'stok_sebelumnya' =>'0',
+            'masuk' => $request->stok,
+            'barang_id' => $barang->id,
+            'periode_laporan_barang_id' => $periodeLaporanBarang->id
         ]);
     }
 
@@ -215,5 +241,30 @@ class BarangController extends Controller
             $data = Barang::all();
         }
         return response()->json($data);
+    }
+
+    public function tambahStok($id){
+        $barang = Barang::find($id);
+        return response()->json($barang);
+    }
+
+    public function updateTambahStok(Request $request){
+        $periodeSebelumnya = Carbon::parse(now()->subMonth()->locale('id'));
+        $periodeLaporanBarang = PeriodeLaporanBarang::where('bulan', now()->format('m'))
+                                                            ->where('tahun', now()->format('Y'))
+                                                            ->first();
+        if($periodeLaporanBarang == ""){
+            return response()->json(['success'=>0,'text'=>'Periode Laporan Bulan '.$periodeSebelumnya->translatedFormat('F').' Tahun '. $periodeSebelumnya->translatedFormat('Y'). ' belum ditutup!'], 442);
+        }
+        $barang = Barang::find($request->id);
+        MutasiBarang::create([
+            'stok_sebelumnya' =>$barang->stok,
+            'masuk' => $request->masuk,
+            'barang_id' => $request->id,
+            'periode_laporan_barang_id' => $periodeLaporanBarang->id
+        ]);
+        $barang->update(["stok"=>$request->masuk + $barang->stok]);
+        return response()->json();
+    
     }
 }

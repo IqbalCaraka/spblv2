@@ -10,10 +10,13 @@ use App\Bidang;
 use App\DokumenPenyerahan;
 use App\Jabatan;
 use App\KeranjangBarangTidakTersedia;
+use App\LaporanBarang;
 use App\LaporanPengajuanBarangTidakTersedia;
 use App\MutasiBarang;
+use App\PeriodeLaporanBarang;
 use App\RiwayatTransaksi;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -128,6 +131,7 @@ class TransaksiController extends Controller
             $laporanPengajuan = LaporanPengajuan::where('transaksi_id', $transaksi->id)
                                                 ->where('status_item_pengajuan_id', '1')
                                                 ->get();
+            //transaksi akan dibatalkan apabila tidak ada item yang disetujui
             if($laporanPengajuan->count() == '0'){
                 $transaksi->update(['status_id'=> '4']);
                 LaporanPengajuanBarangTidakTersedia::where('transaksi_id', '=', $id)->update(['status_item_pengajuan_id'=> '2']);
@@ -178,49 +182,58 @@ class TransaksiController extends Controller
         
         //Ketika status dari proses dokumen menjadi selesai
         } elseif($request->status == 5){
+            //Cek apakah dokumen penyerahan telah dittd
             $dokumenPenyerahan = DokumenPenyerahan::where('transaksi_id', $id)->first();
-            if($dokumenPenyerahan->ttd_kasub_umum == "0"){
-                return response()->json(['success'=>0,'text'=>'Kasubag Umum belum menandatangani dokumen!'], 442);
-            }elseif($dokumenPenyerahan->ttd_administrator == "0"){
-                return response()->json(['success'=>0,'text'=>'Administrator belum menandatangani dokumen!'], 442);
-            }elseif($dokumenPenyerahan->ttd_penerima == "0"){
-                return response()->json(['success'=>0,'text'=>'Penerima belum menandatangani dokumen!'], 442);
-            }elseif($dokumenPenyerahan->ttd_penyerah == "0"){   
-                return response()->json(['success'=>0,'text'=>'Penyerah belum menandatangani dokumen!'], 442);
-            }   
-            $dokumenPenyerahan->update(['tgl_penyerahan'=>now()]);
-            $laporanPengajuan = LaporanPengajuan::with(['barang'])->where('transaksi_id','=',$id)->get();
-            
-            foreach ($laporanPengajuan as $item){
-                if($item->status_item_pengajuan_id == "1"){
-                    if($item->revisi_jumlah_barang == ""){
-                        $jumlah_barang_terkonfirmasi = $item->jumlah_barang;
-                    }else{
-                        $jumlah_barang_terkonfirmasi = $item->revisi_jumlah_barang;
-                    }
-                    
-                    MutasiBarang::create([
-                        'barang_id'=> $item->barang_id,
-                        'stok_sebelumnya' => $item->barang->stok,
-                        'keluar' => $jumlah_barang_terkonfirmasi,
-                    ]);
+            // if($dokumenPenyerahan->ttd_kasub_umum == "0"){
+            //     return response()->json(['success'=>0,'text'=>'Kasubag Umum belum menandatangani dokumen!'], 442);
+            // }elseif($dokumenPenyerahan->ttd_administrator == "0"){
+            //     return response()->json(['success'=>0,'text'=>'Administrator belum menandatangani dokumen!'], 442);
+            // }elseif($dokumenPenyerahan->ttd_penerima == "0"){
+            //     return response()->json(['success'=>0,'text'=>'Penerima belum menandatangani dokumen!'], 442);
+            // }elseif($dokumenPenyerahan->ttd_penyerah == "0"){   
+            //     return response()->json(['success'=>0,'text'=>'Penyerah belum menandatangani dokumen!'], 442);
+            // }   
 
-                    //Jika jumlah pengajuan barang kurang dari stok maka item pengajuan disetujui
-                    if($jumlah_barang_terkonfirmasi <= $item->barang->stok){
-                        Barang::where('id','=', $item->barang_id)->update(['stok'=>\DB::raw('stok-'.$jumlah_barang_terkonfirmasi)]);
-                    //Jika jumlah pengajuan barang lebih dari stok maka item pengajuan ditolak
-                    }else{
-                        $item->status_item_pengajuan_id = "2";
-                        $item->save();
+            //Cek Periode Laporan Barang Sebelumnya sudah ditutup atau belum
+            $periodeSebelumnya = Carbon::parse(now()->subMonth()->locale('id'));
+            $periodeLaporanBarang = PeriodeLaporanBarang::where('bulan', now()->format('m'))
+                                                            ->where('tahun', now()->format('Y'))
+                                                            ->first();
+            if($periodeLaporanBarang == ""){
+                return response()->json(['success'=>0,'text'=>'Periode Laporan Bulan '.$periodeSebelumnya->translatedFormat('F').' Tahun '. $periodeSebelumnya->translatedFormat('Y'). ' belum ditutup!'], 442);
+            }else{
+                // return response()->json(['success'=>0,'text'=>'Periode Laporan Bulan '], 442);
+                $dokumenPenyerahan->update(['tgl_penyerahan'=>now()]);
+                //Membuat table laporan pengajuan
+                $laporanPengajuan = LaporanPengajuan::with(['barang'])->where('transaksi_id','=',$id)->get();
+                foreach ($laporanPengajuan as $item){
+                    if($item->status_item_pengajuan_id == "1"){
+                        if($item->revisi_jumlah_barang == ""){
+                            $jumlah_barang_terkonfirmasi = $item->jumlah_barang;
+                        }else{
+                            $jumlah_barang_terkonfirmasi = $item->revisi_jumlah_barang;
+                        }   
+                        
+                        //Jika jumlah pengajuan barang kurang dari stok maka item pengajuan disetujui dan di buat mutasi baranga
+                        if($jumlah_barang_terkonfirmasi <= $item->barang->stok){
+                            Barang::where('id','=', $item->barang_id)->update(['stok'=>\DB::raw('stok-'.$jumlah_barang_terkonfirmasi)]);
+                            MutasiBarang::create([
+                                'barang_id'=> $item->barang_id,
+                                'stok_sebelumnya' => $item->barang->stok,
+                                'keluar' => $jumlah_barang_terkonfirmasi,
+                                'periode_laporan_barang_id' => $periodeLaporanBarang->id,
+                                'transaksi_id'=>$id
+                            ]);
+                        //Jika jumlah pengajuan barang lebih dari stok maka item pengajuan ditolak
+                        }else{
+                            $item->status_item_pengajuan_id = "2";
+                            $item->save();
+                        }
                     }
-                    
-
                 }
-            }
-
-
+            }                                                         
         }
-        Transaksi::where('id', '=', $id)->update(['status_id'=> $request->status]);
+        // Transaksi::where('id', '=', $id)->update(['status_id'=> $request->status]);
         if($request->status == '2'){
             LaporanPengajuan::where('transaksi_id', '=', $id)->update(['status_item_pengajuan_id'=> '1']);
             LaporanPengajuanBarangTidakTersedia::where('transaksi_id', '=', $id)->update(['status_item_pengajuan_id'=> '4']);    
@@ -233,11 +246,11 @@ class TransaksiController extends Controller
             LaporanPengajuanBarangTidakTersedia::where('transaksi_id', '=', $id)->update(['status_item_pengajuan_id'=> '5']);
         }
         
-        RiwayatTransaksi::create([
-            'transaksi_id'=> $id,
-            'user_id'=> Auth::user()->id,
-            'status_id'=>$request->status,
-        ]);
+        // RiwayatTransaksi::create([
+        //     'transaksi_id'=> $id,
+        //     'user_id'=> Auth::user()->id,
+        //     'status_id'=>$request->status,
+        // ]);
     }
 
     public function convertBulanToRomawi($bulan){

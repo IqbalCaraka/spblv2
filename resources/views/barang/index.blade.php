@@ -116,7 +116,7 @@
         </div>
     </div>
     <!--//Modal tambah jenis-->
-    <!--Modal edit jenis-->
+    <!--Modal edit barang-->
     <div class="modal fade" id="modalEdit" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -143,7 +143,7 @@
                     <div class="row">
                         <div class="col mb-3">
                             <label for="stok_edit" class="form-label">Stok</label>
-                            <input type="number" id="stok_edit" name="stok" class="form-control" placeholder="Masukan Stok"/>
+                            <input disabled type="number" id="stok_edit" name="stok" class="form-control" placeholder="Masukan Stok"/>
                         </div>
                     </div>
                     <div class="row">
@@ -187,7 +187,52 @@
         </div>
         </div>
     </div>
-    <!--//Modal edit jenis-->
+    <!--//Modal edit barang-->
+    <!--Modal tambah stok-->
+    <div class="modal fade" id="modalTambahStok" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="modalTambahStok">Tambah Stok Barang</h5>
+            <button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-tambah-stok" name="ItemForm">
+                <input type="hidden" id="id_edit" name="id" class="form-control"/>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="nomor_barang" class="form-label">Nomor Barang</label>
+                            <input disabled type="number" id="nomor_barang_stok" name="nomor_barang_stok" class="form-control" placeholder="Nomor Barang"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="nama_barang_edit" class="form-label">Nama Barang</label>
+                            <input disabled type="text" id="nama_barang_stok" name="nama_barang_stok" class="form-control" placeholder="Nama Barang"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="stok_edit" class="form-label">Stok Saat Ini</label>
+                            <input disabled type="number" id="stok_stok" name="stok_stok" class="form-control" placeholder="Masukan Stok"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="stok_edit" class="form-label">Tambah Stok</label>
+                            <input type="number" id="stok_tambah" name="stok" class="form-control" placeholder="Masukan Stok"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"> Batal </button>
+                    <button type="button" class="btn btn-primary" id="submit-tambah-stok" data-id="" onclick="updateTambahStok(event.target)"> Simpan </button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+    <!--//Modal tambah stok-->
 </div>
 
 <script>
@@ -354,6 +399,7 @@
             }
         });
     })
+
     //Untuk mendapatkan data yang diedit
     function editBarang(event){
         var gambar;
@@ -409,6 +455,58 @@
     // }
     })
 
+    //Untuk mendapatkan data yang tambah stok
+    function tambahStok(event){
+        data_id = $(event).attr('data-id');        
+        var URL = "{{route('tambah-stok.get', ':id')}}";
+        var newURL = URL.replace(':id', data_id);
+        $('#submit-tambah-stok').attr('data-id',data_id)
+        $.ajax({
+            url: newURL,
+            type:"GET",
+            dataType:"JSON",
+            success: function(barang){
+                $('#nomor_barang_stok').val(barang.nomor_barang)
+                $('#nama_barang_stok').val(barang.nama_barang)
+                $('#stok_stok').val(barang.stok)
+            }
+        })
+    };
+
+    //Untuk update tambah stoke
+    function updateTambahStok(event){
+        var id = $(event).attr('data-id');
+        var url = "{{route('update-tambah-stok')}}";
+        var masuk = $('#stok_tambah').val();
+        var stok_sebelumnya =  $('#stok_stok').val();
+        // alert (stok_sebelumnya);
+        $.ajax({
+            url: url,
+            type:"PUT",
+            dataType:"JSON",
+            data:{
+                id:id,
+                stok_sebelumnya:stok_sebelumnya,
+                masuk: masuk,
+            },
+            success: function(){
+                $('#modalTambahStok').modal('hide');
+                $('#form-tambah-stok').trigger("reset");
+                $('#datatable').DataTable().ajax.reload();
+                swal("Selamat!", "Stok berhasil ditambah!", "success"); 
+            },
+            error: function (xhr) {
+                swal({
+                    title: 'Gagal Menambah Stok!',
+                    text: xhr.responseJSON.text,
+                    icon: 'warning',
+                    buttons: "Kembali"
+                })
+            }
+        })
+        
+    }
+
     //Untuk hapus data
     function deleteBarang(event){
         data_id = $(event).data('id');
@@ -433,7 +531,6 @@
             };
         });
     }
-   
 </script>
 
 @endsection

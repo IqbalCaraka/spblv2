@@ -54,10 +54,10 @@
             </li>
         </ul>
     </li>
-    <li class="menu-item {{( $title === 'Mutasi')? 'active': ''}}">
-        <a href="{{route('mutasi-barang.index')}}" class="menu-link">
+    <li class="menu-item {{( $title === 'Laporan Barang')? 'active': ''}}">
+        <a href="{{route('laporan-barang.index')}}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-transfer-alt"></i>
-            <div data-i18n="Basic">Mutasi Barang</div>
+            <div data-i18n="Basic">Laporan Barang</div>
         </a>
     </li>
     
@@ -140,7 +140,7 @@
         </a>
     </li>
     <li class="menu-item {{( $title === 'Riwayat Mutasi')? 'active': ''}}">
-        <a href="{{route('riwayat-mutasi')}}" class="menu-link">
+        <a href="{{route('mutasi-barang.index')}}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-history"></i>
             <div data-i18n="Basic">Riwayat Mutasi</div>
         </a>
