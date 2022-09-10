@@ -179,7 +179,6 @@
                                             <!-- <th>Harga Satuan</th>
                                             <th>Total Harga Diajukan</th> -->
                                             <th>Persetujuan Barang</th>
-                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -195,7 +194,6 @@
                                             <th>Status Barang</th>
                                             <th>Disesuaikan Dengan</th>
                                             <th>Jumlah Disesuaikan</th>
-                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -405,10 +403,6 @@
                     data: 'status',
                     name: 'status'
                 },
-                {
-                    data: 'action',
-                    name: 'action'
-                }
             ],
                 order: [
                     [0, 'desc']
@@ -456,10 +450,6 @@
                 {
                     data: 'jumlah_disesuaikan',
                     name: 'jumlah_disesuaikan'
-                },
-                {
-                    data: 'action',
-                    name: 'action'
                 },
             ],
                 order: [
