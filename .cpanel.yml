@@ -1,5 +1,5 @@
 ---
 deployment:
 tasks:
-- export DEPLOYPATH=/home/usercpanel/public_html/git
+- export DEPLOYPATH=/home/tatb2335/public_html/trainingsipermata
 - /bin/cp -r * $DEPLOYPATH
