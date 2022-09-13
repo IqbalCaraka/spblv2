@@ -110,7 +110,7 @@ label{
   font-weight: 800;
   transition: 0.3s;
   border: 1px solid #4154f1;
-  background: #fff;
+  background: none;
   width: 100px;
 }
 
@@ -132,7 +132,7 @@ label{
   font-weight: 800;
   transition: 0.3s;
   border: 1px solid #dd0000;
-  background: #fff;
+  background: none;
   width: 100px;
 }
 

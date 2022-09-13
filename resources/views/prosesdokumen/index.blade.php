@@ -462,8 +462,8 @@
         var status = $(event).attr('data-update');
         var nomor_transaksi = $(event).attr('data-notransaksi');
         var transaksi_id = $(event).attr('data-transaksi');
-        var URL = "{{route('transaksi.update', 'id')}}";
-        var newURL = URL.replace('id', transaksi_id);
+        var URL = "{{route('transaksi.update', ':id')}}";
+        var newURL = URL.replace(':id', transaksi_id);
         if(status == 5){
             var text = 'Yakin menyelesaikan proses transaksi ini? Pastikan semua kolom tanda tangan telah di isi!'
             var dangerMode = false;
@@ -491,7 +491,7 @@
                     data:{
                         status:status
                     },
-                    success: function($data){
+                    success: function(data){
                         $('.modal').modal('hide');
                         $('#pengajuan-datatable').DataTable().ajax.reload();
                         swal("Selamat!", swall_success, "success");

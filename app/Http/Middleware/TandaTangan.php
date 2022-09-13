@@ -22,7 +22,8 @@ class TandaTangan
     public function handle($request, Closure $next)
     {
         $url = $request->path();
-        $id = substr($url, -1);
+        $id = explode('/', $url);
+        $id = end($id);
         if(Auth::user()->id == $id ){
             return $next($request);
         }

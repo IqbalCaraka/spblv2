@@ -48,12 +48,12 @@ id="layout-navbar"
             <span class="align-middle"> Go To Menu</span>
             </a>
         </li>
-        <li>
+        <!-- <li>
             <a class="dropdown-item" href="auth-login-basic.html">
             <i class="bx bx-user me-2"></i>
             <span class="align-middle">Profile</span>
             </a>
-        </li>
+        </li> -->
         <li>
             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">

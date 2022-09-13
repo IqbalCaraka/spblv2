@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use App\PeriodeLaporanBarang;
 use App\LaporanBarang;
 
+
 class BarangController extends Controller
 {
     /**
@@ -179,6 +180,7 @@ class BarangController extends Controller
         $gambar ='';
         if(! is_null ($request->gambar)){
             $gambar = $request->gambar->store('barangs');
+            File::delete($request->gambar);
             $barang->deleteImage();
             $data['gambar'] = $gambar;
         }
@@ -254,7 +256,7 @@ class BarangController extends Controller
                                                             ->where('tahun', now()->format('Y'))
                                                             ->first();
         if($periodeLaporanBarang == ""){
-            return response()->json(['success'=>0,'text'=>'Periode Laporan Bulan '.$periodeSebelumnya->translatedFormat('F').' Tahun '. $periodeSebelumnya->translatedFormat('Y'). ' belum ditutup!'], 442);
+            return response()->json(['success'=>0,'text'=>'Periode Laporan Bulan '.$periodeSebelumnya->translatedFormat('F').' Tahun '. $periodeSebelumnya->translatedFormat('Y'). ' belum ditutup!'], 422);
         }
         $barang = Barang::find($request->id);
         MutasiBarang::create([

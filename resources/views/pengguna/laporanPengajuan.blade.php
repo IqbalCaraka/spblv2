@@ -184,8 +184,10 @@
                                         <tr>
                                             <th>Nama Barang</th>
                                             <th>Jumlah Pengajuan</th>
+                                            <th>Jumlah Disesuaikan</th>
                                             <th>Satuan</th>
                                             <th>Status</th>
+                                            <th>Disesuaikan Dengan</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -515,12 +517,20 @@
                     name: 'jumlah_barang'
                 },
                 {
+                    data: 'jumlah_disesuaikan',
+                    name: 'jumlah_disesuaikan'
+                },
+                {
                     data: 'satuan',
                     name: 'satuan'
                 },
                 {
                     data: 'status',
                     name: 'status'
+                },
+                {
+                    data: 'laporan_pengajuan',
+                    name: 'laporan_pengajuan'
                 },
             ],
                 order: [

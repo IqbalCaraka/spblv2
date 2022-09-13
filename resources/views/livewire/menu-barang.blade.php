@@ -56,7 +56,7 @@
                                 <button id="tambah-keranjang-{{$barang->id}}" data-id="{{$barang->id}}" class="btn-tambah-keranjang" onclick="tambahBarang(event.target)">Tambahkan ke Keranjang!</button>
                             </div>
                             <p>
-                                <small class="text-muted fw-semibold" id="stok">Jumlah stok saat ini {{$barang->stok}}</small>
+                                <small class="text-muted fw-semibold" id="stok">Jumlah stok saat ini {{$barang->stok}} {{$barang->satuan->nama_satuan}}</small>
                             </p>
                         </div>
                     </div>         

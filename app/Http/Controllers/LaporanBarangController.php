@@ -91,7 +91,7 @@ class LaporanBarangController extends Controller
                                                             ->where('tahun', $request->tahun)
                                                             ->first();
         if($periodeLaporanBarang == ""){
-            return response()->json(['success'=>0,'text'=>'Laporan barang pada periode tersebut belum pernah dicatatkan!'], 442);
+            return response()->json(['success'=>0,'text'=>'Laporan barang pada periode tersebut belum pernah dicatatkan!'], 422);
         }else{
             $laporanBarang = LaporanBarang::where('periode_laporan_barang_id', $periodeLaporanBarang->id)->orderBy('barang_id', 'ASC')->get();
             if($request->ajax()){

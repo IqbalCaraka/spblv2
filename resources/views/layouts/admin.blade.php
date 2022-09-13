@@ -114,9 +114,8 @@
 
     <!-- Sweet Alert -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!--Stack JS-->
     
-   
   </body>
-      <!--Stack JS-->
-      @stack('scripts')
+  @stack('scripts')
 </html>

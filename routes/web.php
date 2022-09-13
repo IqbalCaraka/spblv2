@@ -42,6 +42,7 @@ Route::group(['middleware' => ['auth','superadmin']], function(){
     Route::resource('admin/proses-validasi', 'ProsesValidasiController');
     Route::post('admin/sesuaikan-permintaan', 'ProsesValidasiController@sesuaikanPermintaan')->name('sesuaikan-permintaan');
     Route::resource('admin/proses-dokumen', 'ProsesDokumenController',['except' => ['show']]);
+    Route::resource('admin/transaksi-selesai', 'TransaksiSelesaiController');
     Route::resource('admin/semua-status', 'SemuaStatusController');
     Route::resource('admin/kebutuhan-permintaan', 'KebutuhanPermintaanController');
     Route::get('admin/permintaan-tidak-tersedia', 'KebutuhanPermintaanController@tidakTersedia')->name(('permintaan-tidak-tersedia'));

@@ -32,8 +32,8 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <!-- To Do list -->
+        <!-- <div class="row">
+             To Do list 
             <div class="col-md-12 col-lg-12 order-0 mb-4">
                 <div class="card h-100">
                 <h5 class="card-header">Riwayat Pengajuan</h5>
@@ -111,8 +111,8 @@
                 </div>
                 </div>
             </div>
-            <!--/ Todo List -->
-            <!-- Presentase jenis barang -->
+            / Todo List
+            Presentase jenis barang
             <div class="col-md-6 col-lg-9 col-xl-8 order-0 mb-4">
                 <div class="card h-100">
                 <div class="card-header d-flex align-items-center justify-content-between pb-0">
@@ -155,8 +155,8 @@
                 </div>
                 </div>
             </div>
-            <!--/ Presentase jenis barang -->
-            <!-- Barang masuk dan keluar -->
+            / Presentase jenis barang
+            Barang masuk dan keluar
             <div class="col-md-6 col-lg-3 col-xl-4 order-0 mb-4">
                 <div class="card">
                 <div class="row g-0">
@@ -173,9 +173,9 @@
                 </div>
                 </div>
             </div>
-            <!--/ Barang masuk dan keluar -->
+            / Barang masuk dan keluar
 
-            <!-- Barang masuk keluar bulanan -->
+            Barang masuk keluar bulanan
             <div class="col-md-6 col-lg-6 order-0 mb-6">
                 <div class="card">
                     <div class="row">
@@ -205,11 +205,11 @@
                     </div>
                 </div>
             </div>
-            <!--/ Barang masuk keluar bulanan -->
+            / Barang masuk keluar bulanan
 
             
             
-            <!-- Additional -->
+            Additional
             <div class="col-md-6 col-lg-6 order-0 mb-4">
                 <div class="card h-100">
                 <div class="card-header d-flex align-items-center justify-content-between">
@@ -328,10 +328,10 @@
                 </div>
                 </div>
             </div>
-            <!--/ Additional -->
+            / Additional
 
             
-        </div>
+        </div> -->
     </div>
     <!-- / Content -->
     <div class="content-backdrop fade"></div>

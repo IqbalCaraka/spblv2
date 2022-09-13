@@ -91,6 +91,8 @@
 </div>
 <!--Modal show laporan-pengajuan-->
 
+@endsection
+@push('scripts')
 <script>
     $.ajaxSetup({
         headers: {
@@ -141,8 +143,8 @@
     function detailLaporanPengajuan (event){
         var transaksi_id = $(event).attr('data-transaksi');
         var nomor_transaksi = $(event).attr('data-notransaksi');
-        var URL = "{{route('laporan-pengajuan.show', 'id')}}";
-        var newURL = URL.replace('id', transaksi_id);
+        var URL = "{{route('laporan-pengajuan.show', ':id')}}";
+        var newURL = URL.replace(':id', transaksi_id);
         $('.update-status').attr("data-transaksi",transaksi_id);
         $('.update-status').attr("data-notransaksi",nomor_transaksi);
         detailLaporanPengajuanTidakTersedia(transaksi_id); 
@@ -215,14 +217,14 @@
         var status = $(event).attr('data-update')
         var nomor_transaksi = $(event).attr('data-notransaksi')
         var transaksi_id = $(event).attr('data-transaksi')
-        var URL = "{{route('transaksi.update', 'id')}}";
-        var newURL = URL.replace('id', transaksi_id);
+        var URL = "{{route('transaksi.update', ':id')}}";
+        var newURL = URL.replace(':id', transaksi_id);
         if(status == 2){
             var text = 'Yakin melakukan proses validasi pada transaksi ini?'
             var dangerMode = false;
             var icon = "info";
             var swall_success = "Transaksi berhasil divalidasi!"
-            var error_title = "Gagal mevalidasi transaksi!"
+            var error_title = "Gagal memvalidasi transaksi!"
         }else if(status == 4){
             var text = 'Yakin melakukan penolakan pada transaksi ini?'
             var dangerMode = true;
@@ -261,4 +263,4 @@
         });
     };
 </script>
-@endsection
+@endpush

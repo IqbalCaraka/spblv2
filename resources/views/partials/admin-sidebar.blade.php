@@ -29,7 +29,7 @@
                             {{( $title === 'Satuan')? 'open': ''}}">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons bx bx-dock-top"></i>
-            <div data-i18n="Account Settings">Pendataan Barang</div>
+            <div data-i18n="Account Settings">Stok Opname</div>
         </a>
         <ul class="menu-sub">
             <li class="menu-item {{( $title === 'Jenis')? 'active': ''}}">
@@ -98,6 +98,14 @@
             @endif
         </a>
     </li>
+
+    <!-- Transaksi Selesai -->
+    <li class="menu-item {{( $title === 'Transaksi Selesai')? 'active': ''}}">
+        <a href="{{route('transaksi-selesai.index')}}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-check-double"></i>
+            <div data-i18n="Basic">Transaksi Selesai</div>
+        </a>
+    </li>
     
     <!-- Semua Status -->
     <li class="menu-item {{( $title === 'Semua Status')? 'active': ''}}">
@@ -157,11 +165,11 @@
         </a>
     </li>
 
-    <!-- Profil -->
+    <!-- Profil
     <li class="menu-item">
         <a href="" class="menu-link">
             <i class="menu-icon tf-icons bx bxs-user-rectangle"></i>
             <div data-i18n="Basic">Pengguna</div>
         </a>
-    </li>
+    </li> -->
 </aside>
